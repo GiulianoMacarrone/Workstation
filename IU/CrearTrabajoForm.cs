@@ -15,6 +15,8 @@ namespace Presentacion_IU
         public CrearTrabajoForm()
         {
             InitializeComponent();
+            //Añadir data grid view para añadir y eliminar tareas /task
+        
         }
     }
 }
