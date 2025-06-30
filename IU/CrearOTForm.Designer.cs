@@ -40,16 +40,19 @@
             this.textBoxSerialNumber = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.dateTimePickerFecha = new System.Windows.Forms.DateTimePicker();
-            this.label7 = new System.Windows.Forms.Label();
-            this.dataGridViewTrabajos = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comboBoxTrabajo = new System.Windows.Forms.ComboBox();
+            this.lblTrabajo = new System.Windows.Forms.Label();
+            this.dgvTrabajos = new System.Windows.Forms.DataGridView();
             this.label8 = new System.Windows.Forms.Label();
             this.buttonGenerarOT = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTrabajos)).BeginInit();
+            this.NroTrabajo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.tareas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrabajos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -153,27 +156,62 @@
             this.dateTimePickerFecha.TabIndex = 13;
             this.dateTimePickerFecha.Value = new System.DateTime(2025, 7, 4, 0, 0, 0, 0);
             // 
-            // label7
+            // lblTrabajo
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(17, 149);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 24);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Trabajo";
+            this.lblTrabajo.AutoSize = true;
+            this.lblTrabajo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTrabajo.Location = new System.Drawing.Point(12, 344);
+            this.lblTrabajo.Name = "lblTrabajo";
+            this.lblTrabajo.Size = new System.Drawing.Size(74, 24);
+            this.lblTrabajo.TabIndex = 14;
+            this.lblTrabajo.Text = "Trabajo";
             // 
-            // dataGridViewTrabajos
+            // dgvTrabajos
             // 
-            this.dataGridViewTrabajos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewTrabajos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvTrabajos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTrabajos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.NroTrabajo,
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridViewTrabajos.Location = new System.Drawing.Point(418, 98);
-            this.dataGridViewTrabajos.Name = "dataGridViewTrabajos";
-            this.dataGridViewTrabajos.Size = new System.Drawing.Size(402, 218);
-            this.dataGridViewTrabajos.TabIndex = 15;
+            this.dgvTrabajos.Location = new System.Drawing.Point(16, 163);
+            this.dgvTrabajos.Name = "dgvTrabajos";
+            this.dgvTrabajos.Size = new System.Drawing.Size(872, 178);
+            this.dgvTrabajos.TabIndex = 15;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(17, 136);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(144, 24);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "Lista de trabajos";
+            // 
+            // buttonGenerarOT
+            // 
+            this.buttonGenerarOT.Location = new System.Drawing.Point(12, 633);
+            this.buttonGenerarOT.Name = "buttonGenerarOT";
+            this.buttonGenerarOT.Size = new System.Drawing.Size(92, 36);
+            this.buttonGenerarOT.TabIndex = 18;
+            this.buttonGenerarOT.Text = "Generar";
+            this.buttonGenerarOT.UseVisualStyleBackColor = true;
+            this.buttonGenerarOT.Click += new System.EventHandler(this.buttonGenerarOT_Click);
+            // 
+            // buttonCancelar
+            // 
+            this.buttonCancelar.Location = new System.Drawing.Point(800, 633);
+            this.buttonCancelar.Name = "buttonCancelar";
+            this.buttonCancelar.Size = new System.Drawing.Size(88, 36);
+            this.buttonCancelar.TabIndex = 20;
+            this.buttonCancelar.Text = "Cancelar";
+            this.buttonCancelar.UseVisualStyleBackColor = true;
+            // 
+            // NroTrabajo
+            // 
+            this.NroTrabajo.HeaderText = "Numero";
+            this.NroTrabajo.Name = "NroTrabajo";
             // 
             // Column1
             // 
@@ -190,54 +228,32 @@
             this.Column3.HeaderText = "Intervalo";
             this.Column3.Name = "Column3";
             // 
-            // comboBoxTrabajo
+            // dataGridView1
             // 
-            this.comboBoxTrabajo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxTrabajo.FormattingEnabled = true;
-            this.comboBoxTrabajo.Location = new System.Drawing.Point(26, 186);
-            this.comboBoxTrabajo.Name = "comboBoxTrabajo";
-            this.comboBoxTrabajo.Size = new System.Drawing.Size(323, 28);
-            this.comboBoxTrabajo.TabIndex = 16;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.tareas});
+            this.dataGridView1.Location = new System.Drawing.Point(16, 371);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(872, 256);
+            this.dataGridView1.TabIndex = 21;
             // 
-            // label8
+            // tareas
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(414, 64);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(144, 24);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "Lista de trabajos";
-            // 
-            // buttonGenerarOT
-            // 
-            this.buttonGenerarOT.Location = new System.Drawing.Point(26, 263);
-            this.buttonGenerarOT.Name = "buttonGenerarOT";
-            this.buttonGenerarOT.Size = new System.Drawing.Size(92, 36);
-            this.buttonGenerarOT.TabIndex = 18;
-            this.buttonGenerarOT.Text = "Generar";
-            this.buttonGenerarOT.UseVisualStyleBackColor = true;
-            // 
-            // buttonCancelar
-            // 
-            this.buttonCancelar.Location = new System.Drawing.Point(256, 263);
-            this.buttonCancelar.Name = "buttonCancelar";
-            this.buttonCancelar.Size = new System.Drawing.Size(88, 36);
-            this.buttonCancelar.TabIndex = 20;
-            this.buttonCancelar.Text = "Cancelar";
-            this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.tareas.HeaderText = "Tareas";
+            this.tareas.Name = "tareas";
             // 
             // CrearOTForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(832, 365);
+            this.ClientSize = new System.Drawing.Size(900, 681);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonGenerarOT);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.comboBoxTrabajo);
-            this.Controls.Add(this.dataGridViewTrabajos);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.dgvTrabajos);
+            this.Controls.Add(this.lblTrabajo);
             this.Controls.Add(this.dateTimePickerFecha);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxSerialNumber);
@@ -251,8 +267,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "CrearOTForm";
-            this.Text = "CrearOTForm";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTrabajos)).EndInit();
+            this.Text = "Crear Orden de Trabajo";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrabajos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,14 +289,16 @@
         private System.Windows.Forms.TextBox textBoxSerialNumber;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DateTimePicker dateTimePickerFecha;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DataGridView dataGridViewTrabajos;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.ComboBox comboBoxTrabajo;
+        private System.Windows.Forms.Label lblTrabajo;
+        private System.Windows.Forms.DataGridView dgvTrabajos;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button buttonGenerarOT;
         private System.Windows.Forms.Button buttonCancelar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NroTrabajo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tareas;
     }
 }

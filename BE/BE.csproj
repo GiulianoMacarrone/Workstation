@@ -46,17 +46,21 @@
     <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Diferido.cs" />
     <Compile Include="Modelo\HerramientaBE.cs" />
-    <Compile Include="Modelo\InspectorBE.cs" />
-    <Compile Include="Modelo\LogisticoBE.cs" />
-    <Compile Include="Modelo\MecanicoBE.cs" />
+    <Compile Include="Modelo\Descartados\InspectorBE.cs" />
+    <Compile Include="Modelo\ItemOTBE.cs" />
+    <Compile Include="Modelo\Descartados\LogisticoBE.cs" />
+    <Compile Include="Modelo\Descartados\MecanicoBE.cs" />
     <Compile Include="Modelo\NoStockBE.cs" />
     <Compile Include="Modelo\OrdenDeTrabajo.cs" />
-    <Compile Include="Modelo\PanoleroBE.cs" />
-    <Compile Include="Modelo\PlanificadorBE.cs" />
-    <Compile Include="Modelo\RegistroBE.cs" />
+    <Compile Include="Modelo\Descartados\PanoleroBE.cs" />
+    <Compile Include="Modelo\Descartados\PlanificadorBE.cs" />
+    <Compile Include="Modelo\Descartados\RegistroBE.cs" />
+    <Compile Include="Modelo\Permiso.cs" />
+    <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\RotableBE.cs" />
     <Compile Include="Modelo\TrabajoBE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Modelo\UsuarioBE.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Abstraccion\Abstraccion.csproj">

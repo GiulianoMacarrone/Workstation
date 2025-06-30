@@ -14,10 +14,7 @@ namespace BE.Modelo
         public DateTime fechaInicio { get; set; }
         public DateTime fechaCierre { get; set; }
         protected string estado { get; set; } // Ejemplo: "Pendiente", "En Progreso", "Completada"
-        public List<string> listaTrabajos { get; set; } // Lista de IDs de trabajos asociados a esta orden
-        public OrdenDeTrabajo()
-        {
-            listaTrabajos = new List<string>();
-        }
+
+
     }
 }

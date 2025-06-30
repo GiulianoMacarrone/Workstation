@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Presentacion_IU
+namespace IU
 {
-    public partial class CrearOTForm : Form
+    public partial class OrdenDeTrabajo : Form
     {
-        public CrearOTForm()
+        public OrdenDeTrabajo()
         {
             InitializeComponent();
-        }
-
-        private void buttonGenerarOT_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

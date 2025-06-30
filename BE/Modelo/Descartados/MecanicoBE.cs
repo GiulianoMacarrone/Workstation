@@ -7,24 +7,19 @@ using Abstraccion;
 
 namespace BE.Modelo
 {
-    public class InspectorBE : UsuarioABS
+    public class MecanicoBE : UsuarioABS
     {
-        public string nroInspector { get; set; } //I01 por ejemplo, número de inspector único
+        public string nroMecanico { get; set; } //M01 por ejemplo, número de mecánico único
         public override List<string> ObtenerPermisosBase() => new List<string>
         {
+            "EjecutarOT",
             "FirmarOT",
             "VisualizarOT",
             "ConsultarAeronaves",
-            "SeleccionarOT",
-            "AbrirDiferido",
-            "CerrarDiferido",
-            "CerrarOT",
-
+            
         };
 
 
-        public override string ObtenerRol() => "Inspector";
-
-        
+        public override string ObtenerRol() => "Mecanico";
     }
 }

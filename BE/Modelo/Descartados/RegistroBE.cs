@@ -10,8 +10,8 @@ namespace BE.Modelo
     {
         public int reg { get; set; }
 
-        List listaUsuarios = new List();
-        
+        List<UsuarioBE> listaUsuarios { get; set; } // Lista de usuarios registrados
 
-    }
+
+}
 }
