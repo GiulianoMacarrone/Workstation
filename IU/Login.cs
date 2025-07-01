@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BE.Composite;
+using BLL;
+using BLL.Servicios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,11 +22,18 @@ namespace IU
 
         private void buttonIniciar_Click(object sender, EventArgs e)
         {
-            // Lógica Autenticación
-            this.Hide();
-            Form form = new Menu();
-            form.Show();
-
+            UsuarioBLL userBll = new UsuarioBLL();
+            UsuarioBE user = UsuarioBLL.Login(textBoxUser.Text, textBoxPww.Text );
+            if (user != null && !user.bloqueado)
+            {
+                SesionUsuario.IniciarSesion(user);
+                this.Hide();
+                new Menu().Show();
+            }
+            else
+            {
+                MessageBox.Show("Usuario o contraseña incorrectos.");
+            }
         }
     }
 }

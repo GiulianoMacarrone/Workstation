@@ -10,13 +10,6 @@ namespace BLL.Roles
 {
     public class TrabajoBLL
     {
-        // Pseudocódigo:
-        // 1. Validar que el objeto nuevoTrabajo no sea nulo.
-        // 2. Validar campos obligatorios (ej: titulo, descripcion, nroTrabajo).
-        // 3. (Opcional) Validar unicidad de nroTrabajo si corresponde.
-        // 4. Llamar a la capa DAL para persistir el objeto (no implementado aquí).
-        // 5. Lanzar excepciones o retornar según resultado.
-
         public void CrearTrabajo(TrabajoBE nuevoTrabajo)
         {
             if (nuevoTrabajo == null)
@@ -28,15 +21,8 @@ namespace BLL.Roles
             if (string.IsNullOrWhiteSpace(nuevoTrabajo.descripcion))
                 throw new ArgumentException("La descripción del trabajo es obligatoria.", nameof(nuevoTrabajo.descripcion));
 
-            TrabajoDAL.CrearTrabajo(nuevoTrabajo);
-            // Aquí iría la lógica para verificar unicidad de nroTrabajo, si aplica.
-            // Ejemplo: if (TrabajoDAL.ExisteNroTrabajo(nuevoTrabajo.nroTrabajo)) throw new Exception(...);
+            DatosDAL.GuardarTrabajo(nuevoTrabajo);
 
-            // Aquí se llamaría a la capa DAL para guardar el trabajo.
-            // Ejemplo: TrabajoDAL.CrearTrabajo(nuevoTrabajo);
-            // Como no hay DAL implementado, se deja como comentario.
-
-            // throw new NotImplementedException("Persistencia no implementada.");
         }
     }
 }

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BLL;
+using BE;
 
 namespace IU
 {
@@ -27,7 +29,7 @@ namespace IU
         {
             string rol = comboBoxRolUsuario.SelectedItem?.ToString();
 
-            UsuarioABS nuevoUsuario;
+            UsuarioBE nuevoUsuario;
 
             if (rol == "Mecanico")
             {
@@ -49,7 +51,7 @@ namespace IU
             }
             else if (rol == "Logistico")
             {
-                nuevoUsuario = new LogisticoBE();
+                nuevoUsuario.;
             }
             else
             {

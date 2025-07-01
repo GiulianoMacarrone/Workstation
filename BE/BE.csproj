@@ -41,32 +41,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Composite\PermisoComponent.cs" />
+    <Compile Include="Composite\PermisoLeaf.cs" />
+    <Compile Include="Composite\RolComposite.cs" />
     <Compile Include="Modelo\AeronaveBE.cs" />
     <Compile Include="Modelo\BaseBE.cs" />
     <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Diferido.cs" />
     <Compile Include="Modelo\HerramientaBE.cs" />
-    <Compile Include="Modelo\Descartados\InspectorBE.cs" />
     <Compile Include="Modelo\ItemOTBE.cs" />
-    <Compile Include="Modelo\Descartados\LogisticoBE.cs" />
-    <Compile Include="Modelo\Descartados\MecanicoBE.cs" />
     <Compile Include="Modelo\NoStockBE.cs" />
     <Compile Include="Modelo\OrdenDeTrabajo.cs" />
-    <Compile Include="Modelo\Descartados\PanoleroBE.cs" />
-    <Compile Include="Modelo\Descartados\PlanificadorBE.cs" />
-    <Compile Include="Modelo\Descartados\RegistroBE.cs" />
     <Compile Include="Modelo\Permiso.cs" />
     <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\RotableBE.cs" />
     <Compile Include="Modelo\TrabajoBE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Modelo\UsuarioBE.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Abstraccion\Abstraccion.csproj">
-      <Project>{6b7f23a5-6f32-47ea-ac1e-6a28fcbf9472}</Project>
-      <Name>Abstraccion</Name>
-    </ProjectReference>
+    <Compile Include="Composite\UsuarioBE.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

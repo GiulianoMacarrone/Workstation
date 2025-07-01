@@ -11,8 +11,7 @@ namespace BE.Modelo
     {
         public int id { get; set; }
         public string designacion { get; set; }
-
-        public List<Permiso> ListaPermisos(int idPermiso) => new List<Permiso>();
+        public List<int> idsPermisos { get; set; } = new List<int>();
     }
 }
 

@@ -194,7 +194,37 @@ namespace DAL
             contenedor.Add(elem);
             GuardarDocumento(doc);
         }
+        public static void GuardarPermiso(Permiso permiso)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Permisos");
 
+            permiso.id = GenerarIdUnico(contenedor, "Permiso");
+
+            var elem = new XElement("Permiso",
+                new XAttribute("id", permiso.id),
+                new XElement("nombre", permiso.nombre)
+            );
+
+            contenedor.Add(elem);
+            GuardarDocumento(doc);
+        }
+        public static void GuardarRol(Rol rol)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Roles");
+
+            rol.id = GenerarIdUnico(contenedor, "Rol");
+
+            var elem = new XElement("Rol",
+                new XAttribute("id", rol.id),
+                new XElement("designacion", rol.designacion),
+                new XElement("Permisos", rol.idsPermisos.Select(id => new XElement("idPermiso", id)))
+            );
+
+            contenedor.Add(elem);
+            GuardarDocumento(doc);
+        }
 
 
         #endregion
@@ -353,6 +383,33 @@ namespace DAL
                 }).ToList();
         }
 
+        public static List<Permiso> ListarPermisos()
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Permisos");
+
+            return contenedor.Elements("Permiso")
+                .Select(x => new Permiso
+                {
+                    id = int.Parse(x.Attribute("id")?.Value ?? "0"),
+                    nombre = x.Element("nombre")?.Value
+                }).ToList();
+        }
+
+        public static List<Rol> ListarRoles()
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Roles");
+
+            return contenedor.Elements("Rol")
+                .Select(x => new Rol
+                {
+                    id = int.Parse(x.Attribute("id")?.Value ?? "0"),
+                    designacion = x.Element("designacion")?.Value,
+                    idsPermisos = x.Element("Permisos")?.Elements("idPermiso")
+                                    .Select(p => int.Parse(p.Value)).ToList() ?? new List<int>()
+                }).ToList();
+        }
 
 
         #endregion

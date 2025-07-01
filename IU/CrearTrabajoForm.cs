@@ -150,8 +150,11 @@ namespace Presentacion_IU
         }
 
     }
-}               // 5. Al crear la OT, obtén los datos de los DataGridView:
-                private void (object sender, EventArgs e)
+}
+
+
+/* 5. Al crear la OT, obtén los datos de los DataGridView:
+private void (object sender, EventArgs e)
                 {
                     string titulo = txtTitulo.Text.Trim();
                     string descripcion = txtDescripcion.Text.Trim();
@@ -239,3 +242,4 @@ namespace Presentacion_IU
                 }
         
 }
+*/
