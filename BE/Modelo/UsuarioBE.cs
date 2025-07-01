@@ -15,6 +15,7 @@ namespace BE
         public string nombre { get; set; }
         public string apellido { get; set; }
         public List<string> permisosAdicionales { get; set; }
+        public bool bloqueado { get; set; } // Indica si el usuario está bloqueado del sistema (no se eliminan del xml)
 
         public UsuarioBE() //iniciador de la clase Usuario para los permisos adicionales
         {

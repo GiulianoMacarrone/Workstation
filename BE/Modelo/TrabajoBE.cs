@@ -11,7 +11,7 @@ namespace BE.Modelo
     public class TrabajoBE
     {
         public int id { get; set; } // Identificador único del trabajo
-        public int nroTrabajo { get; set; } // Número asociado trabajo TR-XXXXXX
+        public string nroTrabajo { get; set; } // Número asociado trabajo TR-XXXXXX
         public string descripcion { get; set; } // Descripción del trabajo  
         public string titulo{ get; set; } // Título del trabajo
         public string intervalo { get; set; } // Intervalo de tiempo para el trabajo (ej. "Mensual", "Anual")

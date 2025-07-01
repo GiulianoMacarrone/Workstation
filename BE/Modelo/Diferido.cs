@@ -18,14 +18,7 @@ namespace BE.Modelo
         public bool estado { get; set; } 
         public string nroItemMEl { get; set; } // Número de ítem MEl asociado al diferido (ejemplo : "MEl-31-52-01.3")
         public string observaciones { get; set; } // Observaciones del diferido
-        public NoStockBE noStock { get; set; } // Información de No Stock asociada al diferido
-        public string GetNombreDMI(int numero, string aeronave, string descripcion)
-        {
-            this.numero = numero;
-            this.aeronave = aeronave;
-            this.descripcion = descripcion;
-
-            return $"DMI-{aeronave}-{numero}"; // Formato de nombre del DMI: "DMI-MAT-401"
-        }
+        public int? idNoStock { get; set; } // Id del No Stock asociada al diferido
+        
     }
 }

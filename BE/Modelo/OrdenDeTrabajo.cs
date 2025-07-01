@@ -13,7 +13,7 @@ namespace BE.Modelo
         public string descripcion { get; set; }
         public DateTime fechaInicio { get; set; }
         public DateTime fechaCierre { get; set; }
-        protected string estado { get; set; } // Ejemplo: "Pendiente", "En Progreso", "Completada"
+        public string estado { get; set; } // Ejemplo: "Pendiente", "En Progreso", "Completada"
 
 
     }

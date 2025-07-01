@@ -41,10 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HerramientasDAL.cs" />
-    <Compile Include="TrabajoDAL.cs" />
-    <Compile Include="UsuarioDAL.cs" />
+    <Compile Include="acceso.cs" />
+    <Compile Include="DatosDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BE\BE.csproj">
+      <Project>{fd4910dd-608f-42e7-880a-1ed6aff3e017}</Project>
+      <Name>BE</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

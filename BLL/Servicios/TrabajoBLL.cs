@@ -1,4 +1,5 @@
 ﻿using BE.Modelo;
+using DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,7 @@ namespace BLL.Roles
             if (string.IsNullOrWhiteSpace(nuevoTrabajo.descripcion))
                 throw new ArgumentException("La descripción del trabajo es obligatoria.", nameof(nuevoTrabajo.descripcion));
 
-            if (nuevoTrabajo.nroTrabajo <= 0)
-                throw new ArgumentException("El número de trabajo debe ser mayor a cero.", nameof(nuevoTrabajo.nroTrabajo));
-
+            TrabajoDAL.CrearTrabajo(nuevoTrabajo);
             // Aquí iría la lógica para verificar unicidad de nroTrabajo, si aplica.
             // Ejemplo: if (TrabajoDAL.ExisteNroTrabajo(nuevoTrabajo.nroTrabajo)) throw new Exception(...);
 
