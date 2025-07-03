@@ -42,6 +42,7 @@
             this.dgvOTs.Name = "dgvOTs";
             this.dgvOTs.Size = new System.Drawing.Size(776, 413);
             this.dgvOTs.TabIndex = 0;
+            this.dgvOTs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOTs_CellClick);
             // 
             // label1
             // 
@@ -60,6 +61,7 @@
             this.buttonVisualizarOT.TabIndex = 2;
             this.buttonVisualizarOT.Text = "Visualizar";
             this.buttonVisualizarOT.UseVisualStyleBackColor = true;
+            this.buttonVisualizarOT.Click += new System.EventHandler(this.buttonVisualizarOT_Click);
             // 
             // buttonExit
             // 

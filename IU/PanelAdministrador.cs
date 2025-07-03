@@ -1,5 +1,5 @@
-﻿using Abstraccion;
-using BE.Modelo;
+﻿using BE.Modelo;
+using BLL.Servicios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +21,7 @@ namespace IU
 
         private void buttonExit_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void buttonLimpiarCampos_Click(object sender, EventArgs e)
@@ -98,19 +98,22 @@ namespace IU
 
         private void buttonCrearAeronave_Click(object sender, EventArgs e)
         {
+            AeronaveBE aeronave = new AeronaveBE
+            {
+                matricula = textBoxMatricula.Text.Trim(),
+                marca = textBoxMarca.Text.Trim(),
+                modelo = textBoxModelo.Text.Trim(),
+                serial = textBoxSerie.Text.Trim()
+            };
+
+            AeronaveBLL aeronaveBLL = new AeronaveBLL();
+            aeronaveBLL.GuardarAeronave(aeronave);
 
         }
 
         private void buttonAsociarRolUser_Click_1(object sender, EventArgs e)
         {
-            if(comboBoxRolUsuario.Text == "Mecánico")
-            {
-                MecanicoBE mecanico = new MecanicoBE() //con el ID buscamos el usuario y le asignamos el ROL de mecánico
-                {
-                    //hay q asignar un nro de mecánico único, por ejemplo M01, M02, etc. Asi que hay q buscar el nro de mecanico que SIGUE
-                    nroMecanico = "M"+
-                };
-            }
+            
         }
 
         private void buttonCrearUser_Click(object sender, EventArgs e)

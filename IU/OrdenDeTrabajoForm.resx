@@ -117,4 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label8.Text" xml:space="preserve">
+    <value>It is hereby certified that the works specified in this document was carried out in accordance with
+the maintenance rules applicable to EMPRESA. approved by the Civil Aviation Authority
+for the Maintenance Organization and, in respect to that works, the aircraft is considered ready for
+Return to Service in accordance with the aircraft manufacturer.
+Date (dd/mm/yyyy): </value>
+  </data>
+  <data name="txtNota.Text" xml:space="preserve">
+    <value>NOTA EJEMPLO: Esta TCI consiste en una verificación física del estado general y seguridad de fijación de los sistemas y estructuras
+accesibles. Esto incluye comprobaciones de degradación, como rozamientos de tuberías, soportes de conductos sueltos,
+daños al sistema de interconexión de cableado eléctrico (EWIS), desgaste de cables y poleas, fugas de fluidos, conexiones
+eléctricas, estado general de los sujetadores (remaches, tornillos, bulones, etc), drenaje inadecuado, etc., y corrosión
+generalizada. Refiérase a la Figura 1 para detalles sobre la ruta de inspección. / This TCI consists of a physical check of
+the general condition and security of attachment of the accessible systems and structures. This includes checks for
+degradation such as chafing of tubing, loose duct supports, damage to Electrical Wiring Interconnection System (EWIS),
+cable and pulley wear, fluid leaks, electrical bonding, general condition of fasteners (rivets, screws, bolts, etc.), inadequate
+drainage, etc., and general corrosion.
+</value>
+  </data>
 </root>

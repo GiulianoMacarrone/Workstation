@@ -34,12 +34,14 @@
             this.panelDeAdministraciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trabajosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crearTrabajoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eliminarTrabajoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ordenesDeTrabajoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crearOrdenDeTrabajoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarOrdenDeTrabajoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.visualizarOrdenDeTrabajoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aeronavesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consultarAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.abrirDiferidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cerrarDiferidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pañolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.crearRotableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cargarConsumibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,9 +50,6 @@
             this.visualizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logisticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarSolicitudesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consultarAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.abrirDiferidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cerrarDiferidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,8 +93,7 @@
             // trabajosToolStripMenuItem
             // 
             this.trabajosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.crearTrabajoToolStripMenuItem,
-            this.eliminarTrabajoToolStripMenuItem});
+            this.crearTrabajoToolStripMenuItem});
             this.trabajosToolStripMenuItem.Name = "trabajosToolStripMenuItem";
             this.trabajosToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.trabajosToolStripMenuItem.Text = "Trabajos";
@@ -105,12 +103,7 @@
             this.crearTrabajoToolStripMenuItem.Name = "crearTrabajoToolStripMenuItem";
             this.crearTrabajoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.crearTrabajoToolStripMenuItem.Text = "Crear Trabajo";
-            // 
-            // eliminarTrabajoToolStripMenuItem
-            // 
-            this.eliminarTrabajoToolStripMenuItem.Name = "eliminarTrabajoToolStripMenuItem";
-            this.eliminarTrabajoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.eliminarTrabajoToolStripMenuItem.Text = "Eliminar Trabajo";
+            this.crearTrabajoToolStripMenuItem.Click += new System.EventHandler(this.crearTrabajoToolStripMenuItem_Click);
             // 
             // ordenesDeTrabajoToolStripMenuItem
             // 
@@ -127,18 +120,21 @@
             this.crearOrdenDeTrabajoToolStripMenuItem.Name = "crearOrdenDeTrabajoToolStripMenuItem";
             this.crearOrdenDeTrabajoToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.crearOrdenDeTrabajoToolStripMenuItem.Text = "Crear Orden de Trabajo";
+            this.crearOrdenDeTrabajoToolStripMenuItem.Click += new System.EventHandler(this.crearOrdenDeTrabajoToolStripMenuItem_Click);
             // 
             // eliminarOrdenDeTrabajoToolStripMenuItem
             // 
             this.eliminarOrdenDeTrabajoToolStripMenuItem.Name = "eliminarOrdenDeTrabajoToolStripMenuItem";
             this.eliminarOrdenDeTrabajoToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.eliminarOrdenDeTrabajoToolStripMenuItem.Text = "Eliminar Orden de Trabajo";
+            this.eliminarOrdenDeTrabajoToolStripMenuItem.Click += new System.EventHandler(this.eliminarOrdenDeTrabajoToolStripMenuItem_Click);
             // 
             // visualizarOrdenDeTrabajoToolStripMenuItem
             // 
             this.visualizarOrdenDeTrabajoToolStripMenuItem.Name = "visualizarOrdenDeTrabajoToolStripMenuItem";
             this.visualizarOrdenDeTrabajoToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.visualizarOrdenDeTrabajoToolStripMenuItem.Text = "Visualizar Orden de Trabajo";
+            this.visualizarOrdenDeTrabajoToolStripMenuItem.Click += new System.EventHandler(this.visualizarOrdenDeTrabajoToolStripMenuItem_Click);
             // 
             // aeronavesToolStripMenuItem
             // 
@@ -149,6 +145,25 @@
             this.aeronavesToolStripMenuItem.Name = "aeronavesToolStripMenuItem";
             this.aeronavesToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
             this.aeronavesToolStripMenuItem.Text = "Aeronaves";
+            // 
+            // consultarAToolStripMenuItem
+            // 
+            this.consultarAToolStripMenuItem.Name = "consultarAToolStripMenuItem";
+            this.consultarAToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.consultarAToolStripMenuItem.Text = "Consultar Aeronaves";
+            this.consultarAToolStripMenuItem.Click += new System.EventHandler(this.consultarAToolStripMenuItem_Click);
+            // 
+            // abrirDiferidoToolStripMenuItem
+            // 
+            this.abrirDiferidoToolStripMenuItem.Name = "abrirDiferidoToolStripMenuItem";
+            this.abrirDiferidoToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.abrirDiferidoToolStripMenuItem.Text = "Abrir Diferido";
+            // 
+            // cerrarDiferidoToolStripMenuItem
+            // 
+            this.cerrarDiferidoToolStripMenuItem.Name = "cerrarDiferidoToolStripMenuItem";
+            this.cerrarDiferidoToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.cerrarDiferidoToolStripMenuItem.Text = "Cerrar Diferido";
             // 
             // pañolToolStripMenuItem
             // 
@@ -165,31 +180,31 @@
             // crearRotableToolStripMenuItem
             // 
             this.crearRotableToolStripMenuItem.Name = "crearRotableToolStripMenuItem";
-            this.crearRotableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.crearRotableToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.crearRotableToolStripMenuItem.Text = "Crear Rotable";
             // 
             // cargarConsumibleToolStripMenuItem
             // 
             this.cargarConsumibleToolStripMenuItem.Name = "cargarConsumibleToolStripMenuItem";
-            this.cargarConsumibleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cargarConsumibleToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.cargarConsumibleToolStripMenuItem.Text = "Cargar Consumible";
             // 
             // crearHerramientaToolStripMenuItem
             // 
             this.crearHerramientaToolStripMenuItem.Name = "crearHerramientaToolStripMenuItem";
-            this.crearHerramientaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.crearHerramientaToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.crearHerramientaToolStripMenuItem.Text = "Crear Herramienta";
             // 
             // generarNOSTOCKToolStripMenuItem
             // 
             this.generarNOSTOCKToolStripMenuItem.Name = "generarNOSTOCKToolStripMenuItem";
-            this.generarNOSTOCKToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.generarNOSTOCKToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.generarNOSTOCKToolStripMenuItem.Text = "Generar NO-STOCK";
             // 
             // visualizarToolStripMenuItem
             // 
             this.visualizarToolStripMenuItem.Name = "visualizarToolStripMenuItem";
-            this.visualizarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.visualizarToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.visualizarToolStripMenuItem.Text = "Visualizar";
             // 
             // logisticaToolStripMenuItem
@@ -205,24 +220,6 @@
             this.consultarSolicitudesToolStripMenuItem.Name = "consultarSolicitudesToolStripMenuItem";
             this.consultarSolicitudesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.consultarSolicitudesToolStripMenuItem.Text = "Consultar Solicitudes";
-            // 
-            // consultarAToolStripMenuItem
-            // 
-            this.consultarAToolStripMenuItem.Name = "consultarAToolStripMenuItem";
-            this.consultarAToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.consultarAToolStripMenuItem.Text = "Consultar Aeronaves";
-            // 
-            // abrirDiferidoToolStripMenuItem
-            // 
-            this.abrirDiferidoToolStripMenuItem.Name = "abrirDiferidoToolStripMenuItem";
-            this.abrirDiferidoToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.abrirDiferidoToolStripMenuItem.Text = "Abrir Diferido";
-            // 
-            // cerrarDiferidoToolStripMenuItem
-            // 
-            this.cerrarDiferidoToolStripMenuItem.Name = "cerrarDiferidoToolStripMenuItem";
-            this.cerrarDiferidoToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
-            this.cerrarDiferidoToolStripMenuItem.Text = "Cerrar Diferido";
             // 
             // Menu
             // 
@@ -251,7 +248,6 @@
         private System.Windows.Forms.ToolStripMenuItem panelDeAdministraciónToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trabajosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem crearTrabajoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem eliminarTrabajoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ordenesDeTrabajoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem crearOrdenDeTrabajoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eliminarOrdenDeTrabajoToolStripMenuItem;

@@ -33,7 +33,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.txtTitulo = new System.Windows.Forms.TextBox();
             this.txtDescripcion = new System.Windows.Forms.TextBox();
             this.txtNota = new System.Windows.Forms.RichTextBox();
             this.txtIntervalo = new System.Windows.Forms.TextBox();
@@ -55,6 +54,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvMateriales = new System.Windows.Forms.DataGridView();
+            this.txtTitulo = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTask)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHerramientas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMateriales)).BeginInit();
@@ -104,13 +104,6 @@
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 6;
             this.label7.Text = "NOTA";
-            // 
-            // txtTitulo
-            // 
-            this.txtTitulo.Location = new System.Drawing.Point(67, 13);
-            this.txtTitulo.Name = "txtTitulo";
-            this.txtTitulo.Size = new System.Drawing.Size(286, 20);
-            this.txtTitulo.TabIndex = 7;
             // 
             // txtDescripcion
             // 
@@ -188,6 +181,7 @@
             this.buttonCancelar.TabIndex = 20;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
             // dgvTask
             // 
@@ -276,6 +270,13 @@
             this.dgvMateriales.Size = new System.Drawing.Size(324, 150);
             this.dgvMateriales.TabIndex = 14;
             // 
+            // txtTitulo
+            // 
+            this.txtTitulo.Location = new System.Drawing.Point(67, 13);
+            this.txtTitulo.Name = "txtTitulo";
+            this.txtTitulo.Size = new System.Drawing.Size(286, 20);
+            this.txtTitulo.TabIndex = 7;
+            // 
             // CrearTrabajoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -319,7 +320,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtTitulo;
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.RichTextBox txtNota;
         private System.Windows.Forms.TextBox txtIntervalo;
@@ -341,5 +341,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridView dgvMateriales;
+        private System.Windows.Forms.TextBox txtTitulo;
     }
 }

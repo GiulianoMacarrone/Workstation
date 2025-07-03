@@ -1,5 +1,4 @@
-﻿using Abstraccion;
-using BE.Modelo;
+﻿using BE.Modelo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL;
 using BE;
+using BE.Composite;
 
 namespace IU
 {
@@ -22,42 +22,14 @@ namespace IU
         }
         private void NuevoUsuario_Load(object sender, EventArgs e)
         {
-            comboBoxRolUsuario.Items.AddRange(new string[] { "Mecanico", "Inspector", "Panolero", "Logistico" });
+            
         }
 
         private void buttonCrearUser_Click(object sender, EventArgs e)
         {
             string rol = comboBoxRolUsuario.SelectedItem?.ToString();
 
-            UsuarioBE nuevoUsuario;
-
-            if (rol == "Mecanico")
-            {
-                nuevoUsuario = new MecanicoBE
-                {
-                    nroMecanico = UsuarioBLL.ObtenerSiguienteCodigo("M") // ej. "M03"
-                };
-            }
-            else if (rol == "Inspector")
-            {
-                nuevoUsuario = new InspectorBE
-                {
-                    nroInspector = UsuarioBLL.ObtenerSiguienteCodigo("I")
-                };
-            }
-            else if (rol == "Panolero")
-            {
-                nuevoUsuario = new PanoleroBE();
-            }
-            else if (rol == "Logistico")
-            {
-                nuevoUsuario.;
-            }
-            else
-            {
-                MessageBox.Show("Debe seleccionar un rol.");
-                return;
-            }
+            UsuarioBE nuevoUsuario = new UsuarioBE();
 
             nuevoUsuario.id = textBoxIdUser.Text;
             nuevoUsuario.username = textBoxUserName.Text;
@@ -65,7 +37,7 @@ namespace IU
             nuevoUsuario.apellido = textBoxApellido.Text;
             nuevoUsuario.password = textBoxPww.Text;
 
-            UsuarioBLL.GuardarUsuario(nuevoUsuario);
+            //UsuarioBLL.GuardarUsuario(nuevoUsuario);
 
             MessageBox.Show("Usuario creado correctamente.");
             this.Close();

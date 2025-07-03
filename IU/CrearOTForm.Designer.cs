@@ -30,12 +30,10 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBoxAeronaves = new System.Windows.Forms.ComboBox();
             this.textBoxTituloOT = new System.Windows.Forms.TextBox();
-            this.comboBoxMatricula = new System.Windows.Forms.ComboBox();
             this.textBoxNroOT = new System.Windows.Forms.TextBox();
             this.textBoxSerialNumber = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,14 +43,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.buttonGenerarOT = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
-            this.NroTrabajo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.tareas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTareas = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrabajos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTareas)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -72,15 +65,6 @@
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Aeronave";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 98);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Matrícula";
             // 
             // label5
             // 
@@ -107,6 +91,7 @@
             this.comboBoxAeronaves.Name = "comboBoxAeronaves";
             this.comboBoxAeronaves.Size = new System.Drawing.Size(121, 21);
             this.comboBoxAeronaves.TabIndex = 6;
+            this.comboBoxAeronaves.SelectedIndexChanged += new System.EventHandler(this.comboBoxAeronaves_SelectedIndexChanged);
             // 
             // textBoxTituloOT
             // 
@@ -114,14 +99,6 @@
             this.textBoxTituloOT.Name = "textBoxTituloOT";
             this.textBoxTituloOT.Size = new System.Drawing.Size(285, 20);
             this.textBoxTituloOT.TabIndex = 7;
-            // 
-            // comboBoxMatricula
-            // 
-            this.comboBoxMatricula.FormattingEnabled = true;
-            this.comboBoxMatricula.Location = new System.Drawing.Point(81, 95);
-            this.comboBoxMatricula.Name = "comboBoxMatricula";
-            this.comboBoxMatricula.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxMatricula.TabIndex = 9;
             // 
             // textBoxNroOT
             // 
@@ -133,7 +110,7 @@
             // 
             // textBoxSerialNumber
             // 
-            this.textBoxSerialNumber.Location = new System.Drawing.Point(247, 95);
+            this.textBoxSerialNumber.Location = new System.Drawing.Point(247, 61);
             this.textBoxSerialNumber.Name = "textBoxSerialNumber";
             this.textBoxSerialNumber.ReadOnly = true;
             this.textBoxSerialNumber.Size = new System.Drawing.Size(100, 20);
@@ -142,7 +119,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(208, 98);
+            this.label3.Location = new System.Drawing.Point(208, 64);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 12;
@@ -150,11 +127,12 @@
             // 
             // dateTimePickerFecha
             // 
+            this.dateTimePickerFecha.Enabled = false;
             this.dateTimePickerFecha.Location = new System.Drawing.Point(612, 19);
             this.dateTimePickerFecha.Name = "dateTimePickerFecha";
             this.dateTimePickerFecha.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerFecha.TabIndex = 13;
-            this.dateTimePickerFecha.Value = new System.DateTime(2025, 7, 4, 0, 0, 0, 0);
+            this.dateTimePickerFecha.Value = new System.DateTime(2025, 7, 2, 0, 0, 0, 0);
             // 
             // lblTrabajo
             // 
@@ -168,22 +146,22 @@
             // 
             // dgvTrabajos
             // 
+            this.dgvTrabajos.AllowUserToAddRows = false;
+            this.dgvTrabajos.AllowUserToDeleteRows = false;
             this.dgvTrabajos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTrabajos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.NroTrabajo,
-            this.Column1,
-            this.Column2,
-            this.Column3});
-            this.dgvTrabajos.Location = new System.Drawing.Point(16, 163);
+            this.dgvTrabajos.Location = new System.Drawing.Point(16, 133);
+            this.dgvTrabajos.MultiSelect = false;
             this.dgvTrabajos.Name = "dgvTrabajos";
-            this.dgvTrabajos.Size = new System.Drawing.Size(872, 178);
+            this.dgvTrabajos.ReadOnly = true;
+            this.dgvTrabajos.Size = new System.Drawing.Size(872, 208);
             this.dgvTrabajos.TabIndex = 15;
+            this.dgvTrabajos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTrabajos_CellClick);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(17, 136);
+            this.label8.Location = new System.Drawing.Point(17, 106);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(144, 24);
             this.label8.TabIndex = 17;
@@ -207,48 +185,22 @@
             this.buttonCancelar.TabIndex = 20;
             this.buttonCancelar.Text = "Cancelar";
             this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
-            // NroTrabajo
+            // dataGridViewTareas
             // 
-            this.NroTrabajo.HeaderText = "Numero";
-            this.NroTrabajo.Name = "NroTrabajo";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Título";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Descripción";
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Intervalo";
-            this.Column3.Name = "Column3";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.tareas});
-            this.dataGridView1.Location = new System.Drawing.Point(16, 371);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(872, 256);
-            this.dataGridView1.TabIndex = 21;
-            // 
-            // tareas
-            // 
-            this.tareas.HeaderText = "Tareas";
-            this.tareas.Name = "tareas";
+            this.dataGridViewTareas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTareas.Location = new System.Drawing.Point(16, 371);
+            this.dataGridViewTareas.Name = "dataGridViewTareas";
+            this.dataGridViewTareas.Size = new System.Drawing.Size(872, 256);
+            this.dataGridViewTareas.TabIndex = 21;
             // 
             // CrearOTForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 681);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewTareas);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonGenerarOT);
             this.Controls.Add(this.label8);
@@ -258,18 +210,16 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxSerialNumber);
             this.Controls.Add(this.textBoxNroOT);
-            this.Controls.Add(this.comboBoxMatricula);
             this.Controls.Add(this.textBoxTituloOT);
             this.Controls.Add(this.comboBoxAeronaves);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "CrearOTForm";
             this.Text = "Crear Orden de Trabajo";
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrabajos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTareas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,12 +229,10 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox comboBoxAeronaves;
         private System.Windows.Forms.TextBox textBoxTituloOT;
-        private System.Windows.Forms.ComboBox comboBoxMatricula;
         private System.Windows.Forms.TextBox textBoxNroOT;
         private System.Windows.Forms.TextBox textBoxSerialNumber;
         private System.Windows.Forms.Label label3;
@@ -294,11 +242,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button buttonGenerarOT;
         private System.Windows.Forms.Button buttonCancelar;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NroTrabajo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tareas;
+        private System.Windows.Forms.DataGridView dataGridViewTareas;
     }
 }

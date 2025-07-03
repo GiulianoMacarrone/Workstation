@@ -1,4 +1,5 @@
 ﻿using BE;
+using BE.Composite;
 using BE.Modelo;
 using System;
 using System.Collections.Generic;
@@ -98,9 +99,15 @@ namespace DAL
                 new XElement("numeroOT", ot.numeroOT),
                 new XElement("titulo", ot.titulo),
                 new XElement("descripcion", ot.descripcion),
+                new XElement("aeronave", ot.aeronave),
+                new XElement("serial", ot.serial),
+                new XElement("matricula", ot.matricula),
                 new XElement("fechaInicio", ot.fechaInicio.ToString("yyyy-MM-dd")),
                 new XElement("fechaCierre", ot.fechaCierre.ToString("yyyy-MM-dd")),
-                new XElement("estado", ot.estado)
+                new XElement("estado", ot.estado),
+                new XElement("trabajo",
+                    new XAttribute("id", ot.trabajo.id)
+                )
             );
 
             contenedor.Add(otElem);
@@ -279,13 +286,21 @@ namespace DAL
 
             var lista = new List<OrdenDeTrabajo>();
 
+
             foreach (var nodo in contenedor.Elements("OrdenDeTrabajo"))
             {
+                int idTrabajo = (int)nodo.Element("trabajo")?.Attribute("id"); //id del trabajo 
+                var trabajoCompleto = ListarTrabajos().FirstOrDefault(t => t.id == idTrabajo); // lo busco
                 var ot = new OrdenDeTrabajo
                 {
                     numeroOT = nodo.Element("numeroOT")?.Value,
                     titulo = nodo.Element("titulo")?.Value,
                     descripcion = nodo.Element("descripcion")?.Value,
+                    aeronave = nodo.Element("aeronave")?.Value,
+                    serial = nodo.Element("serial")?.Value,
+                    matricula = nodo.Element("matricula")?.Value,
+                    estado = nodo.Element("estado")?.Value,
+                    trabajo = trabajoCompleto, //lo pego
                     fechaInicio = DateTime.TryParse(nodo.Element("fechaInicio")?.Value, out var fi) ? fi : DateTime.MinValue,
                     fechaCierre = DateTime.TryParse(nodo.Element("fechaCierre")?.Value, out var fc) ? fc : DateTime.MinValue,
                 };
@@ -318,7 +333,7 @@ namespace DAL
                     apellido = nodo.Element("apellido")?.Value,
                     bloqueado = bool.TryParse(nodo.Element("bloqueado")?.Value, out var bloq) && bloq,
                     permisosAdicionales = nodo.Element("permisosAdicionales")?
-                        .Elements("Permiso").Select(x => x.Value).ToList() ?? new List<string>()
+                        .Elements("Permiso").Select(x => int.Parse(x.Value)).ToList() ?? new List<int>()
                 };
 
                 lista.Add(usuario);
@@ -431,6 +446,35 @@ namespace DAL
 
             // Agregar nuevo idNoStock
             dmi.Add(new XElement("idNoStock", idNoStock));
+
+            GuardarDocumento(doc);
+        }
+
+        public static void ActualizarOrdenDeTrabajo(OrdenDeTrabajo ot)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "OrdenesDeTrabajo");
+
+            var nodo = contenedor.Elements("OrdenDeTrabajo")
+                .FirstOrDefault(x => x.Element("numeroOT")?.Value == ot.numeroOT);
+
+            if (nodo == null)
+                throw new Exception("No se encontró la OT para actualizar.");
+
+            nodo.Element("estado")?.SetValue(ot.estado);
+            nodo.Element("fechaCierre")?.SetValue(ot.fechaCierre.ToString("yyyy-MM-dd"));
+
+            var mecanicoElem = nodo.Element("mecanico");
+            if (mecanicoElem != null)
+                mecanicoElem.SetValue(ot.mecanico);
+            else
+                nodo.Add(new XElement("mecanico", ot.mecanico));
+
+            var inspectorElem = nodo.Element("inspector");
+            if (inspectorElem != null)
+                inspectorElem.SetValue(ot.inspector);
+            else
+                nodo.Add(new XElement("inspector", ot.inspector));
 
             GuardarDocumento(doc);
         }

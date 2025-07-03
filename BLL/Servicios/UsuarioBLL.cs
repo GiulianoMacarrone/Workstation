@@ -13,7 +13,7 @@ namespace BLL
 {
     public class UsuarioBLL
     {
-        public void ChangePassword(UsuarioBE user, string nuevaPassword)
+        /*public void ChangePassword(UsuarioBE user, string nuevaPassword)
         {
             if (string.IsNullOrEmpty(nuevaPassword))
             {
@@ -23,7 +23,7 @@ namespace BLL
 
             //validar contraseña actual
             //guardar en la DAL una vez validada
-        }
+        }*/
 
         public static List<Permiso> ObtenerPermisos(string usuarioId)
         {

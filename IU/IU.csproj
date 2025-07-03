@@ -102,11 +102,11 @@
     <Compile Include="NuevoUsuario.Designer.cs">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrdenDeTrabajo.cs">
+    <Compile Include="OrdenDeTrabajoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OrdenDeTrabajo.Designer.cs">
-      <DependentUpon>OrdenDeTrabajo.cs</DependentUpon>
+    <Compile Include="OrdenDeTrabajoForm.Designer.cs">
+      <DependentUpon>OrdenDeTrabajoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PanelAdministrador.cs">
       <SubType>Form</SubType>
@@ -116,6 +116,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualizarAeronavesFormcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VisualizarAeronavesFormcs.Designer.cs">
+      <DependentUpon>VisualizarAeronavesFormcs.cs</DependentUpon>
+    </Compile>
     <Compile Include="VisualizarOT.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,8 +149,8 @@
     <EmbeddedResource Include="NuevoUsuario.resx">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrdenDeTrabajo.resx">
-      <DependentUpon>OrdenDeTrabajo.cs</DependentUpon>
+    <EmbeddedResource Include="OrdenDeTrabajoForm.resx">
+      <DependentUpon>OrdenDeTrabajoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelAdministrador.resx">
       <DependentUpon>PanelAdministrador.cs</DependentUpon>
@@ -158,6 +164,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="VisualizarAeronavesFormcs.resx">
+      <DependentUpon>VisualizarAeronavesFormcs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VisualizarOT.resx">
       <DependentUpon>VisualizarOT.cs</DependentUpon>
     </EmbeddedResource>

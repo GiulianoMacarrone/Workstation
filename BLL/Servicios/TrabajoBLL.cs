@@ -24,5 +24,10 @@ namespace BLL.Roles
             DatosDAL.GuardarTrabajo(nuevoTrabajo);
 
         }
+
+        public List<TrabajoBE> ListarTrabajos()
+        {
+            return DatosDAL.ListarTrabajos();
+        }
     }
 }
