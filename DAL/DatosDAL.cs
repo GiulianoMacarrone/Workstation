@@ -117,20 +117,26 @@ namespace DAL
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Usuarios");
-            int nuevoId = GenerarIdUnico(contenedor, "Usuario");
-            usuario.id = nuevoId.ToString(); 
 
             var usuarioElem = new XElement("Usuario",
-                new XAttribute("id", usuario.id),
+                new XAttribute("id", usuario.id), //el id lo generamos en la BLL con formato U0001
                 new XElement("username", usuario.username),
                 new XElement("password", usuario.password),
                 new XElement("nombre", usuario.nombre),
                 new XElement("apellido", usuario.apellido),
-                new XElement("bloqueado", usuario.bloqueado),
-                new XElement("permisosAdicionales",
-                    usuario.permisosAdicionales?.Select(p => new XElement("Permiso", p))
+                new XElement("bloqueado", usuario.bloqueado.ToString().ToLower()),
+                new XElement("idRol", usuario.idRol),
+                new XElement("permisosAdicionales",usuario.permisosAdicionales?.Select(p => new XElement("Permiso", p))
                 )
             );
+            if(!string.IsNullOrEmpty(usuario.nroMecanico))
+            {
+                usuarioElem.Add(new XElement("nroMecanico", usuario.nroMecanico));
+            }
+            if(!string.IsNullOrEmpty(usuario.nroInspector))
+            {
+                usuarioElem.Add(new XElement("nroInspector", usuario.nroInspector));
+            }
 
             contenedor.Add(usuarioElem);
             GuardarDocumento(doc);
@@ -221,7 +227,10 @@ namespace DAL
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Roles");
 
-            rol.id = GenerarIdUnico(contenedor, "Rol");
+            if (rol.id == 0) 
+            {
+                rol.id = GenerarIdUnico(contenedor, "Rol");
+            }
 
             var elem = new XElement("Rol",
                 new XAttribute("id", rol.id),
@@ -331,9 +340,12 @@ namespace DAL
                     password = nodo.Element("password")?.Value,
                     nombre = nodo.Element("nombre")?.Value,
                     apellido = nodo.Element("apellido")?.Value,
+                    idRol = int.TryParse(nodo.Element("idRol")?.Value, out var idRol) ? idRol : 0,
                     bloqueado = bool.TryParse(nodo.Element("bloqueado")?.Value, out var bloq) && bloq,
                     permisosAdicionales = nodo.Element("permisosAdicionales")?
-                        .Elements("Permiso").Select(x => int.Parse(x.Value)).ToList() ?? new List<int>()
+                        .Elements("Permiso").Select(x => int.Parse(x.Value)).ToList() ?? new List<int>(),
+                    nroMecanico = nodo.Element("nroMecanico")?.Value,
+                    nroInspector = nodo.Element("nroInspector")?.Value
                 };
 
                 lista.Add(usuario);
@@ -411,21 +423,29 @@ namespace DAL
                 }).ToList();
         }
 
-        public static List<Rol> ListarRoles()
+        public static List<Rol> ListarRoles(bool includeInactive = false)
         {
-            var doc = GetDocumento();
-            var contenedor = GetOrCreateContenedor(doc, "Roles");
-
-            return contenedor.Elements("Rol")
+            var roles = GetOrCreateContenedor(GetDocumento(), "Roles")
+                .Elements("Rol")
                 .Select(x => new Rol
                 {
-                    id = int.Parse(x.Attribute("id")?.Value ?? "0"),
-                    designacion = x.Element("designacion")?.Value,
-                    idsPermisos = x.Element("Permisos")?.Elements("idPermiso")
-                                    .Select(p => int.Parse(p.Value)).ToList() ?? new List<int>()
-                }).ToList();
-        }
+                    id = (int)x.Attribute("id"),
+                    designacion = (string)x.Element("designacion"),
+                    idsPermisos = x.Element("Permisos")
+                                      ?.Elements("idPermiso")
+                                      .Select(y => (int)y)
+                                      .ToList() ?? new List<int>(),
+                    inactivo = (bool?)x.Element("inactivo") ?? false,
+                    idRolesHijos = x.Element("RolesHijos")
+                                      ?.Elements("idRol")
+                                      .Select(y => (int)y)
+                                      .ToList() ?? new List<int>()
+                });
 
+            return includeInactive
+                ? roles.ToList()
+                : roles.Where(r => !r.inactivo).ToList();
+        }
 
         #endregion
 
@@ -478,6 +498,52 @@ namespace DAL
 
             GuardarDocumento(doc);
         }
+
+        public static void ActualizarRol(Rol rol)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Roles");
+
+            var nodoRol = contenedor.Elements("Rol")
+                .FirstOrDefault(x => (int?)x.Attribute("id") == rol.id);
+            if(nodoRol == null) throw new Exception($"No se encontró el rol con id {rol.id}");
+
+            var permisosElem = nodoRol.Element("Permisos");
+            permisosElem.Remove();
+            foreach(var idPermiso in rol.idsPermisos)
+            {
+                permisosElem.Add(new XElement("idPermiso", idPermiso));
+            }
+            
+            nodoRol.Element("designacion")?.SetValue(rol.designacion);
+
+            GuardarDocumento(doc);
+
+        }
+
+        public static void DesactivarRol(int idRol)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Roles");
+            var nodo = contenedor.Elements("Rol")
+                               .FirstOrDefault(x => (int?)x.Attribute("id") == idRol);
+
+            if (nodo == null)
+                throw new Exception($"No existe el rol con ID {idRol}");
+
+            var elem = nodo.Element("inactivo"); //como esto lo agregue mas tarde, puede que haya roles que no lo tengan
+            if (elem == null)
+            {
+                nodo.Add(new XElement("inactivo", true));
+            }
+            else
+            {
+                elem.SetValue(true);
+            }
+
+            GuardarDocumento(doc);
+        }
+
 
         #endregion
     }

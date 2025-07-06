@@ -17,5 +17,10 @@ namespace BE.Composite
         public List<int> permisosAdicionales { get; set; } = new List<int>(); // Lista de permisos adicionales asignados al usuario (lo manejo con las IDs)
         public bool bloqueado { get; set; } // Indica si el usuario está bloqueado del sistema (no se eliminan del xml)
         
+
+        //solo para roles especificos
+
+        public string nroMecanico { get; set; } // Número de mecánico asignado al usuario (para mecánicos)
+        public string nroInspector { get; set; } // Número de inspector asignado al usuario (para inspectores)
     }
 }

@@ -98,6 +98,7 @@
             this.checkBoxMostrarContraseña.TabIndex = 10;
             this.checkBoxMostrarContraseña.Text = "Mostrar Contraseña";
             this.checkBoxMostrarContraseña.UseVisualStyleBackColor = true;
+            this.checkBoxMostrarContraseña.CheckedChanged += new System.EventHandler(this.checkBoxMostrarContraseña_CheckedChanged);
             // 
             // textBoxApellido
             // 
@@ -172,6 +173,7 @@
             this.bttnCancelar.TabIndex = 14;
             this.bttnCancelar.Text = "Cancelar";
             this.bttnCancelar.UseVisualStyleBackColor = true;
+            this.bttnCancelar.Click += new System.EventHandler(this.bttnCancelar_Click);
             // 
             // NuevoUsuario
             // 

@@ -51,6 +51,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.lblRol = new System.Windows.Forms.Label();
+            this.buttonCerrar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -243,12 +244,23 @@
             this.lblRol.TabIndex = 22;
             this.lblRol.Text = "Rol";
             // 
+            // buttonCerrar
+            // 
+            this.buttonCerrar.Location = new System.Drawing.Point(1177, 646);
+            this.buttonCerrar.Name = "buttonCerrar";
+            this.buttonCerrar.Size = new System.Drawing.Size(75, 23);
+            this.buttonCerrar.TabIndex = 23;
+            this.buttonCerrar.Text = "Cerrar";
+            this.buttonCerrar.UseVisualStyleBackColor = true;
+            this.buttonCerrar.Click += new System.EventHandler(this.buttonCerrar_Click);
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.buttonCerrar);
             this.Controls.Add(this.lblRol);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label7);
@@ -302,5 +314,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label lblRol;
+        private System.Windows.Forms.Button buttonCerrar;
     }
 }

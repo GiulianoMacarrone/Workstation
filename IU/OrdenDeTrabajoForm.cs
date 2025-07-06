@@ -126,22 +126,27 @@ namespace IU
         {
 
         }
-/*        public void CerrarOT(string numeroOT, string idMecanico, string idInspector)
+
+        private void bttnCerrar_Click(object sender, EventArgs e)
         {
-            var lista = ListarOrdenes();
-
-            var ot = lista.FirstOrDefault(o => o.numeroOT == numeroOT);
-            if (ot == null) throw new Exception("OT no encontrada");
-
-            ot.estado = "Completa";
-            ot.fechaCierre = DateTime.Now;
-            ot.mecanico = idMecanico;
-            ot.inspector = idInspector;
-
-            OrdenDeTrabajoBLL otBLL = new OrdenDeTrabajoBLL();
-            otBLL.ActualizarOT(ot);
+            this.Close();
         }
+        /*        public void CerrarOT(string numeroOT, string idMecanico, string idInspector)
+       {
+           var lista = ListarOrdenes();
 
-        */
+           var ot = lista.FirstOrDefault(o => o.numeroOT == numeroOT);
+           if (ot == null) throw new Exception("OT no encontrada");
+
+           ot.estado = "Completa";
+           ot.fechaCierre = DateTime.Now;
+           ot.mecanico = idMecanico;
+           ot.inspector = idInspector;
+
+           OrdenDeTrabajoBLL otBLL = new OrdenDeTrabajoBLL();
+           otBLL.ActualizarOT(ot);
+       }
+
+       */
     }
 }

@@ -72,13 +72,14 @@ namespace BLL
         public static List<Permiso> ObtenerPermisosEfectivos(string idUsuario)
         {
             var usuario = SesionUsuario.Instancia.UsuarioActual;
-            var todosPermisos = DatosDAL.ListarPermisos();
-            var todosRoles = DatosDAL.ListarRoles();
+            var listaPermisos = DatosDAL.ListarPermisos();
+            var listaRoles = DatosDAL.ListarRoles();
 
-            var permisoDict = todosPermisos.ToDictionary(p => p.id);
+            var permisoDict = listaPermisos.ToDictionary(p => p.id);
             var composite = new RolComposite();
+            var listaTodosLosRoles = listaRoles.ToList();
 
-            Rol rol = todosRoles.FirstOrDefault(r => r.id == usuario.idRol);
+            Rol rol = listaRoles.FirstOrDefault(r => r.id == usuario.idRol);
             if (rol != null)
             {
                 foreach (var idPerm in rol.idsPermisos)
@@ -87,10 +88,37 @@ namespace BLL
             }
 
             foreach (var idPerm in usuario.permisosAdicionales)
-                if (permisoDict.ContainsKey(idPerm))
-                    composite.Add(new PermisoLeaf(permisoDict[idPerm]));
+                if (permisoDict.TryGetValue(idPerm, out var perm))
+                    composite.Add(new PermisoLeaf(perm));
 
-            return composite.ObtenerPermisos();
+            return composite.ObtenerPermisos() //para evitar duplicados agrupamos y seleccionamos
+                .GroupBy(p => p.id)
+                .Select(g => g.First())
+                .ToList();
+        }
+
+        //Crear ROL HIJO
+        private static PermisoComponent ConstruirRolComposite(int rolId, Dictionary<int, Permiso> permisoDict, List<Rol> todosLosRoles)
+        {
+            var rol = todosLosRoles.First(r => r.id == rolId);
+            var composite = new RolComposite();
+
+            foreach (var idPermiso in rol.idsPermisos)
+            {
+                if (permisoDict.TryGetValue(idPermiso, out var permiso))
+                {
+                    composite.Add(new PermisoLeaf(permiso));
+
+                }
+            }
+
+            foreach (var hijo in rol.idsRolesHijos ?? Enumerable.Empty<int>())
+            {
+                var subComposite = ConstruirRolComposite(hijo, permisoDict, todosLosRoles);
+                composite.Add(subComposite);
+            }
+
+            return composite;
         }
 
         #endregion
@@ -107,6 +135,35 @@ namespace BLL
             return usuario;
         }
 
+        public void GuardarUsuario(UsuarioBE nuevoUsuario)
+        {
+            var usuarios = DatosDAL.ListarUsuarios();
+            int nuevoIdNumerico = usuarios.Select(u => int.TryParse(u.id?.Replace("U", ""), out var n) ? n : 0).DefaultIfEmpty().Max() + 1;
+            nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // Formato U0001, U0002, etc.
 
+            var rol = DatosDAL.ListarRoles().FirstOrDefault(r => r.id == nuevoUsuario.idRol);
+            if (rol != null)
+            {
+                string designacion = rol.designacion.ToLower();
+                if (designacion == "mecanico")
+                {
+                    int nuevoNroMec = usuarios.Select(u => int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1; //formato M01, M02, etc.
+                    nuevoUsuario.nroMecanico = $"M{nuevoNroMec:D2}"; //FORMATO M01, M02, etc.
+                }
+                else if (designacion == "inspector")
+                {
+                    int nuevoNroIns = usuarios.Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0).DefaultIfEmpty().Max() + 1; //formato I01, I02, etc.
+                    nuevoUsuario.nroInspector = $"I{nuevoNroIns:D2}"; //FORMATO I01, I02, etc.
+                }
+                
+            }
+            DatosDAL.GuardarUsuario(nuevoUsuario);
+        }
+
+        public List<UsuarioBE> ListarUsuarios()
+        {
+            return DatosDAL.ListarUsuarios();
+        }
+        
     }
 }

@@ -32,6 +32,7 @@
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Roles");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Permisos");
             this.groupBoxUser = new System.Windows.Forms.GroupBox();
+            this.buttonModificarUsuario = new System.Windows.Forms.Button();
             this.buttonCrearUser = new System.Windows.Forms.Button();
             this.textBoxPww = new System.Windows.Forms.TextBox();
             this.labelPassword = new System.Windows.Forms.Label();
@@ -55,11 +56,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxPermiso = new System.Windows.Forms.GroupBox();
-            this.buttonEliminarPermiso = new System.Windows.Forms.Button();
-            this.buttonAltaPermiso = new System.Windows.Forms.Button();
-            this.textBoxItem = new System.Windows.Forms.TextBox();
-            this.textBoxMenuPermiso = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.buttonQuitarPermiso = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.comboPermisos = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxNombrePermiso = new System.Windows.Forms.TextBox();
             this.lblNombrePermiso = new System.Windows.Forms.Label();
@@ -87,17 +86,14 @@
             this.treeViewRolesyPermisosDelUsuario = new System.Windows.Forms.TreeView();
             this.label9 = new System.Windows.Forms.Label();
             this.groupBoxRolParaAgregarRoles = new System.Windows.Forms.GroupBox();
-            this.buttonDesasociarRolesUser2 = new System.Windows.Forms.Button();
-            this.buttonAsociarRolesUser2 = new System.Windows.Forms.Button();
+            this.buttonDesasociarRolARol = new System.Windows.Forms.Button();
+            this.buttonAsociarRolARol = new System.Windows.Forms.Button();
             this.comboBoxRoles = new System.Windows.Forms.ComboBox();
             this.textBoxIDRolParaAsociarRol = new System.Windows.Forms.TextBox();
             this.textBoxNombreRolParaAsociarRol = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonQuitarPermisoARol = new System.Windows.Forms.Button();
-            this.buttonAsociarPermisoARol = new System.Windows.Forms.Button();
             this.buttonLimpiarCampos = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.groupBoxAeronaves = new System.Windows.Forms.GroupBox();
@@ -112,7 +108,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.Marca = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewAeronaves = new System.Windows.Forms.DataGridView();
             this.label19 = new System.Windows.Forms.Label();
             this.groupBoxUser.SuspendLayout();
             this.groupBoxRol.SuspendLayout();
@@ -121,13 +117,13 @@
             this.groupBox2.SuspendLayout();
             this.groupBoxRolesAUser.SuspendLayout();
             this.groupBoxRolParaAgregarRoles.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.groupBoxAeronaves.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAeronaves)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxUser
             // 
+            this.groupBoxUser.Controls.Add(this.buttonModificarUsuario);
             this.groupBoxUser.Controls.Add(this.buttonCrearUser);
             this.groupBoxUser.Controls.Add(this.textBoxPww);
             this.groupBoxUser.Controls.Add(this.labelPassword);
@@ -149,9 +145,19 @@
             this.groupBoxUser.TabStop = false;
             this.groupBoxUser.Text = "Usuario:";
             // 
+            // buttonModificarUsuario
+            // 
+            this.buttonModificarUsuario.Location = new System.Drawing.Point(278, 147);
+            this.buttonModificarUsuario.Name = "buttonModificarUsuario";
+            this.buttonModificarUsuario.Size = new System.Drawing.Size(75, 23);
+            this.buttonModificarUsuario.TabIndex = 14;
+            this.buttonModificarUsuario.Text = "Modificar";
+            this.buttonModificarUsuario.UseVisualStyleBackColor = true;
+            this.buttonModificarUsuario.Click += new System.EventHandler(this.buttonModificarUsuario_Click);
+            // 
             // buttonCrearUser
             // 
-            this.buttonCrearUser.Location = new System.Drawing.Point(102, 148);
+            this.buttonCrearUser.Location = new System.Drawing.Point(11, 148);
             this.buttonCrearUser.Name = "buttonCrearUser";
             this.buttonCrearUser.Size = new System.Drawing.Size(75, 23);
             this.buttonCrearUser.TabIndex = 13;
@@ -185,6 +191,7 @@
             this.checkBoxMostrarContraseña.TabIndex = 10;
             this.checkBoxMostrarContraseña.Text = "Mostrar Contraseña";
             this.checkBoxMostrarContraseña.UseVisualStyleBackColor = true;
+            this.checkBoxMostrarContraseña.CheckedChanged += new System.EventHandler(this.checkBoxMostrarContraseña_CheckedChanged);
             // 
             // checkBoxActive
             // 
@@ -352,11 +359,9 @@
             // 
             // groupBoxPermiso
             // 
-            this.groupBoxPermiso.Controls.Add(this.buttonEliminarPermiso);
-            this.groupBoxPermiso.Controls.Add(this.buttonAltaPermiso);
-            this.groupBoxPermiso.Controls.Add(this.textBoxItem);
-            this.groupBoxPermiso.Controls.Add(this.textBoxMenuPermiso);
-            this.groupBoxPermiso.Controls.Add(this.label4);
+            this.groupBoxPermiso.Controls.Add(this.buttonQuitarPermiso);
+            this.groupBoxPermiso.Controls.Add(this.button2);
+            this.groupBoxPermiso.Controls.Add(this.comboPermisos);
             this.groupBoxPermiso.Controls.Add(this.label3);
             this.groupBoxPermiso.Controls.Add(this.textBoxNombrePermiso);
             this.groupBoxPermiso.Controls.Add(this.lblNombrePermiso);
@@ -369,57 +374,42 @@
             this.groupBoxPermiso.TabStop = false;
             this.groupBoxPermiso.Text = "Permiso:";
             // 
-            // buttonEliminarPermiso
+            // buttonQuitarPermiso
             // 
-            this.buttonEliminarPermiso.Location = new System.Drawing.Point(174, 95);
-            this.buttonEliminarPermiso.Name = "buttonEliminarPermiso";
-            this.buttonEliminarPermiso.Size = new System.Drawing.Size(96, 23);
-            this.buttonEliminarPermiso.TabIndex = 9;
-            this.buttonEliminarPermiso.Text = "Eliminar";
-            this.buttonEliminarPermiso.UseVisualStyleBackColor = true;
-            this.buttonEliminarPermiso.Click += new System.EventHandler(this.buttonEliminarPermiso_Click);
+            this.buttonQuitarPermiso.Location = new System.Drawing.Point(170, 89);
+            this.buttonQuitarPermiso.Name = "buttonQuitarPermiso";
+            this.buttonQuitarPermiso.Size = new System.Drawing.Size(110, 36);
+            this.buttonQuitarPermiso.TabIndex = 13;
+            this.buttonQuitarPermiso.Text = "Quitar permiso";
+            this.buttonQuitarPermiso.UseVisualStyleBackColor = true;
+            this.buttonQuitarPermiso.Click += new System.EventHandler(this.buttonQuitarPermiso_Click);
             // 
-            // buttonAltaPermiso
+            // button2
             // 
-            this.buttonAltaPermiso.Location = new System.Drawing.Point(41, 95);
-            this.buttonAltaPermiso.Name = "buttonAltaPermiso";
-            this.buttonAltaPermiso.Size = new System.Drawing.Size(96, 23);
-            this.buttonAltaPermiso.TabIndex = 8;
-            this.buttonAltaPermiso.Text = "Alta";
-            this.buttonAltaPermiso.UseVisualStyleBackColor = true;
-            this.buttonAltaPermiso.Click += new System.EventHandler(this.buttonAltaPermiso_Click);
+            this.button2.Location = new System.Drawing.Point(43, 88);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(110, 36);
+            this.button2.TabIndex = 12;
+            this.button2.Text = "Asociar permiso";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.buttonAsociarPermiso_Click);
             // 
-            // textBoxItem
+            // comboPermisos
             // 
-            this.textBoxItem.Location = new System.Drawing.Point(197, 60);
-            this.textBoxItem.Name = "textBoxItem";
-            this.textBoxItem.Size = new System.Drawing.Size(115, 20);
-            this.textBoxItem.TabIndex = 7;
-            // 
-            // textBoxMenuPermiso
-            // 
-            this.textBoxMenuPermiso.Location = new System.Drawing.Point(55, 60);
-            this.textBoxMenuPermiso.Name = "textBoxMenuPermiso";
-            this.textBoxMenuPermiso.Size = new System.Drawing.Size(100, 20);
-            this.textBoxMenuPermiso.TabIndex = 6;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 63);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Menú:";
+            this.comboPermisos.FormattingEnabled = true;
+            this.comboPermisos.Location = new System.Drawing.Point(103, 57);
+            this.comboPermisos.Name = "comboPermisos";
+            this.comboPermisos.Size = new System.Drawing.Size(151, 21);
+            this.comboPermisos.TabIndex = 11;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(161, 63);
+            this.label3.Location = new System.Drawing.Point(50, 60);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(30, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Item:";
+            this.label3.Size = new System.Drawing.Size(47, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Permiso:";
             // 
             // textBoxNombrePermiso
             // 
@@ -487,6 +477,7 @@
             this.buttonQuitarPermisoUser.TabIndex = 7;
             this.buttonQuitarPermisoUser.Text = "Quitar permiso";
             this.buttonQuitarPermisoUser.UseVisualStyleBackColor = true;
+            this.buttonQuitarPermisoUser.Click += new System.EventHandler(this.buttonQuitarPermisoUser_Click);
             // 
             // buttonAsociarPermisoUser
             // 
@@ -496,6 +487,7 @@
             this.buttonAsociarPermisoUser.TabIndex = 6;
             this.buttonAsociarPermisoUser.Text = "Asociar permiso";
             this.buttonAsociarPermisoUser.UseVisualStyleBackColor = true;
+            this.buttonAsociarPermisoUser.Click += new System.EventHandler(this.buttonAsociarPermisoUser_Click);
             // 
             // comboBoxPermisos
             // 
@@ -535,6 +527,7 @@
             this.buttonQuitarRolUser.TabIndex = 7;
             this.buttonQuitarRolUser.Text = "Quitar rol a usuario";
             this.buttonQuitarRolUser.UseVisualStyleBackColor = true;
+            this.buttonQuitarRolUser.Click += new System.EventHandler(this.buttonQuitarRolUser_Click);
             // 
             // buttonAsociarRolUser
             // 
@@ -544,7 +537,7 @@
             this.buttonAsociarRolUser.TabIndex = 6;
             this.buttonAsociarRolUser.Text = "Asociar rol  a usuario";
             this.buttonAsociarRolUser.UseVisualStyleBackColor = true;
-            this.buttonAsociarRolUser.Click += new System.EventHandler(this.buttonAsociarRolUser_Click_1);
+            this.buttonAsociarRolUser.Click += new System.EventHandler(this.buttonAsociarRolUser_Click);
             // 
             // comboBoxRolUsuario
             // 
@@ -580,12 +573,13 @@
             treeNode1.Text = "Usuarios";
             this.treeViewUsuarios.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this.treeViewUsuarios.Size = new System.Drawing.Size(121, 357);
+            this.treeViewUsuarios.Size = new System.Drawing.Size(168, 357);
             this.treeViewUsuarios.TabIndex = 5;
+            this.treeViewUsuarios.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewUsuarios_AfterSelect);
             // 
             // treeViewRoles
             // 
-            this.treeViewRoles.Location = new System.Drawing.Point(155, 345);
+            this.treeViewRoles.Location = new System.Drawing.Point(430, 345);
             this.treeViewRoles.Name = "treeViewRoles";
             treeNode2.Name = "Roles";
             treeNode2.Text = "Roles";
@@ -593,11 +587,12 @@
             treeNode2});
             this.treeViewRoles.Size = new System.Drawing.Size(121, 357);
             this.treeViewRoles.TabIndex = 7;
+            this.treeViewRoles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewRoles_AfterSelect);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(152, 329);
+            this.label6.Location = new System.Drawing.Point(427, 329);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(37, 13);
             this.label6.TabIndex = 6;
@@ -605,7 +600,7 @@
             // 
             // treeViewPermisos
             // 
-            this.treeViewPermisos.Location = new System.Drawing.Point(305, 345);
+            this.treeViewPermisos.Location = new System.Drawing.Point(581, 345);
             this.treeViewPermisos.Name = "treeViewPermisos";
             treeNode3.Name = "Permisos";
             treeNode3.Text = "Permisos";
@@ -613,11 +608,12 @@
             treeNode3});
             this.treeViewPermisos.Size = new System.Drawing.Size(203, 357);
             this.treeViewPermisos.TabIndex = 9;
+            this.treeViewPermisos.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewPermisos_AfterSelect);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(302, 329);
+            this.label7.Location = new System.Drawing.Point(578, 329);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(52, 13);
             this.label7.TabIndex = 8;
@@ -625,15 +621,16 @@
             // 
             // treeViewPermisosXRol
             // 
-            this.treeViewPermisosXRol.Location = new System.Drawing.Point(536, 345);
+            this.treeViewPermisosXRol.Location = new System.Drawing.Point(815, 345);
             this.treeViewPermisosXRol.Name = "treeViewPermisosXRol";
             this.treeViewPermisosXRol.Size = new System.Drawing.Size(222, 357);
             this.treeViewPermisosXRol.TabIndex = 11;
+            this.treeViewPermisosXRol.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewPermisosXRol_AfterSelect);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(533, 329);
+            this.label8.Location = new System.Drawing.Point(812, 329);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(89, 13);
             this.label8.TabIndex = 10;
@@ -641,15 +638,16 @@
             // 
             // treeViewRolesyPermisosDelUsuario
             // 
-            this.treeViewRolesyPermisosDelUsuario.Location = new System.Drawing.Point(786, 345);
+            this.treeViewRolesyPermisosDelUsuario.Location = new System.Drawing.Point(200, 345);
             this.treeViewRolesyPermisosDelUsuario.Name = "treeViewRolesyPermisosDelUsuario";
-            this.treeViewRolesyPermisosDelUsuario.Size = new System.Drawing.Size(245, 357);
+            this.treeViewRolesyPermisosDelUsuario.Size = new System.Drawing.Size(206, 357);
             this.treeViewRolesyPermisosDelUsuario.TabIndex = 13;
+            this.treeViewRolesyPermisosDelUsuario.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewRolesyPermisosDelUsuario_AfterSelect);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(783, 329);
+            this.label9.Location = new System.Drawing.Point(197, 329);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(146, 13);
             this.label9.TabIndex = 12;
@@ -657,8 +655,8 @@
             // 
             // groupBoxRolParaAgregarRoles
             // 
-            this.groupBoxRolParaAgregarRoles.Controls.Add(this.buttonDesasociarRolesUser2);
-            this.groupBoxRolParaAgregarRoles.Controls.Add(this.buttonAsociarRolesUser2);
+            this.groupBoxRolParaAgregarRoles.Controls.Add(this.buttonDesasociarRolARol);
+            this.groupBoxRolParaAgregarRoles.Controls.Add(this.buttonAsociarRolARol);
             this.groupBoxRolParaAgregarRoles.Controls.Add(this.comboBoxRoles);
             this.groupBoxRolParaAgregarRoles.Controls.Add(this.textBoxIDRolParaAsociarRol);
             this.groupBoxRolParaAgregarRoles.Controls.Add(this.textBoxNombreRolParaAsociarRol);
@@ -672,25 +670,25 @@
             this.groupBoxRolParaAgregarRoles.TabStop = false;
             this.groupBoxRolParaAgregarRoles.Text = "Rol para Asociar/Desasociar a otro Rol";
             // 
-            // buttonDesasociarRolesUser2
+            // buttonDesasociarRolARol
             // 
-            this.buttonDesasociarRolesUser2.Location = new System.Drawing.Point(152, 101);
-            this.buttonDesasociarRolesUser2.Name = "buttonDesasociarRolesUser2";
-            this.buttonDesasociarRolesUser2.Size = new System.Drawing.Size(92, 36);
-            this.buttonDesasociarRolesUser2.TabIndex = 7;
-            this.buttonDesasociarRolesUser2.Text = "Desasociar roles  a usuario";
-            this.buttonDesasociarRolesUser2.UseVisualStyleBackColor = true;
-            this.buttonDesasociarRolesUser2.Click += new System.EventHandler(this.buttonDesasociarRolesUser2_Click);
+            this.buttonDesasociarRolARol.Location = new System.Drawing.Point(152, 101);
+            this.buttonDesasociarRolARol.Name = "buttonDesasociarRolARol";
+            this.buttonDesasociarRolARol.Size = new System.Drawing.Size(92, 36);
+            this.buttonDesasociarRolARol.TabIndex = 7;
+            this.buttonDesasociarRolARol.Text = "Desasociar rol a rol";
+            this.buttonDesasociarRolARol.UseVisualStyleBackColor = true;
+            this.buttonDesasociarRolARol.Click += new System.EventHandler(this.buttonDesasociarRolaRol_Click);
             // 
-            // buttonAsociarRolesUser2
+            // buttonAsociarRolARol
             // 
-            this.buttonAsociarRolesUser2.Location = new System.Drawing.Point(15, 101);
-            this.buttonAsociarRolesUser2.Name = "buttonAsociarRolesUser2";
-            this.buttonAsociarRolesUser2.Size = new System.Drawing.Size(92, 36);
-            this.buttonAsociarRolesUser2.TabIndex = 6;
-            this.buttonAsociarRolesUser2.Text = "Asociar roles  a usuario";
-            this.buttonAsociarRolesUser2.UseVisualStyleBackColor = true;
-            this.buttonAsociarRolesUser2.Click += new System.EventHandler(this.buttonAsociarRolesUser2_Click);
+            this.buttonAsociarRolARol.Location = new System.Drawing.Point(15, 101);
+            this.buttonAsociarRolARol.Name = "buttonAsociarRolARol";
+            this.buttonAsociarRolARol.Size = new System.Drawing.Size(92, 36);
+            this.buttonAsociarRolARol.TabIndex = 6;
+            this.buttonAsociarRolARol.Text = "Asociar rol a rol";
+            this.buttonAsociarRolARol.UseVisualStyleBackColor = true;
+            this.buttonAsociarRolARol.Click += new System.EventHandler(this.buttonAsociarRolaRol_Click);
             // 
             // comboBoxRoles
             // 
@@ -742,38 +740,9 @@
             this.label10.TabIndex = 0;
             this.label10.Text = "Roles: ";
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.buttonQuitarPermisoARol);
-            this.groupBox1.Controls.Add(this.buttonAsociarPermisoARol);
-            this.groupBox1.Location = new System.Drawing.Point(700, 163);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(227, 126);
-            this.groupBox1.TabIndex = 15;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Opciones Roles/Permisos";
-            // 
-            // buttonQuitarPermisoARol
-            // 
-            this.buttonQuitarPermisoARol.Location = new System.Drawing.Point(126, 34);
-            this.buttonQuitarPermisoARol.Name = "buttonQuitarPermisoARol";
-            this.buttonQuitarPermisoARol.Size = new System.Drawing.Size(85, 68);
-            this.buttonQuitarPermisoARol.TabIndex = 1;
-            this.buttonQuitarPermisoARol.Text = "Quitar permiso a rol";
-            this.buttonQuitarPermisoARol.UseVisualStyleBackColor = true;
-            // 
-            // buttonAsociarPermisoARol
-            // 
-            this.buttonAsociarPermisoARol.Location = new System.Drawing.Point(15, 34);
-            this.buttonAsociarPermisoARol.Name = "buttonAsociarPermisoARol";
-            this.buttonAsociarPermisoARol.Size = new System.Drawing.Size(85, 68);
-            this.buttonAsociarPermisoARol.TabIndex = 0;
-            this.buttonAsociarPermisoARol.Text = "Asociar permiso a rol";
-            this.buttonAsociarPermisoARol.UseVisualStyleBackColor = true;
-            // 
             // buttonLimpiarCampos
             // 
-            this.buttonLimpiarCampos.Location = new System.Drawing.Point(933, 178);
+            this.buttonLimpiarCampos.Location = new System.Drawing.Point(786, 180);
             this.buttonLimpiarCampos.Name = "buttonLimpiarCampos";
             this.buttonLimpiarCampos.Size = new System.Drawing.Size(75, 46);
             this.buttonLimpiarCampos.TabIndex = 2;
@@ -783,7 +752,7 @@
             // 
             // buttonExit
             // 
-            this.buttonExit.Location = new System.Drawing.Point(933, 234);
+            this.buttonExit.Location = new System.Drawing.Point(786, 238);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(75, 42);
             this.buttonExit.TabIndex = 16;
@@ -902,13 +871,13 @@
             this.label13.TabIndex = 0;
             this.label13.Text = "ID";
             // 
-            // dataGridView1
+            // dataGridViewAeronaves
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(1059, 345);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(209, 357);
-            this.dataGridView1.TabIndex = 18;
+            this.dataGridViewAeronaves.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewAeronaves.Location = new System.Drawing.Point(1059, 345);
+            this.dataGridViewAeronaves.Name = "dataGridViewAeronaves";
+            this.dataGridViewAeronaves.Size = new System.Drawing.Size(209, 357);
+            this.dataGridViewAeronaves.TabIndex = 18;
             // 
             // label19
             // 
@@ -925,11 +894,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.Controls.Add(this.label19);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewAeronaves);
             this.Controls.Add(this.groupBoxAeronaves);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonLimpiarCampos);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxRolParaAgregarRoles);
             this.Controls.Add(this.treeViewRolesyPermisosDelUsuario);
             this.Controls.Add(this.label9);
@@ -962,10 +930,9 @@
             this.groupBoxRolesAUser.PerformLayout();
             this.groupBoxRolParaAgregarRoles.ResumeLayout(false);
             this.groupBoxRolParaAgregarRoles.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
             this.groupBoxAeronaves.ResumeLayout(false);
             this.groupBoxAeronaves.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAeronaves)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -998,12 +965,6 @@
         private System.Windows.Forms.GroupBox groupBoxPermiso;
         private System.Windows.Forms.Label lblIDPermiso;
         private System.Windows.Forms.TextBox textBoxIdPermiso;
-        private System.Windows.Forms.Button buttonEliminarPermiso;
-        private System.Windows.Forms.Button buttonAltaPermiso;
-        private System.Windows.Forms.TextBox textBoxItem;
-        private System.Windows.Forms.TextBox textBoxMenuPermiso;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxNombrePermiso;
         private System.Windows.Forms.Label lblNombrePermiso;
         private System.Windows.Forms.GroupBox groupBoxRolesyPermisos;
@@ -1018,9 +979,6 @@
         private System.Windows.Forms.TreeView treeViewRolesyPermisosDelUsuario;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.GroupBox groupBoxRolParaAgregarRoles;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button buttonAsociarPermisoARol;
-        private System.Windows.Forms.Button buttonQuitarPermisoARol;
         private System.Windows.Forms.TextBox textBoxIDRolParaAsociarRol;
         private System.Windows.Forms.TextBox textBoxNombreRolParaAsociarRol;
         private System.Windows.Forms.Label label12;
@@ -1029,8 +987,8 @@
         private System.Windows.Forms.Button buttonLimpiarCampos;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.ComboBox comboBoxRoles;
-        private System.Windows.Forms.Button buttonDesasociarRolesUser2;
-        private System.Windows.Forms.Button buttonAsociarRolesUser2;
+        private System.Windows.Forms.Button buttonDesasociarRolARol;
+        private System.Windows.Forms.Button buttonAsociarRolARol;
         private System.Windows.Forms.GroupBox groupBoxAeronaves;
         private System.Windows.Forms.TextBox textBoxSerie;
         private System.Windows.Forms.TextBox textBoxMatricula;
@@ -1054,7 +1012,12 @@
         private System.Windows.Forms.Button buttonAsociarPermisoUser;
         private System.Windows.Forms.ComboBox comboBoxPermisos;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewAeronaves;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Button buttonQuitarPermiso;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox comboPermisos;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button buttonModificarUsuario;
     }
 }

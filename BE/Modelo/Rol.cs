@@ -8,9 +8,13 @@ namespace BE.Modelo
 {
     public class Rol
     {
+        public IEnumerable<int> idsRolesHijos;
+
         public int id { get; set; }
         public string designacion { get; set; }
         public List<int> idsPermisos { get; set; } = new List<int>();
+        public List<int> idRolesHijos { get; set; } = new List<int>();
+        public bool inactivo { get; set; } = false; // Indica si el rol está inactivo (no se eliminan del xml)
     }
 }
 

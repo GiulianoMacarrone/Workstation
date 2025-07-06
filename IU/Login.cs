@@ -29,6 +29,7 @@ namespace IU
                 SesionUsuario.IniciarSesion(user);
                 this.Hide();
                 new Menu().Show();
+                
             }
             else
             {

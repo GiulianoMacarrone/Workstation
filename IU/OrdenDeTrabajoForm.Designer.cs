@@ -60,6 +60,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.lblReferencia = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.bttnCerrar = new System.Windows.Forms.Button();
             this.groupBoxEncabezado.SuspendLayout();
             this.groupBoxFirma.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -118,6 +119,7 @@
             this.txtIntervalo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtIntervalo.Location = new System.Drawing.Point(572, 59);
             this.txtIntervalo.Name = "txtIntervalo";
+            this.txtIntervalo.ReadOnly = true;
             this.txtIntervalo.Size = new System.Drawing.Size(150, 26);
             this.txtIntervalo.TabIndex = 8;
             // 
@@ -137,6 +139,7 @@
             this.txtSerial.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSerial.Location = new System.Drawing.Point(525, 91);
             this.txtSerial.Name = "txtSerial";
+            this.txtSerial.ReadOnly = true;
             this.txtSerial.Size = new System.Drawing.Size(197, 26);
             this.txtSerial.TabIndex = 4;
             // 
@@ -146,6 +149,7 @@
             this.txtMatricula.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMatricula.Location = new System.Drawing.Point(332, 90);
             this.txtMatricula.Name = "txtMatricula";
+            this.txtMatricula.ReadOnly = true;
             this.txtMatricula.Size = new System.Drawing.Size(117, 26);
             this.txtMatricula.TabIndex = 4;
             // 
@@ -155,6 +159,7 @@
             this.txtAeronave.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAeronave.Location = new System.Drawing.Point(98, 90);
             this.txtAeronave.Name = "txtAeronave";
+            this.txtAeronave.ReadOnly = true;
             this.txtAeronave.Size = new System.Drawing.Size(137, 26);
             this.txtAeronave.TabIndex = 4;
             // 
@@ -164,6 +169,7 @@
             this.txtFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtFecha.Location = new System.Drawing.Point(342, 59);
             this.txtFecha.Name = "txtFecha";
+            this.txtFecha.ReadOnly = true;
             this.txtFecha.Size = new System.Drawing.Size(139, 26);
             this.txtFecha.TabIndex = 4;
             // 
@@ -173,6 +179,7 @@
             this.txtNumeroOT.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNumeroOT.Location = new System.Drawing.Point(126, 59);
             this.txtNumeroOT.Name = "txtNumeroOT";
+            this.txtNumeroOT.ReadOnly = true;
             this.txtNumeroOT.Size = new System.Drawing.Size(145, 26);
             this.txtNumeroOT.TabIndex = 4;
             // 
@@ -182,6 +189,7 @@
             this.txtTituloOT.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTituloOT.Location = new System.Drawing.Point(83, 26);
             this.txtTituloOT.Name = "txtTituloOT";
+            this.txtTituloOT.ReadOnly = true;
             this.txtTituloOT.Size = new System.Drawing.Size(639, 26);
             this.txtTituloOT.TabIndex = 3;
             // 
@@ -309,20 +317,26 @@
             // 
             // dataGridViewHerramientas
             // 
+            this.dataGridViewHerramientas.AllowUserToAddRows = false;
+            this.dataGridViewHerramientas.AllowUserToDeleteRows = false;
             this.dataGridViewHerramientas.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dataGridViewHerramientas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewHerramientas.Location = new System.Drawing.Point(24, 197);
             this.dataGridViewHerramientas.Name = "dataGridViewHerramientas";
+            this.dataGridViewHerramientas.ReadOnly = true;
             this.dataGridViewHerramientas.RowHeadersVisible = false;
             this.dataGridViewHerramientas.Size = new System.Drawing.Size(361, 100);
             this.dataGridViewHerramientas.TabIndex = 0;
             // 
             // dataGridViewMateriales
             // 
+            this.dataGridViewMateriales.AllowUserToAddRows = false;
+            this.dataGridViewMateriales.AllowUserToDeleteRows = false;
             this.dataGridViewMateriales.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dataGridViewMateriales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMateriales.Location = new System.Drawing.Point(397, 197);
             this.dataGridViewMateriales.Name = "dataGridViewMateriales";
+            this.dataGridViewMateriales.ReadOnly = true;
             this.dataGridViewMateriales.RowHeadersVisible = false;
             this.dataGridViewMateriales.Size = new System.Drawing.Size(370, 100);
             this.dataGridViewMateriales.TabIndex = 1;
@@ -368,6 +382,7 @@
             this.lblReferencia.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblReferencia.Location = new System.Drawing.Point(89, 152);
             this.lblReferencia.Name = "lblReferencia";
+            this.lblReferencia.ReadOnly = true;
             this.lblReferencia.Size = new System.Drawing.Size(678, 20);
             this.lblReferencia.TabIndex = 14;
             // 
@@ -380,12 +395,29 @@
             this.label13.TabIndex = 15;
             this.label13.Text = "Referencia";
             // 
+            // bttnCerrar
+            // 
+            this.bttnCerrar.BackColor = System.Drawing.SystemColors.Window;
+            this.bttnCerrar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bttnCerrar.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.bttnCerrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bttnCerrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bttnCerrar.ForeColor = System.Drawing.Color.Black;
+            this.bttnCerrar.Location = new System.Drawing.Point(773, -2);
+            this.bttnCerrar.Name = "bttnCerrar";
+            this.bttnCerrar.Size = new System.Drawing.Size(31, 27);
+            this.bttnCerrar.TabIndex = 16;
+            this.bttnCerrar.Text = "X";
+            this.bttnCerrar.UseVisualStyleBackColor = false;
+            this.bttnCerrar.Click += new System.EventHandler(this.bttnCerrar_Click);
+            // 
             // OrdenDeTrabajoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 905);
+            this.Controls.Add(this.bttnCerrar);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.lblReferencia);
             this.Controls.Add(this.label10);
@@ -397,7 +429,9 @@
             this.Controls.Add(this.dataGridViewHerramientas);
             this.Controls.Add(this.groupBoxFirma);
             this.Controls.Add(this.groupBoxEncabezado);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "OrdenDeTrabajoForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OrdenDeTrabajo";
             this.groupBoxEncabezado.ResumeLayout(false);
             this.groupBoxEncabezado.PerformLayout();
@@ -445,5 +479,6 @@
         private System.Windows.Forms.TextBox lblReferencia;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label lblFechaConformance;
+        private System.Windows.Forms.Button bttnCerrar;
     }
 }

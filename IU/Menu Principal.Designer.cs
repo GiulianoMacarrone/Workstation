@@ -50,6 +50,7 @@
             this.visualizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logisticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consultarSolicitudesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eliminarTrToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +94,8 @@
             // trabajosToolStripMenuItem
             // 
             this.trabajosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.crearTrabajoToolStripMenuItem});
+            this.crearTrabajoToolStripMenuItem,
+            this.eliminarTrToolStripMenuItem});
             this.trabajosToolStripMenuItem.Name = "trabajosToolStripMenuItem";
             this.trabajosToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.trabajosToolStripMenuItem.Text = "Trabajos";
@@ -221,6 +223,13 @@
             this.consultarSolicitudesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.consultarSolicitudesToolStripMenuItem.Text = "Consultar Solicitudes";
             // 
+            // eliminarTrToolStripMenuItem
+            // 
+            this.eliminarTrToolStripMenuItem.Name = "eliminarTrToolStripMenuItem";
+            this.eliminarTrToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.eliminarTrToolStripMenuItem.Text = "Eliminar Trabajo";
+            this.eliminarTrToolStripMenuItem.Click += new System.EventHandler(this.eliminarTrToolStripMenuItem_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -264,5 +273,6 @@
         private System.Windows.Forms.ToolStripMenuItem consultarAToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem abrirDiferidoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarDiferidoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem eliminarTrToolStripMenuItem;
     }
 }
