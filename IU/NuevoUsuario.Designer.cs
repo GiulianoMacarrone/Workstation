@@ -197,6 +197,7 @@
             this.Controls.Add(this.lblUsername);
             this.Name = "NuevoUsuario";
             this.Text = "Crear Usuario";
+            this.Load += new System.EventHandler(this.NuevoUsuario_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

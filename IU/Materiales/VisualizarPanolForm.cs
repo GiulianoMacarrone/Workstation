@@ -27,7 +27,6 @@ namespace IU
         public VisualizarPanolForm()
         {
             InitializeComponent();
-            this.Load += VisualizarPanolForm_Load;
         }
 
         private void VisualizarPanolForm_Load(object sender, EventArgs e)

@@ -12,9 +12,6 @@ namespace IU
         public BackupForm()
         {
             InitializeComponent();
-            Load += BackupForm_Load;
-            btnBackup.Click += btnBackup_Click;
-            btnRestore.Click += btnRestore_Click;
         }
 
         private void BackupForm_Load(object sender, EventArgs e)

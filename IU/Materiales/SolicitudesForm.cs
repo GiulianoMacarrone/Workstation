@@ -14,15 +14,12 @@ namespace IU
 {
     public partial class SolicitudesForm : Form
     {
-        private readonly NoStockBLL _noStockBLL = new NoStockBLL();
-        private List<NoStockBE> _listaNoStocks;
+        private readonly NoStockBLL noStockBLL = new NoStockBLL();
+        private List<NoStockBE> listaNoStocks;
 
         public SolicitudesForm()
         {
             InitializeComponent();
-
-            this.Load += SolicitudesForm_Load;
-            btnCerrar.Click += bttnCerrar_Click;
         }
 
         private void SolicitudesForm_Load(object sender, EventArgs e)
@@ -32,7 +29,7 @@ namespace IU
 
         private void CargarNoStocks()
         {
-            _listaNoStocks = _noStockBLL.ListarNoStocks();
+            listaNoStocks = noStockBLL.ListarNoStocks();
 
             dataGridViewNoStock.AutoGenerateColumns = false;
             dataGridViewNoStock.Columns.Clear();
@@ -79,13 +76,46 @@ namespace IU
                 HeaderText = "Completado"
             });
 
-            dataGridViewNoStock.DataSource = _listaNoStocks;
+            dataGridViewNoStock.DataSource = listaNoStocks;
             dataGridViewNoStock.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
         }
 
         private void bttnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void dataGridViewNoStock_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dataGridViewNoStock.IsCurrentCellDirty)
+            {
+                dataGridViewNoStock.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dataGridViewNoStock_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var grid = (DataGridView)sender;
+            var colName = grid.Columns[e.ColumnIndex].DataPropertyName;
+
+            if (colName == "estado")
+            {
+                var pedido = (NoStockBE)grid.Rows[e.RowIndex].DataBoundItem;
+                if (pedido != null)
+                {
+                    try
+                    {
+                        noStockBLL.ActualizarEstado(pedido);
+                        MessageBox.Show("Estado actualizado correctamente.", "Confirmación", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error al guardar el estado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

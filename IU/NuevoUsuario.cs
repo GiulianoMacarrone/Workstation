@@ -19,8 +19,8 @@ namespace IU
     public partial class NuevoUsuario : Form
     {
         public BLL.Roles.RolBLL rolBLL { get; private set; } = new BLL.Roles.RolBLL();
-        public UsuarioBE nuevoUsuario { get; private set; } = new UsuarioBE(); //para guardar el usuario creado
-        public UsuarioBLL usuarioBLL { get; private set; } = new UsuarioBLL(); //para guardar el usuario creado
+        public UsuarioBE nuevoUsuario { get; private set; } = new UsuarioBE(); 
+        public UsuarioBLL usuarioBLL { get; private set; } = new UsuarioBLL(); 
 
 
         public NuevoUsuario()
@@ -29,7 +29,7 @@ namespace IU
             rolBLL = new BLL.Roles.RolBLL();
             comboBoxRolUsuario.DataSource = rolBLL.ListarRoles();
             comboBoxRolUsuario.DisplayMember = "designacion";
-            comboBoxRolUsuario.ValueMember = "id"; //agarramos el id para luego guardarlo al usuario)
+            comboBoxRolUsuario.ValueMember = "id"; 
         }
         private void NuevoUsuario_Load(object sender, EventArgs e)
         {
@@ -39,7 +39,6 @@ namespace IU
         private void buttonCrearUser_Click(object sender, EventArgs e)
         {
             string rol = comboBoxRolUsuario.SelectedItem?.ToString();
-
 
             nuevoUsuario.username = textBoxUserName.Text;
             nuevoUsuario.nombre = textBoxNombre.Text;

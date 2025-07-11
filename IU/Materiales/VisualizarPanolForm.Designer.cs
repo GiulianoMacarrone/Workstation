@@ -36,7 +36,7 @@
             // 
             // bttnCancelar
             // 
-            this.bttnCancelar.Location = new System.Drawing.Point(685, 568);
+            this.bttnCancelar.Location = new System.Drawing.Point(400, 568);
             this.bttnCancelar.Name = "bttnCancelar";
             this.bttnCancelar.Size = new System.Drawing.Size(75, 23);
             this.bttnCancelar.TabIndex = 0;
@@ -49,7 +49,7 @@
             this.dataGridViewComponentes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewComponentes.Location = new System.Drawing.Point(1, 1);
             this.dataGridViewComponentes.Name = "dataGridViewComponentes";
-            this.dataGridViewComponentes.Size = new System.Drawing.Size(798, 537);
+            this.dataGridViewComponentes.Size = new System.Drawing.Size(505, 537);
             this.dataGridViewComponentes.TabIndex = 2;
             // 
             // button1
@@ -66,12 +66,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 615);
+            this.ClientSize = new System.Drawing.Size(512, 615);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridViewComponentes);
             this.Controls.Add(this.bttnCancelar);
             this.Name = "VisualizarPanolForm";
             this.Text = "Buscar Componentes";
+            this.Load += new System.EventHandler(this.VisualizarPanolForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewComponentes)).EndInit();
             this.ResumeLayout(false);
 

@@ -20,9 +20,7 @@ namespace BLL.Servicios
             if (elemento == null)
                 throw new ArgumentNullException(nameof(elemento));
 
-            if (cantidad < 1)
-                throw new ArgumentException(
-                    "La cantidad debe ser al menos 1.", nameof(cantidad));
+            if (cantidad < 1) throw new ArgumentException("La cantidad debe ser al menos 1.", nameof(cantidad));
 
             if (string.IsNullOrWhiteSpace(idEmisor))
                 throw new ArgumentException("Emisor inválido.", nameof(idEmisor));
@@ -30,11 +28,18 @@ namespace BLL.Servicios
             if (string.IsNullOrWhiteSpace(idReceptor))
                 throw new ArgumentException("Receptor inválido.", nameof(idReceptor));
 
-            switch (elemento.tipo)
+            if (elemento.Tipo == "Consumible")
+            {
+                var c = (Consumible)elemento.ElementoOriginal;
+                if (!c.estado) throw new InvalidOperationException("El consumible no está disponible.");
+
+                if (c.cantidad < cantidad) throw new InvalidOperationException("Stock insuficiente para el consumible.");
+            }
+            switch (elemento.Tipo)
             {
                 case "Consumible":
                     consumibleBLL.Consumir(
-                        (Consumible)elemento.elementoOriginal,
+                        (Consumible)elemento.ElementoOriginal,
                         cantidad,
                         idEmisor,
                         idReceptor);
@@ -42,18 +47,16 @@ namespace BLL.Servicios
 
                 case "Rotable":
                     rotableBLL.Entregar(
-                        (RotableBE)elemento.elementoOriginal,
+                        (RotableBE)elemento.ElementoOriginal,
                         idEmisor,
                         idReceptor);
                     break;
 
                 case "Herramienta":
-                    throw new InvalidOperationException(
-                        $"Error, selecciono una herramienta. Intente con un consumible o rotable");
+                    throw new InvalidOperationException($"Error, seleccionó una herramienta. Intente con un consumible o rotable.");
 
                 default:
-                    throw new InvalidOperationException(
-                        $"Tipo desconocido: {elemento.tipo}");
+                    throw new InvalidOperationException($"Tipo desconocido: {elemento.Tipo}");
             }
         }
     }

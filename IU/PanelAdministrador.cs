@@ -37,7 +37,6 @@ namespace IU
         public PanelAdministrador()
         {
             InitializeComponent();
-            Load += PanelAdministrador_Load;
         }
 
         private void PanelAdministrador_Load(object sender, EventArgs e)
@@ -683,7 +682,6 @@ namespace IU
         private void btnBackup_Click(object sender, EventArgs e)
         {
             BackupForm bForm = new BackupForm();
-            bForm.MdiParent = this;
             bForm.Show();
         }
     }

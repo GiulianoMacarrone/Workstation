@@ -14,7 +14,7 @@ namespace IU
 {
     public partial class VisualizarOT : Form
     {
-        private OrdenDeTrabajo _ordenSeleccionada;
+        private OrdenDeTrabajo ordenSeleccionada;
 
         public VisualizarOT()
         {
@@ -47,14 +47,14 @@ namespace IU
 
         private void dgvOTs_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0) _ordenSeleccionada = (OrdenDeTrabajo)dgvOTs.Rows[e.RowIndex].DataBoundItem;
+            if (e.RowIndex >= 0) ordenSeleccionada = (OrdenDeTrabajo)dgvOTs.Rows[e.RowIndex].DataBoundItem;
         }
 
         private void buttonVisualizarOT_Click(object sender, EventArgs e)
         {
-            if (_ordenSeleccionada != null)
+            if (ordenSeleccionada != null)
             {
-                Form verOT = new OrdenDeTrabajoForm(_ordenSeleccionada); 
+                Form verOT = new OrdenDeTrabajoForm(ordenSeleccionada); 
                 verOT.MdiParent = this.MdiParent;
                 verOT.Show();
             }

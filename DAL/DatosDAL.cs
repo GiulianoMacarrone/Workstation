@@ -167,22 +167,22 @@ namespace DAL
             contenedor.Add(elem);
             GuardarDocumento(doc);
         }
-        public static void GuardarNoStock(NoStockBE ns)
+        public static void GuardarNoStock(NoStockBE noStock)
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "NoStocks");
 
-            ns.id = GenerarIdUnico(contenedor, "NoStock");
+            noStock.id = GenerarIdUnico(contenedor, "NoStock");
 
             var elem = new XElement("NoStock",
-                new XAttribute("id", ns.id),
-                new XElement("numero", ns.numero),
-                new XElement("descripcion", ns.descripcion),
-                new XElement("dmiUOt", ns.dmiUOt),
-                new XElement("criticidad", ns.criticidad),
-                new XElement("aeronave", ns.aeronave),
-                new XElement("partNumber", ns.partNumber),
-                new XElement("estado", ns.estado)
+                new XAttribute("id", noStock.id),
+                new XElement("numero", noStock.numero),
+                new XElement("descripcion", noStock.descripcion),
+                new XElement("dmiUOt", noStock.dmiUOt),
+                new XElement("criticidad", noStock.criticidad),
+                new XElement("aeronave", noStock.aeronave),
+                new XElement("partNumber", noStock.partNumber),
+                new XElement("estado", noStock.estado)
             );
 
             contenedor.Add(elem);
@@ -623,7 +623,21 @@ namespace DAL
 
             GuardarDocumento(doc);
         }
+        public static void ActualizarNoStock(NoStockBE noStock)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "NoStocks");
 
+            var nodo = contenedor.Elements("NoStock")
+                .FirstOrDefault(e => (string)e.Element("numero") == noStock.numero.ToString());
+
+            if (nodo == null)
+                throw new Exception($"No se encontró el pedido con número {noStock.numero}");
+
+            nodo.Element("estado")?.SetValue(noStock.estado);
+
+            GuardarDocumento(doc);
+        }
         public static void ActualizarOrdenDeTrabajo(OrdenDeTrabajo ot)
         {
             var doc = GetDocumento();

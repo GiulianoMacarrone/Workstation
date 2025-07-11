@@ -28,9 +28,9 @@ namespace IU.Materiales
             comboBoxUser.ValueMember = "id";
             comboBoxUser.SelectedIndex = -1;
 
-            if (componente.tipo == "Consumible")
+            if (componente.Tipo == "Consumible")
             {
-                var stock = ((Consumible)componente.elementoOriginal).cantidad;
+                var stock = ((Consumible)componente.ElementoOriginal).cantidad;
                 labelCantMax.Text = $"Stock disponible: {stock}";
                 textBoxCantidad.Visible = true;
                 textBoxCantidad.Enabled = true;
@@ -58,7 +58,7 @@ namespace IU.Materiales
                 MessageBox.Show("Debe seleccionar un usuario.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (componente.tipo == "Consumible")
+            if (componente.Tipo == "Consumible")
             {
                 if (!int.TryParse(textBoxCantidad.Text.Trim(), out int cant))
                 {
@@ -67,7 +67,7 @@ namespace IU.Materiales
                     return;
                 }
 
-                var stock = ((Consumible)componente.elementoOriginal).cantidad;
+                var stock = ((Consumible)componente.ElementoOriginal).cantidad;
                 if (cant < 1 || cant > stock)
                 {
                     MessageBox.Show($"La cantidad debe estar entre 1 y {stock}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);

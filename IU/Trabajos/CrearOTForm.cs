@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Presentacion_IU
 {
-    public partial class CrearOTForm : Form //AÑADIR VALIDACIONES AL FORM
+    public partial class CrearOTForm : Form 
     {
         private List<TrabajoBE> listaTrabajos = new List<TrabajoBE>();
         private TrabajoBE trabajoSeleccionado = null;
@@ -30,17 +30,17 @@ namespace Presentacion_IU
         }
 
 
-        private string GenerarNroOT() //funcion para generar automaticamente el nro de OT
+        private string GenerarNroOT() 
         {
             OrdenDeTrabajoBLL otBLL = new OrdenDeTrabajoBLL();
             List<OrdenDeTrabajo> listaOTs = otBLL.ListarOrdenes();
             int maxNumero = 0;
 
-            foreach (var ot in listaOTs) //recorre la lista de trabajos y busca el nro mas alto
+            foreach (var ot in listaOTs) 
             {
                 if (!string.IsNullOrEmpty(ot.numeroOT) && ot.numeroOT.StartsWith("OT-"))
                 {
-                    string numStr = ot.numeroOT.Substring(3); // aca sacamos el prefijo ot-
+                    string numStr = ot.numeroOT.Substring(3); 
                     if (int.TryParse(numStr, out int num))
                     {
                         if (num > maxNumero)

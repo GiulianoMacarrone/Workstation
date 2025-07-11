@@ -104,6 +104,11 @@ namespace IU
                 aeronave = comboBoxAeronave.SelectedValue.ToString(),
                 partNumber = textBoxPn.Text.Trim()
             };
+            if (radioButtonDmi.Checked)
+            {
+                int idDmi = (int)comboBoxDMIuOT.SelectedValue;
+                noStockBLL.AsociarNoStockADiferido(idDmi, noStock.id);
+            }
 
             try
             {

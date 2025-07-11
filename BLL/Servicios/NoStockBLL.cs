@@ -10,6 +10,16 @@ namespace BLL.Servicios
 {
     public class NoStockBLL
     {
+        public void ActualizarEstado(NoStockBE pedido)
+        {
+            DatosDAL.ActualizarNoStock(pedido);
+        }
+
+        public void AsociarNoStockADiferido(int idDiferido, int idNoStock)
+        {
+            DatosDAL.AsociarNoStockADiferido(idDiferido, idNoStock);
+        }
+
         public void CrearNoStock(NoStockBE noStock)
         {
             if (noStock == null)

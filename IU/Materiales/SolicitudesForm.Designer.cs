@@ -40,6 +40,8 @@
             this.dataGridViewNoStock.Name = "dataGridViewNoStock";
             this.dataGridViewNoStock.Size = new System.Drawing.Size(755, 387);
             this.dataGridViewNoStock.TabIndex = 0;
+            this.dataGridViewNoStock.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewNoStock_CellValueChanged);
+            this.dataGridViewNoStock.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewNoStock_CurrentCellDirtyStateChanged);
             // 
             // btnCerrar
             // 
@@ -60,6 +62,7 @@
             this.Controls.Add(this.dataGridViewNoStock);
             this.Name = "SolicitudesForm";
             this.Text = "SolicitudesForm";
+            this.Load += new System.EventHandler(this.SolicitudesForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNoStock)).EndInit();
             this.ResumeLayout(false);
 

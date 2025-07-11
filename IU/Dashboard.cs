@@ -22,7 +22,6 @@ namespace IU
         public Dashboard()
         {
             InitializeComponent();
-            this.Load += Dashboard_Load;
             lblUsername.Text = usuarioActual.username;
 
         }

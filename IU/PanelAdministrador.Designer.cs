@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Usuarios");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Roles");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Permisos");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Usuarios");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Roles");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Permisos");
             this.groupBoxUser = new System.Windows.Forms.GroupBox();
             this.buttonModificarUsuario = new System.Windows.Forms.Button();
             this.buttonCrearUser = new System.Windows.Forms.Button();
@@ -558,10 +558,10 @@
             // 
             this.treeViewUsuarios.Location = new System.Drawing.Point(12, 345);
             this.treeViewUsuarios.Name = "treeViewUsuarios";
-            treeNode1.Name = "Usuarios";
-            treeNode1.Text = "Usuarios";
+            treeNode4.Name = "Usuarios";
+            treeNode4.Text = "Usuarios";
             this.treeViewUsuarios.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode4});
             this.treeViewUsuarios.Size = new System.Drawing.Size(168, 357);
             this.treeViewUsuarios.TabIndex = 5;
             this.treeViewUsuarios.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewUsuarios_AfterSelect);
@@ -570,10 +570,10 @@
             // 
             this.treeViewRoles.Location = new System.Drawing.Point(430, 345);
             this.treeViewRoles.Name = "treeViewRoles";
-            treeNode2.Name = "Roles";
-            treeNode2.Text = "Roles";
+            treeNode5.Name = "Roles";
+            treeNode5.Text = "Roles";
             this.treeViewRoles.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode5});
             this.treeViewRoles.Size = new System.Drawing.Size(121, 357);
             this.treeViewRoles.TabIndex = 7;
             this.treeViewRoles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewRoles_AfterSelect);
@@ -591,10 +591,10 @@
             // 
             this.treeViewPermisos.Location = new System.Drawing.Point(581, 345);
             this.treeViewPermisos.Name = "treeViewPermisos";
-            treeNode3.Name = "Permisos";
-            treeNode3.Text = "Permisos";
+            treeNode6.Name = "Permisos";
+            treeNode6.Text = "Permisos";
             this.treeViewPermisos.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3});
+            treeNode6});
             this.treeViewPermisos.Size = new System.Drawing.Size(203, 357);
             this.treeViewPermisos.TabIndex = 9;
             this.treeViewPermisos.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewPermisos_AfterSelect);
@@ -917,6 +917,7 @@
             this.Name = "PanelAdministrador";
             this.Text = "Panel de administrador";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.PanelAdministrador_Load);
             this.groupBoxUser.ResumeLayout(false);
             this.groupBoxUser.PerformLayout();
             this.groupBoxRol.ResumeLayout(false);

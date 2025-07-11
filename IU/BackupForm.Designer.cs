@@ -83,6 +83,7 @@
             this.Controls.Add(this.dgvEventos);
             this.Name = "BackupForm";
             this.Text = "Copia de seguridad";
+            this.Load += new System.EventHandler(this.BackupForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEventos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
