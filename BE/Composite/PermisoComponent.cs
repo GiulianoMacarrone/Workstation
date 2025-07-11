@@ -15,4 +15,5 @@ namespace BE.Composite
         public virtual PermisoComponent GetChild(int index) => null;
         public virtual List<Permiso> ObtenerPermisos() => new List<Permiso>();
     }
+
 }

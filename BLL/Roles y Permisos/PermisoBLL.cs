@@ -1,4 +1,5 @@
-﻿using BE.Modelo;
+﻿using BE.Composite;
+using BE.Modelo;
 using DAL;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,6 @@ namespace BLL.Roles
         {
             return DatosDAL.ListarPermisos();
         }
+       
     }
 }

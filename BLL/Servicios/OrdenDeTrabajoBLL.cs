@@ -29,6 +29,22 @@ namespace BLL.Servicios
         {
             DatosDAL.ActualizarOrdenDeTrabajo(ot);
         }
+
+        public void EliminarOT(OrdenDeTrabajo ot)
+        {
+            if (ot == null) throw new ArgumentNullException(nameof(ot));
+
+            var todas = ListarOrdenes();
+            if (!todas.Any(o => o.numeroOT == ot.numeroOT)) throw new InvalidOperationException($"No existe ninguna OT con número '{ot.numeroOT}'.");
+
+            DatosDAL.EliminarOrdenDeTrabajo(ot.numeroOT);
+        }
+
+        public List<OrdenDeTrabajo> ListarOtCerradas()
+        {
+            return ListarOrdenes().Where(o =>string.Equals(o.estado, "Completada", StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
     }
 
 }

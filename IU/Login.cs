@@ -22,14 +22,16 @@ namespace IU
 
         private void buttonIniciar_Click(object sender, EventArgs e)
         {
-            UsuarioBLL userBll = new UsuarioBLL();
-            UsuarioBE user = UsuarioBLL.Login(textBoxUser.Text, textBoxPww.Text );
+            var username = textBoxUser.Text.Trim();
+            var password = textBoxPww.Text.Trim();
+
+            UsuarioBE user = UsuarioBLL.Login(username, password);
+
             if (user != null && !user.bloqueado)
             {
                 SesionUsuario.IniciarSesion(user);
                 this.Hide();
                 new Menu().Show();
-                
             }
             else
             {

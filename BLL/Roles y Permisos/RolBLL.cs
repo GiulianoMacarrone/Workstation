@@ -1,4 +1,5 @@
-﻿using BE.Modelo;
+﻿using BE.Composite;
+using BE.Modelo;
 using DAL;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace BLL.Roles
             DatosDAL.GuardarRol(rol);
         }
 
+        //en usuarioBLL se usa GuardarUsuario y se reescribe el usuario. Aca se usa ActualizarRol. Metodo para probar distinto enfoque
         public void ActualizarRol(Rol rol)
         {
             var existentes = DatosDAL.ListarRoles();
@@ -60,25 +62,49 @@ namespace BLL.Roles
             DatosDAL.DesactivarRol(idRol);
         }
 
-        public void AsociarPermiso(int idRol, int idPermiso)
+        public void AsociarPermiso(Rol rol, int idPermiso)
         {
-            throw new NotImplementedException("AsociarPermiso no está implementado en BLLRol");
+            if (rol.idsPermisos.Contains(idPermiso)) { throw new InvalidOperationException("El rol ya tiene este permiso"); }
+            
+            rol.idsPermisos.Add(idPermiso);
+            DatosDAL.GuardarRol(rol);
         }
 
-        public void DesasociarPermiso(int idRol, int idPermiso)
+        public void DesasociarPermiso(Rol rol, int idPermiso)
         {
-            throw new NotImplementedException("DesasociarPermiso no está implementado en BLLRol");
+            if (!rol.idsPermisos.Contains(idPermiso)) { throw new InvalidOperationException("El rol no tiene asigando este permiso"); }
+            rol.idsPermisos.Remove(idPermiso);
+            DatosDAL.GuardarRol(rol);
         }
 
 
-        public void AsociarSubRol(int idRolPadre, int idRolHijo)
+        public void AsociarSubRol(Rol rolPadre, Rol rolHijo)
         {
-            throw new NotImplementedException();
+            if (rolPadre == null || rolHijo == null)
+                throw new ArgumentNullException("Ambos roles deben estar definidos.");
+
+            if (rolPadre.id == rolHijo.id)
+                throw new InvalidOperationException("Un rol no puede asociarse a sí mismo.");
+
+            if (rolPadre.idRolesHijos.Contains(rolHijo.id))
+                throw new InvalidOperationException("El rol ya está asociado como hijo.");
+
+            rolPadre.idRolesHijos.Add(rolHijo.id);
+            DatosDAL.GuardarRol(rolPadre); 
+
         }
-        public void DesasociarSubRol(int idRolPadre, int idRolHijo)
+        public void DesasociarSubRol(Rol rolPadre, Rol rolHijo)
         {
-            throw new NotImplementedException();
+            if (rolPadre == null || rolHijo == null)
+                throw new ArgumentNullException("Ambos roles deben estar definidos.");
+
+            if (!rolPadre.idRolesHijos.Contains(rolHijo.id))
+                throw new InvalidOperationException("Este rol no está asociado como hijo.");
+
+            rolPadre.idRolesHijos.Remove(rolHijo.id);
+            DatosDAL.GuardarRol(rolPadre);
         }
         #endregion
+
     }
 }

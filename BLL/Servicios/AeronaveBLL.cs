@@ -27,8 +27,7 @@ namespace BLL.Servicios
                         int idNum;
                         return int.TryParse(a.id, out idNum) ? idNum : 0;
                     })
-                    .DefaultIfEmpty(0)
-                    .Max();
+                    .DefaultIfEmpty(0).Max();
                 return (maxId + 1).ToString();
             }
             else

@@ -118,6 +118,13 @@ namespace DAL
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Usuarios");
 
+            //se agregio para guardar usuario en general. Si ya existe lo reemplaza, si no existe creamos uno nuevo. De esta forma lo actualizo.
+            var nodoExistente = contenedor.Elements("Usuario").FirstOrDefault(x => (string)x.Attribute("id") == usuario.id);
+            if (nodoExistente != null)
+            {
+                nodoExistente.Remove();
+            }
+
             var usuarioElem = new XElement("Usuario",
                 new XAttribute("id", usuario.id), //el id lo generamos en la BLL con formato U0001
                 new XElement("username", usuario.username),
@@ -194,7 +201,6 @@ namespace DAL
                 new XElement("aeronave", dmi.aeronave),
                 new XElement("descripcion", dmi.descripcion),
                 new XElement("fechaApertura", dmi.fechaApertura.ToString("yyyy-MM-dd")),
-                new XElement("fechaCierre", dmi.fechaCierre.ToString("yyyy-MM-dd")),
                 new XElement("estado", dmi.estado),
                 new XElement("nroItemMEl", dmi.nroItemMEl ?? ""),
                 new XElement("observaciones", dmi.observaciones ?? "")
@@ -227,21 +233,131 @@ namespace DAL
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Roles");
 
+
             if (rol.id == 0) 
             {
                 rol.id = GenerarIdUnico(contenedor, "Rol");
             }
+            
+            //se borra el nodo actual y se crea uno nuevo. ActualizarRol() podría eliminarse como se hizo con GuardarUsuario()
+            var nodoExistente = contenedor.Elements("Rol").FirstOrDefault(r => (int)r.Attribute("id") == rol.id);
+            if (nodoExistente != null) nodoExistente.Remove();
 
-            var elem = new XElement("Rol",
+            var newRol = new XElement("Rol",
                 new XAttribute("id", rol.id),
                 new XElement("designacion", rol.designacion),
-                new XElement("Permisos", rol.idsPermisos.Select(id => new XElement("idPermiso", id)))
+                new XElement("Permisos", rol.idsPermisos.Select(id => new XElement("idPermiso", id))),
+                new XElement("RolesHijos", rol.idRolesHijos.Select(id => new XElement("idRol", id)))
             );
 
-            contenedor.Add(elem);
+            contenedor.Add(newRol);
             GuardarDocumento(doc);
         }
+        public static void GuardarConsumible(Consumible consumible)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Consumibles");
 
+            var nodo = contenedor.Elements("Consumible").FirstOrDefault(x => x.Attribute("id")?.Value == consumible.id);
+            
+
+            if (nodo == null)
+            {
+                int nuevoId = GenerarIdUnico(contenedor, "Consumible");
+                consumible.id = nuevoId.ToString();
+
+                nodo = new XElement("Consumible",
+                    new XAttribute("id", consumible.id),
+                    new XElement("descripcion", consumible.descripcion),
+                    new XElement("partNumber", consumible.partNumber),
+                    new XElement("lot", consumible.lot),
+                    new XElement("estado", consumible.estado),
+                    new XElement("cantidad", consumible.cantidad),
+                    new XElement("fechaVto", consumible.fechaVto.ToString("yyyy-MM-dd")),
+                    new XElement("HistorialEntregas")
+                );
+                contenedor.Add(nodo);
+            }
+            else
+            {
+                nodo.Element("descripcion")?.SetValue(consumible.descripcion);
+                nodo.Element("partNumber")?.SetValue(consumible.partNumber);
+                nodo.Element("lot")?.SetValue(consumible.lot);
+                nodo.Element("estado")?.SetValue(consumible.estado);
+                nodo.Element("cantidad")?.SetValue(consumible.cantidad);
+                nodo.Element("fechaVto")?.SetValue(consumible.fechaVto.ToString("yyyy-MM-dd"));
+            }
+
+            GuardarDocumento(doc);
+        }
+        public static void GuardarRotable(RotableBE rotable)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Rotables");
+
+            var nodo = contenedor
+                .Elements("Rotable")
+                .FirstOrDefault(x => x.Attribute("id")?.Value == rotable.id);
+
+            if (nodo == null)
+            {
+                int nuevoId = GenerarIdUnico(contenedor, "Rotable");
+                rotable.id = nuevoId.ToString();
+
+                nodo = new XElement("Rotable",
+                    new XAttribute("id", rotable.id),
+                    new XElement("descripcion", rotable.descripcion),
+                    new XElement("partNumber", rotable.partNumber),
+                    new XElement("serialNumber", rotable.serialNumber),
+                    new XElement("estado", rotable.estado)
+                );
+                contenedor.Add(nodo);
+            }
+            else
+            {
+                nodo.Element("descripcion")?.SetValue(rotable.descripcion);
+                nodo.Element("partNumber")?.SetValue(rotable.partNumber);
+                nodo.Element("serialNumber")?.SetValue(rotable.serialNumber);
+                nodo.Element("estado")?.SetValue(rotable.estado);
+            }
+
+            GuardarDocumento(doc);
+        }
+        public static void GuardarHerramienta(HerramientaBE herramienta)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Herramientas");
+
+            var nodo = contenedor
+                .Elements("Herramienta")
+                .FirstOrDefault(x => x.Attribute("id")?.Value == herramienta.id);
+
+            if (nodo == null)
+            {
+                int nuevoId = GenerarIdUnico(contenedor, "Herramienta");
+                herramienta.id = nuevoId.ToString();
+
+                nodo = new XElement("Herramienta",
+                    new XAttribute("id", herramienta.id),
+                    new XElement("descripcion", herramienta.descripcion),
+                    new XElement("serial", herramienta.serial),
+                    new XElement("fechaVtoCalibracion", herramienta.fechaVtoCalibracion.ToString("yyyy-MM-dd")),
+                    new XElement("estado", herramienta.estado),
+                    new XElement("HistorialEntregas")
+                );
+                contenedor.Add(nodo);
+            }
+            else
+            {
+                nodo.Element("descripcion")?.SetValue(herramienta.descripcion);
+                nodo.Element("serial")?.SetValue(herramienta.serial);
+                nodo.Element("fechaVtoCalibracion")?
+                    .SetValue(herramienta.fechaVtoCalibracion.ToString("yyyy-MM-dd"));
+                nodo.Element("estado")?.SetValue(herramienta.estado);
+            }
+
+            GuardarDocumento(doc);
+        }
 
         #endregion
 
@@ -287,7 +403,6 @@ namespace DAL
 
             return lista;
         }
-
         public static List<OrdenDeTrabajo> ListarOrdenesDeTrabajo()
         {
             var doc = GetDocumento();
@@ -312,6 +427,8 @@ namespace DAL
                     trabajo = trabajoCompleto, //lo pego
                     fechaInicio = DateTime.TryParse(nodo.Element("fechaInicio")?.Value, out var fi) ? fi : DateTime.MinValue,
                     fechaCierre = DateTime.TryParse(nodo.Element("fechaCierre")?.Value, out var fc) ? fc : DateTime.MinValue,
+                    mecanico = nodo.Element("mecanico")?.Value,
+                    inspector = nodo.Element("inspector")?.Value
                 };
 
                 var estadoNode = nodo.Element("estado")?.Value;
@@ -323,7 +440,6 @@ namespace DAL
 
             return lista;
         }
-
         public static List<UsuarioBE> ListarUsuarios()
         {
             var doc = GetDocumento();
@@ -353,7 +469,6 @@ namespace DAL
 
             return lista;
         }
-
         public static List<AeronaveBE> ListarAeronaves()
         {
             var doc = GetDocumento();
@@ -369,7 +484,6 @@ namespace DAL
                     serial = x.Element("serial")?.Value
                 }).ToList();
         }
-
         public static List<NoStockBE> ListarNoStocks()
         {
             var doc = GetDocumento();
@@ -388,14 +502,12 @@ namespace DAL
                     estado = bool.Parse(x.Element("estado")?.Value ?? "false")
                 }).ToList();
         }
-
         public static List<Diferido> ListarDiferidos()
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Diferidos");
 
-            return contenedor.Elements("Diferido")
-                .Select(x => new Diferido
+            return contenedor.Elements("Diferido").Select(x => new Diferido
                 {
                     id = int.Parse(x.Attribute("id")?.Value ?? "0"),
                     numero = int.Parse(x.Element("numero")?.Value ?? "0"),
@@ -409,42 +521,86 @@ namespace DAL
                     idNoStock = int.TryParse(x.Element("idNoStock")?.Value, out int idNS) ? idNS : (int?)null
                 }).ToList();
         }
-
         public static List<Permiso> ListarPermisos()
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Permisos");
 
-            return contenedor.Elements("Permiso")
-                .Select(x => new Permiso
+            return contenedor.Elements("Permiso").Select(x => new Permiso
                 {
                     id = int.Parse(x.Attribute("id")?.Value ?? "0"),
                     nombre = x.Element("nombre")?.Value
                 }).ToList();
         }
-
         public static List<Rol> ListarRoles(bool includeInactive = false)
         {
-            var roles = GetOrCreateContenedor(GetDocumento(), "Roles")
-                .Elements("Rol")
+            var roles = GetOrCreateContenedor(GetDocumento(), "Roles").Elements("Rol")
                 .Select(x => new Rol
                 {
                     id = (int)x.Attribute("id"),
                     designacion = (string)x.Element("designacion"),
                     idsPermisos = x.Element("Permisos")
                                       ?.Elements("idPermiso")
-                                      .Select(y => (int)y)
-                                      .ToList() ?? new List<int>(),
+                                      .Select(y => (int)y).ToList() ?? new List<int>(),
                     inactivo = (bool?)x.Element("inactivo") ?? false,
-                    idRolesHijos = x.Element("RolesHijos")
+                    idsRolesHijos = x.Element("RolesHijos") //no funcionaba por una S...
                                       ?.Elements("idRol")
-                                      .Select(y => (int)y)
-                                      .ToList() ?? new List<int>()
+                                      .Select(y => (int)y).ToList() ?? new List<int>()
                 });
 
-            return includeInactive
-                ? roles.ToList()
-                : roles.Where(r => !r.inactivo).ToList();
+            return roles.Where(r => r.id != 0 && (includeInactive || !r.inactivo)).ToList();
+        }
+        public static List<Consumible> ListarConsumibles()
+        {
+            var doc = GetDocumento();
+            var cont = GetOrCreateContenedor(doc, "Consumibles");
+
+            return cont.Elements("Consumible")
+                .Select(x => new Consumible
+                {
+                    id = x.Attribute("id")?.Value,
+                    descripcion = x.Element("descripcion")?.Value,
+                    partNumber = x.Element("partNumber")?.Value,
+                    lot = x.Element("lot")?.Value,
+                    estado = bool.TryParse(x.Element("estado")?.Value, out var st) && st,
+                    cantidad = int.TryParse(x.Element("cantidad")?.Value, out var ct) ? ct : 0,
+                    fechaVto = DateTime.TryParse(x.Element("fechaVto")?.Value, out var fv) ? fv : DateTime.MinValue
+                }).ToList();
+        }
+        public static List<RotableBE> ListarRotables()
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Rotables");
+
+            return contenedor.Elements("Rotable")
+                .Select(x => new RotableBE
+                {
+                    id = x.Attribute("id")?.Value,
+                    descripcion = x.Element("descripcion")?.Value,
+                    partNumber = x.Element("partNumber")?.Value,
+                    serialNumber = x.Element("serialNumber")?.Value,
+                    estado = bool.TryParse(x.Element("estado")?.Value, out var st) && st
+                }).ToList();
+        }
+        public static List<HerramientaBE> ListarHerramientas()
+        {
+            var doc = GetDocumento();
+            var cont = GetOrCreateContenedor(doc, "Herramientas");
+
+            return cont.Elements("Herramienta")
+                .Select(x => new HerramientaBE
+                {
+                    id = x.Attribute("id")?.Value,
+                    descripcion = x.Element("descripcion")?.Value,
+                    serial = x.Element("serial")?.Value,
+                    fechaVtoCalibracion = DateTime.TryParse(
+                        x.Element("fechaVtoCalibracion")?.Value,
+                        out var fv) ? fv : DateTime.MinValue,
+                    estado = bool.TryParse(
+                        x.Element("estado")?.Value,
+                        out var st) && st
+                }
+                ).ToList();
         }
 
         #endregion
@@ -461,10 +617,8 @@ namespace DAL
             if (dmi == null)
                 throw new Exception($"No se encontró el DMI con id {idDiferido}");
 
-            // Eliminar si ya existía un idNoStock
             dmi.Element("idNoStock")?.Remove();
 
-            // Agregar nuevo idNoStock
             dmi.Add(new XElement("idNoStock", idNoStock));
 
             GuardarDocumento(doc);
@@ -475,37 +629,43 @@ namespace DAL
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "OrdenesDeTrabajo");
 
-            var nodo = contenedor.Elements("OrdenDeTrabajo")
-                .FirstOrDefault(x => x.Element("numeroOT")?.Value == ot.numeroOT);
+            var nodo = contenedor.Elements("OrdenDeTrabajo").FirstOrDefault(x => x.Element("numeroOT")?.Value == ot.numeroOT);
 
-            if (nodo == null)
-                throw new Exception("No se encontró la OT para actualizar.");
+            if (nodo == null) throw new Exception("No se encontró la OT para actualizar.");
+
+            var tareasElem = nodo.Element("ListaTareas");
+            tareasElem?.Remove();
+
+            var nuevaLista = new XElement("ListaTareas",ot.trabajo.listaTareas.Select(t => new XElement("Tarea", t)));
+            nodo.Add(nuevaLista);
 
             nodo.Element("estado")?.SetValue(ot.estado);
             nodo.Element("fechaCierre")?.SetValue(ot.fechaCierre.ToString("yyyy-MM-dd"));
 
-            var mecanicoElem = nodo.Element("mecanico");
-            if (mecanicoElem != null)
-                mecanicoElem.SetValue(ot.mecanico);
-            else
-                nodo.Add(new XElement("mecanico", ot.mecanico));
+            if (!string.IsNullOrEmpty(ot.mecanico))
+            {
+                var mecanicoElem = nodo.Element("mecanico");
+                if (mecanicoElem != null) mecanicoElem.SetValue(ot.mecanico);
+                else nodo.Add(new XElement("mecanico", ot.mecanico));
+            }
+            else nodo.Add(new XElement("mecanico", ot.mecanico));
 
-            var inspectorElem = nodo.Element("inspector");
-            if (inspectorElem != null)
-                inspectorElem.SetValue(ot.inspector);
-            else
-                nodo.Add(new XElement("inspector", ot.inspector));
+            if (!string.IsNullOrEmpty(ot.inspector))
+            {
+                var inspectorElem = nodo.Element("inspector");
+                if (inspectorElem != null) inspectorElem.SetValue(ot.inspector);
+                else nodo.Add(new XElement("inspector", ot.inspector));
+            }
+
 
             GuardarDocumento(doc);
         }
-
         public static void ActualizarRol(Rol rol)
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Roles");
 
-            var nodoRol = contenedor.Elements("Rol")
-                .FirstOrDefault(x => (int?)x.Attribute("id") == rol.id);
+            var nodoRol = contenedor.Elements("Rol").FirstOrDefault(x => (int?)x.Attribute("id") == rol.id);
             if(nodoRol == null) throw new Exception($"No se encontró el rol con id {rol.id}");
 
             var permisosElem = nodoRol.Element("Permisos");
@@ -520,16 +680,70 @@ namespace DAL
             GuardarDocumento(doc);
 
         }
+        public static void ActualizarDiferido(Diferido dmi)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Diferidos");
 
+            var nodo = contenedor.Elements("Diferido")
+                .FirstOrDefault(x => (int)x.Attribute("id") == dmi.id);
+            if (nodo == null) throw new InvalidOperationException($"No se encontró el diferido {dmi.id} para actualizar.");
+
+            nodo.Element("estado")?.SetValue(dmi.estado);
+            nodo.Element("fechaCierre")?.SetValue(dmi.fechaCierre.ToString("yyyy-MM-dd"));
+
+            GuardarDocumento(doc);
+        }
+        public static void RegistrarEntregaConsumible(string id, int cantidad, string emisor, string receptor)
+        {
+            var doc = GetDocumento();
+            var nodo = doc.Descendants("Consumible").First(x => x.Attribute("id")?.Value == id);
+
+            var hist = nodo.Element("HistorialEntregas");
+            if (hist == null)
+            {
+                hist = new XElement("HistorialEntregas");
+                nodo.Add(hist);
+            }
+
+            hist.Add(new XElement("Entrega",
+                        new XElement("fecha", DateTime.Now),
+                        new XElement("cantidad", cantidad),
+                        new XElement("entregadoPor", emisor),
+                        new XElement("recibidoPor", receptor)
+                        )
+                );
+
+            GuardarDocumento(doc);
+        }
+        public static void RegistrarEntregaRotable(string id, string entregadoPor, string recibidoPor)
+        {
+            var doc = GetDocumento();
+            var nodo = doc.Descendants("Rotable").First(x => x.Attribute("id")?.Value == id);
+
+            var hist = nodo.Element("HistorialEntregas");
+            if (hist == null)
+            {
+                hist = new XElement("HistorialEntregas");
+                nodo.Add(hist);
+            }
+
+            hist.Add(new XElement("Entrega",
+                new XElement("fecha", DateTime.Now),
+                new XElement("entregadoPor", entregadoPor),
+                new XElement("recibidoPor", recibidoPor)
+            ));
+            GuardarDocumento(doc);
+        }
+
+        #region Borrar / Desactivar Datos
         public static void DesactivarRol(int idRol)
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Roles");
-            var nodo = contenedor.Elements("Rol")
-                               .FirstOrDefault(x => (int?)x.Attribute("id") == idRol);
+            var nodo = contenedor.Elements("Rol").FirstOrDefault(x => (int?)x.Attribute("id") == idRol);
 
-            if (nodo == null)
-                throw new Exception($"No existe el rol con ID {idRol}");
+            if (nodo == null)throw new Exception($"No existe el rol con ID {idRol}");
 
             var elem = nodo.Element("inactivo"); //como esto lo agregue mas tarde, puede que haya roles que no lo tengan
             if (elem == null)
@@ -544,6 +758,38 @@ namespace DAL
             GuardarDocumento(doc);
         }
 
+        public static void EliminarTrabajo(int idTrabajo)
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Trabajos");
+
+            var nodo = contenedor.Elements("Trabajo").FirstOrDefault(x => (int)x.Attribute("id") == idTrabajo);
+
+            if (nodo != null)
+            {
+                nodo.Remove();
+                GuardarDocumento(doc);
+            }
+            else
+            {
+                throw new InvalidOperationException($"No se encontró el trabajo con id {idTrabajo}.");
+            }
+        }
+        public static void EliminarOrdenDeTrabajo(string numeroOT)
+        {
+            var doc = GetDocumento();
+            var cont = GetOrCreateContenedor(doc, "OrdenesTrabajo");
+
+            var nodo = cont.Elements("OrdenDeTrabajo")
+                .FirstOrDefault(x =>(string)x.Element("numeroOT") == numeroOT);
+
+            if (nodo == null) throw new InvalidOperationException($"No se encontró la OT con número '{numeroOT}'.");
+
+            nodo.Remove();
+            GuardarDocumento(doc);
+        }
+
+        #endregion
 
         #endregion
     }

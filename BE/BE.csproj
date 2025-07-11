@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backup\Backup.cs" />
     <Compile Include="Composite\PermisoComponent.cs" />
     <Compile Include="Composite\PermisoLeaf.cs" />
     <Compile Include="Composite\RolComposite.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Modelo\BaseBE.cs" />
     <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Diferido.cs" />
+    <Compile Include="Modelo\ElementoVisualizable.cs" />
     <Compile Include="Modelo\HerramientaBE.cs" />
     <Compile Include="Modelo\ItemOTBE.cs" />
     <Compile Include="Modelo\NoStockBE.cs" />

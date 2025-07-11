@@ -13,17 +13,6 @@ namespace BLL
 {
     public class UsuarioBLL
     {
-        /*public void ChangePassword(UsuarioBE user, string nuevaPassword)
-        {
-            if (string.IsNullOrEmpty(nuevaPassword))
-            {
-                throw new ArgumentException("La nueva contraseña no puede ser nula o vacía.");
-            }
-            user.password = nuevaPassword;
-
-            //validar contraseña actual
-            //guardar en la DAL una vez validada
-        }*/
 
         public static List<Permiso> ObtenerPermisos(string usuarioId)
         {
@@ -54,13 +43,6 @@ namespace BLL
                 .ToList();
         }
 
-
-        public static bool TienePermiso(string nombrePermiso)
-        {
-            var permisos = ObtenerPermisosEfectivos(SesionUsuario.Instancia.UsuarioActual.id);
-            return permisos.Any(p => p.nombre.Equals(nombrePermiso, StringComparison.OrdinalIgnoreCase));
-        }
-
         public static UsuarioBE ObtenerUsuarioPorId(string id)
         {
             var lista = DatosDAL.ListarUsuarios();
@@ -69,53 +51,56 @@ namespace BLL
 
 
         #region Composite
-        public static List<Permiso> ObtenerPermisosEfectivos(string idUsuario)
+        public static List<Permiso> ObtenerPermisosEfectivos(UsuarioBE usuario)
         {
-            var usuario = SesionUsuario.Instancia.UsuarioActual;
+            if (usuario == null)
+            {
+                throw new ArgumentNullException(nameof(usuario));
+            }
+
             var listaPermisos = DatosDAL.ListarPermisos();
             var listaRoles = DatosDAL.ListarRoles();
 
             var permisoDict = listaPermisos.ToDictionary(p => p.id);
-            var composite = new RolComposite();
-            var listaTodosLosRoles = listaRoles.ToList();
-
-            Rol rol = listaRoles.FirstOrDefault(r => r.id == usuario.idRol);
-            if (rol != null)
-            {
-                foreach (var idPerm in rol.idsPermisos)
-                    if (permisoDict.ContainsKey(idPerm))
-                        composite.Add(new PermisoLeaf(permisoDict[idPerm]));
-            }
+            var composite = ConstruirRolComposite(usuario.idRol, permisoDict, listaRoles, new HashSet<int>());
 
             foreach (var idPerm in usuario.permisosAdicionales)
                 if (permisoDict.TryGetValue(idPerm, out var perm))
+                {
                     composite.Add(new PermisoLeaf(perm));
+                }
 
-            return composite.ObtenerPermisos() //para evitar duplicados agrupamos y seleccionamos
-                .GroupBy(p => p.id)
-                .Select(g => g.First())
-                .ToList();
+            return composite.ObtenerPermisos().GroupBy(p => p.id).Select(g => g.First()).ToList();
         }
 
         //Crear ROL HIJO
-        private static PermisoComponent ConstruirRolComposite(int rolId, Dictionary<int, Permiso> permisoDict, List<Rol> todosLosRoles)
+        public static PermisoComponent ConstruirRolComposite(int rolId, Dictionary<int, Permiso> permisoDict, List<Rol> todosLosRoles, HashSet<int> visitados)
         {
-            var rol = todosLosRoles.First(r => r.id == rolId);
-            var composite = new RolComposite();
-
-            foreach (var idPermiso in rol.idsPermisos)
+            
+            if (!visitados.Add(rolId))
             {
-                if (permisoDict.TryGetValue(idPermiso, out var permiso))
-                {
-                    composite.Add(new PermisoLeaf(permiso));
-
-                }
+                return new RolComposite();
             }
 
-            foreach (var hijo in rol.idsRolesHijos ?? Enumerable.Empty<int>())
+            var rol = todosLosRoles.FirstOrDefault(r => r.id == rolId);
+            if (rol == null) { return new RolComposite(); }
+
+            var composite = new RolComposite();
+
+            foreach (var idPermiso in rol.idsPermisos ?? new List<int>())
             {
-                var subComposite = ConstruirRolComposite(hijo, permisoDict, todosLosRoles);
-                composite.Add(subComposite);
+                Permiso permiso;
+                if (permisoDict.TryGetValue(idPermiso, out permiso)) { composite.Add(new PermisoLeaf(permiso)); }
+            }
+
+            foreach (var hijoId in rol.idsRolesHijos ?? new List<int>())
+            {
+                var subComp = ConstruirRolComposite(
+                    hijoId,
+                    permisoDict,
+                    todosLosRoles,
+                    visitados);
+                composite.Add(subComp);
             }
 
             return composite;
@@ -127,10 +112,12 @@ namespace BLL
             string username = userInput.ToString().Trim();
             string password = passInput.ToString().Trim();
 
+            string passwordEncriptada = Encriptacion.EncriptarPassword(password);
+
             var usuarios = DatosDAL.ListarUsuarios();
             var usuario = usuarios.FirstOrDefault(u =>
                 u.username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
-                u.password == password);
+                u.password == passwordEncriptada); 
 
             return usuario;
         }
@@ -138,25 +125,30 @@ namespace BLL
         public void GuardarUsuario(UsuarioBE nuevoUsuario)
         {
             var usuarios = DatosDAL.ListarUsuarios();
-            int nuevoIdNumerico = usuarios.Select(u => int.TryParse(u.id?.Replace("U", ""), out var n) ? n : 0).DefaultIfEmpty().Max() + 1;
-            nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // Formato U0001, U0002, etc.
 
-            var rol = DatosDAL.ListarRoles().FirstOrDefault(r => r.id == nuevoUsuario.idRol);
-            if (rol != null)
+            if (string.IsNullOrEmpty(nuevoUsuario.id))
             {
-                string designacion = rol.designacion.ToLower();
-                if (designacion == "mecanico")
+                int nuevoIdNumerico = usuarios.Select(u => int.TryParse(u.id?.Replace("U", ""), out var n) ? n : 0).DefaultIfEmpty().Max() + 1;
+                nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // Formato U0001, U0002, etc.
+
+                var rol = DatosDAL.ListarRoles().FirstOrDefault(r => r.id == nuevoUsuario.idRol);
+                if (rol != null)
                 {
-                    int nuevoNroMec = usuarios.Select(u => int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1; //formato M01, M02, etc.
-                    nuevoUsuario.nroMecanico = $"M{nuevoNroMec:D2}"; //FORMATO M01, M02, etc.
+                    string designacion = rol.designacion.ToLower();
+                    if (designacion == "mecanico")
+                    {
+                        int nuevoNroMec = usuarios.Select(u => int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1; //formato M01, M02, etc.
+                        nuevoUsuario.nroMecanico = $"M{nuevoNroMec:D2}"; //FORMATO M01, M02, etc.
+                    }
+                    else if (designacion == "inspector")
+                    {
+                        int nuevoNroIns = usuarios.Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0).DefaultIfEmpty().Max() + 1; //formato I01, I02, etc.
+                        nuevoUsuario.nroInspector = $"I{nuevoNroIns:D2}"; //FORMATO I01, I02, etc.
+                    }
                 }
-                else if (designacion == "inspector")
-                {
-                    int nuevoNroIns = usuarios.Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0).DefaultIfEmpty().Max() + 1; //formato I01, I02, etc.
-                    nuevoUsuario.nroInspector = $"I{nuevoNroIns:D2}"; //FORMATO I01, I02, etc.
-                }
-                
             }
+
+            nuevoUsuario.password = Encriptacion.EncriptarPassword(nuevoUsuario.password); 
             DatosDAL.GuardarUsuario(nuevoUsuario);
         }
 
@@ -164,6 +156,63 @@ namespace BLL
         {
             return DatosDAL.ListarUsuarios();
         }
-        
+
+        public void AsignarRol(string id, int idRol)
+        {
+            var usuarios = DatosDAL.ListarUsuarios();
+            var usuario = usuarios.FirstOrDefault(u => u.id == id);
+
+            if (usuario == null)
+                throw new Exception($"No se encontró el usuario con ID {id}");
+
+            usuario.idRol = idRol;
+
+            // Guardamos el usuario actualizado
+            DatosDAL.GuardarUsuario(usuario);
+        }
+
+        public void AsignarPermisoAdicional(UsuarioBE usuario, int idPermiso)
+        {
+            // Obtener permisos efectivos del rol (Composite)
+            var permisosEfectivos = ObtenerPermisosEfectivos(usuario)
+                .Select(p => p.id).ToList();
+
+            if (permisosEfectivos.Contains(idPermiso))
+            {
+                throw new InvalidOperationException("Este permiso ya está incluido en el rol asignado al usuario.");
+
+            }
+
+            if (usuario.permisosAdicionales.Contains(idPermiso))
+            {
+                throw new InvalidOperationException("El usuario ya tiene este permiso adicional.");
+            }
+
+            usuario.permisosAdicionales.Add(idPermiso);
+            GuardarUsuario(usuario);
+        }
+
+        public void QuitarPermisoAdicional(UsuarioBE usuario, int idPermiso) //Logica para sacar permisos SOLO ADICIONALES. Otros permisos provenientes del ROL no.
+        {
+            if (usuario == null)
+            {
+                throw new ArgumentNullException(nameof(usuario));
+            }
+
+            var permisosDelRol = ObtenerPermisosEfectivos(usuario).Where(p => !usuario.permisosAdicionales.Contains(p.id))
+                .Select(p => p.id).ToList();
+
+            if (permisosDelRol.Contains(idPermiso))
+            {
+                throw new InvalidOperationException("Este permiso proviene del rol asignado y no puede quitarse directamente.");
+            }
+
+            if (!usuario.permisosAdicionales.Contains(idPermiso)) { 
+                throw new InvalidOperationException("El usuario no tiene este permiso adicional asignado.");
+            }
+
+            usuario.permisosAdicionales.Remove(idPermiso);
+            GuardarUsuario(usuario);
+        }
     }
 }

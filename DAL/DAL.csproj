@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="acceso.cs" />
+    <Compile Include="BackupDAL.cs" />
     <Compile Include="DatosDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

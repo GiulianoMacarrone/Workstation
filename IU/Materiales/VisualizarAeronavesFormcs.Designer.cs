@@ -49,6 +49,7 @@
             this.txtObservaciones = new System.Windows.Forms.TextBox();
             this.txtNoStock = new System.Windows.Forms.TextBox();
             this.buttonCerrar = new System.Windows.Forms.Button();
+            this.buttonCerrarDMI = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDiferidos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,7 +60,7 @@
             this.dataGridViewDiferidos.Name = "dataGridViewDiferidos";
             this.dataGridViewDiferidos.Size = new System.Drawing.Size(314, 317);
             this.dataGridViewDiferidos.TabIndex = 0;
-            this.dataGridViewDiferidos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDiferidos_CellContentClick);
+            this.dataGridViewDiferidos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDiferidos_CellClick);
             // 
             // label1
             // 
@@ -77,6 +78,7 @@
             this.comboBoxMatriculaAeronave.Name = "comboBoxMatriculaAeronave";
             this.comboBoxMatriculaAeronave.Size = new System.Drawing.Size(144, 21);
             this.comboBoxMatriculaAeronave.TabIndex = 2;
+            this.comboBoxMatriculaAeronave.SelectedIndexChanged += new System.EventHandler(this.comboBoxMatriculaAeronave_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -117,7 +119,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(562, 28);
+            this.label6.Location = new System.Drawing.Point(447, 345);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(82, 13);
             this.label6.TabIndex = 7;
@@ -163,6 +165,7 @@
             // 
             this.txtNroDMI.Location = new System.Drawing.Point(432, 56);
             this.txtNroDMI.Name = "txtNroDMI";
+            this.txtNroDMI.ReadOnly = true;
             this.txtNroDMI.Size = new System.Drawing.Size(124, 20);
             this.txtNroDMI.TabIndex = 12;
             // 
@@ -170,6 +173,7 @@
             // 
             this.txtFechaApertura.Location = new System.Drawing.Point(445, 24);
             this.txtFechaApertura.Name = "txtFechaApertura";
+            this.txtFechaApertura.ReadOnly = true;
             this.txtFechaApertura.Size = new System.Drawing.Size(111, 20);
             this.txtFechaApertura.TabIndex = 13;
             // 
@@ -177,6 +181,7 @@
             // 
             this.txtDescripcion.Location = new System.Drawing.Point(433, 96);
             this.txtDescripcion.Name = "txtDescripcion";
+            this.txtDescripcion.ReadOnly = true;
             this.txtDescripcion.Size = new System.Drawing.Size(308, 48);
             this.txtDescripcion.TabIndex = 14;
             this.txtDescripcion.Text = "";
@@ -185,6 +190,7 @@
             // 
             this.txtMEL.Location = new System.Drawing.Point(432, 158);
             this.txtMEL.Name = "txtMEL";
+            this.txtMEL.ReadOnly = true;
             this.txtMEL.Size = new System.Drawing.Size(124, 20);
             this.txtMEL.TabIndex = 15;
             // 
@@ -192,13 +198,15 @@
             // 
             this.txtEstado.Location = new System.Drawing.Point(432, 200);
             this.txtEstado.Name = "txtEstado";
+            this.txtEstado.ReadOnly = true;
             this.txtEstado.Size = new System.Drawing.Size(124, 20);
             this.txtEstado.TabIndex = 16;
             // 
             // txtFechaCierre
             // 
-            this.txtFechaCierre.Location = new System.Drawing.Point(650, 24);
+            this.txtFechaCierre.Location = new System.Drawing.Point(535, 342);
             this.txtFechaCierre.Name = "txtFechaCierre";
+            this.txtFechaCierre.ReadOnly = true;
             this.txtFechaCierre.Size = new System.Drawing.Size(111, 20);
             this.txtFechaCierre.TabIndex = 17;
             // 
@@ -206,6 +214,7 @@
             // 
             this.txtObservaciones.Location = new System.Drawing.Point(445, 240);
             this.txtObservaciones.Name = "txtObservaciones";
+            this.txtObservaciones.ReadOnly = true;
             this.txtObservaciones.Size = new System.Drawing.Size(296, 20);
             this.txtObservaciones.TabIndex = 18;
             // 
@@ -213,6 +222,7 @@
             // 
             this.txtNoStock.Location = new System.Drawing.Point(433, 278);
             this.txtNoStock.Name = "txtNoStock";
+            this.txtNoStock.ReadOnly = true;
             this.txtNoStock.Size = new System.Drawing.Size(123, 20);
             this.txtNoStock.TabIndex = 19;
             // 
@@ -222,15 +232,28 @@
             this.buttonCerrar.Name = "buttonCerrar";
             this.buttonCerrar.Size = new System.Drawing.Size(75, 23);
             this.buttonCerrar.TabIndex = 20;
-            this.buttonCerrar.Text = "Cerrar";
+            this.buttonCerrar.Text = "Cancelar";
             this.buttonCerrar.UseVisualStyleBackColor = true;
             this.buttonCerrar.Click += new System.EventHandler(this.buttonCerrar_Click);
+            // 
+            // buttonCerrarDMI
+            // 
+            this.buttonCerrarDMI.Enabled = false;
+            this.buttonCerrarDMI.Location = new System.Drawing.Point(366, 340);
+            this.buttonCerrarDMI.Name = "buttonCerrarDMI";
+            this.buttonCerrarDMI.Size = new System.Drawing.Size(75, 23);
+            this.buttonCerrarDMI.TabIndex = 21;
+            this.buttonCerrarDMI.Text = "Cerrar DMI";
+            this.buttonCerrarDMI.UseVisualStyleBackColor = true;
+            this.buttonCerrarDMI.Visible = false;
+            this.buttonCerrarDMI.Click += new System.EventHandler(this.buttonCerrarDMI_Click);
             // 
             // VisualizarAeronavesFormcs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.buttonCerrarDMI);
             this.Controls.Add(this.buttonCerrar);
             this.Controls.Add(this.txtNoStock);
             this.Controls.Add(this.txtObservaciones);
@@ -253,7 +276,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridViewDiferidos);
             this.Name = "VisualizarAeronavesFormcs";
-            this.Text = "VisualizarAeronavesFormcs";
+            this.Text = "Visualizar Aeronaves";
+            this.Load += new System.EventHandler(this.VisualizarAeronavesFormcs_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDiferidos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -283,5 +307,6 @@
         private System.Windows.Forms.TextBox txtObservaciones;
         private System.Windows.Forms.TextBox txtNoStock;
         private System.Windows.Forms.Button buttonCerrar;
+        private System.Windows.Forms.Button buttonCerrarDMI;
     }
 }

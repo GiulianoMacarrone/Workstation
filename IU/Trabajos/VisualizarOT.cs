@@ -47,8 +47,7 @@ namespace IU
 
         private void dgvOTs_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
-                _ordenSeleccionada = (OrdenDeTrabajo)dgvOTs.Rows[e.RowIndex].DataBoundItem;
+            if (e.RowIndex >= 0) _ordenSeleccionada = (OrdenDeTrabajo)dgvOTs.Rows[e.RowIndex].DataBoundItem;
         }
 
         private void buttonVisualizarOT_Click(object sender, EventArgs e)

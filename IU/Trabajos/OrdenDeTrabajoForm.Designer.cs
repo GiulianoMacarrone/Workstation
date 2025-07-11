@@ -314,6 +314,7 @@
             this.dataGridViewTareas.RowHeadersVisible = false;
             this.dataGridViewTareas.Size = new System.Drawing.Size(743, 356);
             this.dataGridViewTareas.TabIndex = 0;
+            this.dataGridViewTareas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTareas_CellContentClick);
             // 
             // dataGridViewHerramientas
             // 

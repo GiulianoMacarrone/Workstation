@@ -37,8 +37,7 @@
             this.textBoxPww = new System.Windows.Forms.TextBox();
             this.labelPassword = new System.Windows.Forms.Label();
             this.checkBoxMostrarContraseña = new System.Windows.Forms.CheckBox();
-            this.checkBoxActive = new System.Windows.Forms.CheckBox();
-            this.checkBoxBlock = new System.Windows.Forms.CheckBox();
+            this.checkBoxBloqueado = new System.Windows.Forms.CheckBox();
             this.textBoxApellido = new System.Windows.Forms.TextBox();
             this.textBoxNombre = new System.Windows.Forms.TextBox();
             this.textBoxUserName = new System.Windows.Forms.TextBox();
@@ -110,6 +109,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.dataGridViewAeronaves = new System.Windows.Forms.DataGridView();
             this.label19 = new System.Windows.Forms.Label();
+            this.btnBackup = new System.Windows.Forms.Button();
             this.groupBoxUser.SuspendLayout();
             this.groupBoxRol.SuspendLayout();
             this.groupBoxPermiso.SuspendLayout();
@@ -128,8 +128,7 @@
             this.groupBoxUser.Controls.Add(this.textBoxPww);
             this.groupBoxUser.Controls.Add(this.labelPassword);
             this.groupBoxUser.Controls.Add(this.checkBoxMostrarContraseña);
-            this.groupBoxUser.Controls.Add(this.checkBoxActive);
-            this.groupBoxUser.Controls.Add(this.checkBoxBlock);
+            this.groupBoxUser.Controls.Add(this.checkBoxBloqueado);
             this.groupBoxUser.Controls.Add(this.textBoxApellido);
             this.groupBoxUser.Controls.Add(this.textBoxNombre);
             this.groupBoxUser.Controls.Add(this.textBoxUserName);
@@ -193,25 +192,15 @@
             this.checkBoxMostrarContraseña.UseVisualStyleBackColor = true;
             this.checkBoxMostrarContraseña.CheckedChanged += new System.EventHandler(this.checkBoxMostrarContraseña_CheckedChanged);
             // 
-            // checkBoxActive
+            // checkBoxBloqueado
             // 
-            this.checkBoxActive.AutoSize = true;
-            this.checkBoxActive.Location = new System.Drawing.Point(241, 48);
-            this.checkBoxActive.Name = "checkBoxActive";
-            this.checkBoxActive.Size = new System.Drawing.Size(56, 17);
-            this.checkBoxActive.TabIndex = 9;
-            this.checkBoxActive.Text = "Activo";
-            this.checkBoxActive.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxBlock
-            // 
-            this.checkBoxBlock.AutoSize = true;
-            this.checkBoxBlock.Location = new System.Drawing.Point(241, 24);
-            this.checkBoxBlock.Name = "checkBoxBlock";
-            this.checkBoxBlock.Size = new System.Drawing.Size(77, 17);
-            this.checkBoxBlock.TabIndex = 8;
-            this.checkBoxBlock.Text = "Bloqueado";
-            this.checkBoxBlock.UseVisualStyleBackColor = true;
+            this.checkBoxBloqueado.AutoSize = true;
+            this.checkBoxBloqueado.Location = new System.Drawing.Point(241, 19);
+            this.checkBoxBloqueado.Name = "checkBoxBloqueado";
+            this.checkBoxBloqueado.Size = new System.Drawing.Size(77, 17);
+            this.checkBoxBloqueado.TabIndex = 9;
+            this.checkBoxBloqueado.Text = "Bloqueado";
+            this.checkBoxBloqueado.UseVisualStyleBackColor = true;
             // 
             // textBoxApellido
             // 
@@ -625,7 +614,6 @@
             this.treeViewPermisosXRol.Name = "treeViewPermisosXRol";
             this.treeViewPermisosXRol.Size = new System.Drawing.Size(222, 357);
             this.treeViewPermisosXRol.TabIndex = 11;
-            this.treeViewPermisosXRol.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewPermisosXRol_AfterSelect);
             // 
             // label8
             // 
@@ -693,39 +681,40 @@
             // comboBoxRoles
             // 
             this.comboBoxRoles.FormattingEnabled = true;
-            this.comboBoxRoles.Location = new System.Drawing.Point(58, 36);
+            this.comboBoxRoles.Location = new System.Drawing.Point(59, 66);
             this.comboBoxRoles.Name = "comboBoxRoles";
             this.comboBoxRoles.Size = new System.Drawing.Size(186, 21);
             this.comboBoxRoles.TabIndex = 5;
             // 
             // textBoxIDRolParaAsociarRol
             // 
-            this.textBoxIDRolParaAsociarRol.Location = new System.Drawing.Point(33, 69);
+            this.textBoxIDRolParaAsociarRol.Location = new System.Drawing.Point(34, 25);
             this.textBoxIDRolParaAsociarRol.Name = "textBoxIDRolParaAsociarRol";
             this.textBoxIDRolParaAsociarRol.ReadOnly = true;
-            this.textBoxIDRolParaAsociarRol.Size = new System.Drawing.Size(54, 20);
+            this.textBoxIDRolParaAsociarRol.Size = new System.Drawing.Size(35, 20);
             this.textBoxIDRolParaAsociarRol.TabIndex = 4;
             // 
             // textBoxNombreRolParaAsociarRol
             // 
-            this.textBoxNombreRolParaAsociarRol.Location = new System.Drawing.Point(144, 69);
+            this.textBoxNombreRolParaAsociarRol.Location = new System.Drawing.Point(145, 25);
             this.textBoxNombreRolParaAsociarRol.Name = "textBoxNombreRolParaAsociarRol";
+            this.textBoxNombreRolParaAsociarRol.ReadOnly = true;
             this.textBoxNombreRolParaAsociarRol.Size = new System.Drawing.Size(100, 20);
             this.textBoxNombreRolParaAsociarRol.TabIndex = 3;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(91, 72);
+            this.label12.Location = new System.Drawing.Point(82, 28);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(47, 13);
+            this.label12.Size = new System.Drawing.Size(57, 13);
             this.label12.TabIndex = 2;
-            this.label12.Text = "Nombre:";
+            this.label12.Text = "Rol Padre:";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(12, 72);
+            this.label11.Location = new System.Drawing.Point(13, 28);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(21, 13);
             this.label11.TabIndex = 1;
@@ -734,11 +723,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 39);
+            this.label10.Location = new System.Drawing.Point(13, 69);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(40, 13);
+            this.label10.Size = new System.Drawing.Size(45, 13);
             this.label10.TabIndex = 0;
-            this.label10.Text = "Roles: ";
+            this.label10.Text = "Rol hijo:";
             // 
             // buttonLimpiarCampos
             // 
@@ -888,11 +877,22 @@
             this.label19.TabIndex = 19;
             this.label19.Text = "Aeronaves";
             // 
+            // btnBackup
+            // 
+            this.btnBackup.Location = new System.Drawing.Point(889, 201);
+            this.btnBackup.Name = "btnBackup";
+            this.btnBackup.Size = new System.Drawing.Size(87, 58);
+            this.btnBackup.TabIndex = 20;
+            this.btnBackup.Text = "Copia de Seguridad";
+            this.btnBackup.UseVisualStyleBackColor = true;
+            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
+            // 
             // PanelAdministrador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.dataGridViewAeronaves);
             this.Controls.Add(this.groupBoxAeronaves);
@@ -944,8 +944,7 @@
         private System.Windows.Forms.TextBox textBoxPww;
         private System.Windows.Forms.Label labelPassword;
         private System.Windows.Forms.CheckBox checkBoxMostrarContraseña;
-        private System.Windows.Forms.CheckBox checkBoxActive;
-        private System.Windows.Forms.CheckBox checkBoxBlock;
+        private System.Windows.Forms.CheckBox checkBoxBloqueado;
         private System.Windows.Forms.TextBox textBoxApellido;
         private System.Windows.Forms.TextBox textBoxNombre;
         private System.Windows.Forms.TextBox textBoxUserName;
@@ -1019,5 +1018,6 @@
         private System.Windows.Forms.ComboBox comboPermisos;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonModificarUsuario;
+        private System.Windows.Forms.Button btnBackup;
     }
 }

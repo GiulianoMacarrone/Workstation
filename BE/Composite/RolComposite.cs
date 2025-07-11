@@ -28,13 +28,11 @@ namespace BE.Composite
 
         public override void Operation()
         {
-            foreach (var child in children)
-                child.Operation();
+            foreach (var child in children)child.Operation();
         }
 
         public override List<Permiso> ObtenerPermisos()
         {
-            // Aplana todos los permisos de los hijos
             return children.SelectMany(c => c.ObtenerPermisos()).ToList();
         }
     }

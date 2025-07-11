@@ -12,6 +12,7 @@ namespace BLL.Roles
     {
         public void CrearTrabajo(TrabajoBE nuevoTrabajo)
         {
+            //GENERAR NRO DE TRABAJO. TR-001 TR-002, ETC
             if (nuevoTrabajo == null)
                 throw new ArgumentNullException(nameof(nuevoTrabajo), "El trabajo no puede ser nulo.");
 
@@ -23,6 +24,14 @@ namespace BLL.Roles
 
             DatosDAL.GuardarTrabajo(nuevoTrabajo);
 
+        }
+
+        public void EliminarTrabajo(int idTrabajo)
+        {
+            var listaTrabajos = DatosDAL.ListarTrabajos();
+            if (!listaTrabajos.Any(t => t.id == idTrabajo)) { throw new InvalidOperationException("Trabajo no encontrado");}
+            
+            DatosDAL.EliminarTrabajo(idTrabajo);
         }
 
         public List<TrabajoBE> ListarTrabajos()

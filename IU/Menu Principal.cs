@@ -23,11 +23,11 @@ namespace IU
 
         private void AplicarPermisosAlMenu()
         {
-            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(SesionUsuario.Instancia.UsuarioActual.id)
+            var usuarioActual = SesionUsuario.Instancia.UsuarioActual;
+            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuarioActual)
                 .Select (p => p.nombre)
                 .ToList();
-            //CHEQUEAR NOMBRES
-            // Suponiendo que 'permisos' es una lista de strings con los nombres de los permisos del usuario
+
             dashboardToolStripMenuItem.Visible = permisos.Contains("Ver_Dashboard");
 
             trabajosToolStripMenuItem.Visible = permisos.Contains("Crear_Trabajo") || permisos.Contains("Eliminar_Trabajo");
@@ -47,7 +47,6 @@ namespace IU
             consultarAToolStripMenuItem.Visible = permisos.Contains("Consultar_Aeronaves");
 
             abrirDiferidoToolStripMenuItem.Visible = permisos.Contains("Abrir_Diferido");
-            cerrarDiferidoToolStripMenuItem.Visible = permisos.Contains("Cerrar_Diferido");
 
             pañolToolStripMenuItem.Visible = permisos.Contains("Crear_Herramienta") || permisos.Contains("Crear_Rotable") || permisos.Contains("Cargar_Consumible");
             crearHerramientaToolStripMenuItem.Visible = permisos.Contains("Crear_Herramienta");
@@ -114,7 +113,72 @@ namespace IU
 
         private void eliminarTrToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Form eliminarTr = new EliminarTrForm();
+            eliminarTr.MdiParent = this;
+            eliminarTr.Show();
+        }
 
+        private void abrirDiferidoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form abrirDMIForm = new AbrirDMIForm();
+            abrirDMIForm.MdiParent = this;
+            abrirDMIForm.Show();    
+        }
+
+        private void cargarConsumibleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form cargarConsumible = new CargarConsumibleForm();
+            cargarConsumible.MdiParent = this;
+            cargarConsumible.Show();
+        }
+
+        private void crearRotableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CrearRotableForm crearRotableForm = new CrearRotableForm();
+            crearRotableForm.MdiParent = this;
+            crearRotableForm.Show();
+        }
+
+        private void crearHerramientaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CrearHerramienta crearHerramienta = new CrearHerramienta();
+            crearHerramienta.MdiParent= this;
+            crearHerramienta.Show();
+        }
+
+        private void generarNOSTOCKToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GenerarNoStockForm generarNoStockForm = new GenerarNoStockForm();
+            generarNoStockForm.MdiParent = this;
+            generarNoStockForm.Show();
+        }
+
+        private void visualizarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            VisualizarPanolForm visualizarPanolForm = new VisualizarPanolForm();
+            visualizarPanolForm.MdiParent = this;
+            visualizarPanolForm.Show();
+        }
+
+        private void consultarSolicitudesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SolicitudesForm solicitudesForm = new SolicitudesForm();
+            solicitudesForm.MdiParent = this;   
+            solicitudesForm.Show();
+        }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var confirmar = MessageBox.Show("¿Está seguro que desea cerrar sesión?", "Confirmar salida",MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+
+            if (confirmar != DialogResult.Yes) return;
+
+            SesionUsuario.CerrarSesion();
+
+            var loginForm = new Login();
+            loginForm.Show();
+
+            this.Close();
         }
     }
 }

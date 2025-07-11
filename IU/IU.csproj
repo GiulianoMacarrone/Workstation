@@ -54,22 +54,52 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CertificacionOT.cs">
+    <Compile Include="BackupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CertificacionOT.Designer.cs">
-      <DependentUpon>CertificacionOT.cs</DependentUpon>
+    <Compile Include="BackupForm.Designer.cs">
+      <DependentUpon>BackupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CrearOTForm.cs">
+    <Compile Include="Materiales\AbrirDMIForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CrearOTForm.Designer.cs">
+    <Compile Include="Materiales\AbrirDMIForm.Designer.cs">
+      <DependentUpon>AbrirDMIForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Materiales\CargarConsumibleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Materiales\CargarConsumibleForm.Designer.cs">
+      <DependentUpon>CargarConsumibleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Materiales\SeleccionarReceptorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Materiales\SeleccionarReceptorForm.Designer.cs">
+      <DependentUpon>SeleccionarReceptorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Materiales\CrearHerramienta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Materiales\CrearHerramienta.Designer.cs">
+      <DependentUpon>CrearHerramienta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Trabajos\CrearOTForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trabajos\CrearOTForm.Designer.cs">
       <DependentUpon>CrearOTForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CrearTrabajoForm.cs">
+    <Compile Include="Materiales\CrearRotableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CrearTrabajoForm.Designer.cs">
+    <Compile Include="Materiales\CrearRotableForm.Designer.cs">
+      <DependentUpon>CrearRotableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Trabajos\CrearTrabajoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trabajos\CrearTrabajoForm.Designer.cs">
       <DependentUpon>CrearTrabajoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Dashboard.cs">
@@ -78,11 +108,23 @@
     <Compile Include="Dashboard.Designer.cs">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </Compile>
-    <Compile Include="EliminarOT.cs">
+    <Compile Include="Trabajos\EliminarOT.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EliminarOT.Designer.cs">
+    <Compile Include="Trabajos\EliminarOT.Designer.cs">
       <DependentUpon>EliminarOT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Trabajos\EliminarTrForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Trabajos\EliminarTrForm.Designer.cs">
+      <DependentUpon>EliminarTrForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Materiales\GenerarNoStockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Materiales\GenerarNoStockForm.Designer.cs">
+      <DependentUpon>GenerarNoStockForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -102,10 +144,10 @@
     <Compile Include="NuevoUsuario.Designer.cs">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrdenDeTrabajoForm.cs">
+    <Compile Include="Trabajos\OrdenDeTrabajoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OrdenDeTrabajoForm.Designer.cs">
+    <Compile Include="Trabajos\OrdenDeTrabajoForm.Designer.cs">
       <DependentUpon>OrdenDeTrabajoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PanelAdministrador.cs">
@@ -116,29 +158,71 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VisualizarAeronavesFormcs.cs">
+    <Compile Include="Materiales\SolicitudesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VisualizarAeronavesFormcs.Designer.cs">
+    <Compile Include="Materiales\SolicitudesForm.Designer.cs">
+      <DependentUpon>SolicitudesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Materiales\VisualizarAeronavesFormcs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Materiales\VisualizarAeronavesFormcs.Designer.cs">
       <DependentUpon>VisualizarAeronavesFormcs.cs</DependentUpon>
     </Compile>
-    <Compile Include="VisualizarOT.cs">
+    <Compile Include="Trabajos\VisualizarOT.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VisualizarOT.Designer.cs">
+    <Compile Include="Trabajos\VisualizarOT.Designer.cs">
       <DependentUpon>VisualizarOT.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CrearOTForm.resx">
+    <Compile Include="Materiales\VisualizarPanolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Materiales\VisualizarPanolForm.Designer.cs">
+      <DependentUpon>VisualizarPanolForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="BackupForm.resx">
+      <DependentUpon>BackupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\AbrirDMIForm.resx">
+      <DependentUpon>AbrirDMIForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\CargarConsumibleForm.resx">
+      <DependentUpon>CargarConsumibleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\CrearHerramienta.resx">
+      <DependentUpon>CrearHerramienta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\CrearRotableForm.resx">
+      <DependentUpon>CrearRotableForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\GenerarNoStockForm.resx">
+      <DependentUpon>GenerarNoStockForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\SeleccionarReceptorForm.resx">
+      <DependentUpon>SeleccionarReceptorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\SolicitudesForm.resx">
+      <DependentUpon>SolicitudesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Materiales\VisualizarPanolForm.resx">
+      <DependentUpon>VisualizarPanolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trabajos\CrearOTForm.resx">
       <DependentUpon>CrearOTForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CrearTrabajoForm.resx">
+    <EmbeddedResource Include="Trabajos\CrearTrabajoForm.resx">
       <DependentUpon>CrearTrabajoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dashboard.resx">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EliminarOT.resx">
+    <EmbeddedResource Include="Trabajos\EliminarOT.resx">
       <DependentUpon>EliminarOT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Trabajos\EliminarTrForm.resx">
+      <DependentUpon>EliminarTrForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -149,7 +233,7 @@
     <EmbeddedResource Include="NuevoUsuario.resx">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrdenDeTrabajoForm.resx">
+    <EmbeddedResource Include="Trabajos\OrdenDeTrabajoForm.resx">
       <DependentUpon>OrdenDeTrabajoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PanelAdministrador.resx">
@@ -164,10 +248,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="VisualizarAeronavesFormcs.resx">
+    <EmbeddedResource Include="Materiales\VisualizarAeronavesFormcs.resx">
       <DependentUpon>VisualizarAeronavesFormcs.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VisualizarOT.resx">
+    <EmbeddedResource Include="Trabajos\VisualizarOT.resx">
       <DependentUpon>VisualizarOT.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

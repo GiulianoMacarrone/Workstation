@@ -45,6 +45,7 @@ namespace IU
             CargarTreeViews();
 
             comboBoxRoles.DataSource = listaRoles;
+            if(rolSeleccionado != null) comboBoxRoles.DataSource = listaRoles.Where(r => r.id != rolSeleccionado.id).ToList(); //no repito el rol seleccionado a la hora de hacer ROL A ROL
             comboBoxRoles.DisplayMember = "designacion";
             comboBoxRoles.ValueMember = "id";
 
@@ -91,50 +92,51 @@ namespace IU
         {
             usuarioSeleccionado = e.Node.Tag as UsuarioBE;
             treeViewRolesyPermisosDelUsuario.Nodes.Clear();
-
+            
             if (usuarioSeleccionado == null) return;
 
+            var permisoDict = listaPermisos.ToDictionary(p => p.id);
+            var compRol = UsuarioBLL.ConstruirRolComposite(usuarioSeleccionado.idRol,permisoDict,listaRoles,new HashSet<int>());
+
+            var permisosRol = compRol.ObtenerPermisos().GroupBy(p => p.id).Select(g => g.First()).ToList();
+
             var rol = listaRoles.FirstOrDefault(r => r.id == usuarioSeleccionado.idRol);
-            if (rol != null)
+            var nodoRol = new TreeNode($"Rol: {(rol != null ? rol.designacion : "(sin rol)")} (ID:{usuarioSeleccionado.idRol})"){Tag = rol};
+
+            foreach (var p in permisosRol)
             {
-                var nodoRol = new TreeNode($"Rol: {rol.designacion}") { Tag = rol };
-                foreach (var idPerm in rol.idsPermisos)
-                {
-                    var p = listaPermisos.FirstOrDefault(x => x.id == idPerm);
-                    if (p != null)
-                    {
-                        nodoRol.Nodes.Add(new TreeNode($"Permiso: {p.nombre}") { Tag = p });
-                    }
-                }
-                treeViewRolesyPermisosDelUsuario.Nodes.Add(nodoRol);
+                var nodoPerm = new TreeNode($"Permiso: {p.nombre}") { Tag = p };
+                nodoRol.Nodes.Add(nodoPerm);
             }
+            treeViewRolesyPermisosDelUsuario.Nodes.Add(nodoRol);
 
             if (usuarioSeleccionado.permisosAdicionales.Any())
             {
-                var extras = new TreeNode("Permisos adicionales");
+                var permisosAdicionales = new TreeNode("Permisos adicionales");
                 foreach (var idPerm in usuarioSeleccionado.permisosAdicionales)
                 {
                     var p = listaPermisos.FirstOrDefault(x => x.id == idPerm);
-                    if (p != null)
+                    if (p != null) 
                     {
-                        extras.Nodes.Add(new TreeNode(p.nombre) { Tag = p });
+                        permisosAdicionales.Nodes.Add(new TreeNode($"Permiso: {p.nombre}") { Tag = p });
                     }
                 }
-                treeViewRolesyPermisosDelUsuario.Nodes.Add(extras);
+                treeViewRolesyPermisosDelUsuario.Nodes.Add(permisosAdicionales);
             }
+
 
             textBoxIdUser.Text = usuarioSeleccionado.id;
             textBoxUserName.Text = usuarioSeleccionado.username;
             textBoxNombre.Text = usuarioSeleccionado.nombre;
             textBoxApellido.Text = usuarioSeleccionado.apellido;
             textBoxPww.Text = usuarioSeleccionado.password;
-            checkBoxBlock.Checked = usuarioSeleccionado.bloqueado;
+            checkBoxBloqueado.Checked = usuarioSeleccionado.bloqueado;
 
             comboBoxRolUsuario.DataSource = null;
             comboBoxRolUsuario.DataSource = listaRoles;
             comboBoxRolUsuario.DisplayMember = "designacion";
             comboBoxRolUsuario.ValueMember = "id";
-            comboBoxRolUsuario.SelectedIndex = listaRoles.FindIndex(r => r.id == usuarioSeleccionado.idRol);
+            comboBoxRolUsuario.SelectedValue = usuarioSeleccionado.idRol;
 
             comboBoxPermisos.DataSource = null;
             comboBoxPermisos.DataSource = listaPermisos;
@@ -142,6 +144,8 @@ namespace IU
             comboBoxPermisos.ValueMember = "id";
 
             treeViewRolesyPermisosDelUsuario.ExpandAll();
+
+
         }
         private void treeViewRoles_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -149,26 +153,53 @@ namespace IU
             treeViewPermisosXRol.Nodes.Clear();
             if (rolSeleccionado == null) return;
 
-            var nodoRol = new TreeNode($"Rol: {rolSeleccionado.designacion}");
-            foreach (var idPerm in rolSeleccionado.idsPermisos)
-            {
-                var p = listaPermisos.FirstOrDefault(x => x.id == idPerm);
-                if (p != null)
-                {
-                    nodoRol.Nodes.Add(new TreeNode($"{p.nombre} (ID:{p.id})") { Tag = p });
-                }
-            }
-            treeViewPermisosXRol.Nodes.Add(nodoRol);
+            var nodo = new TreeNode(
+                $"Rol: {rolSeleccionado.designacion} (ID:{rolSeleccionado.id})")
+                    {
+                        Tag = rolSeleccionado
+                    };
+
+            AgregarNodosPermisosYRoles(rolSeleccionado, nodo);
+
+            treeViewPermisosXRol.Nodes.Add(nodo);
+            nodo.ExpandAll();
 
             textBoxIDRol.Text = rolSeleccionado.id.ToString();
             textBoxDesignacionRol.Text = rolSeleccionado.designacion;
+            textBoxNombreRolParaAsociarRol.Text = rolSeleccionado.designacion;
+            textBoxIDRolParaAsociarRol.Text = rolSeleccionado.id.ToString();
 
             comboPermisos.DataSource = null;
             comboPermisos.DataSource = listaPermisos;
             comboPermisos.DisplayMember = "nombre";
             comboPermisos.ValueMember = "id";
 
-            treeViewPermisosXRol.ExpandAll();
+
+        }
+        private void AgregarNodosPermisosYRoles(Rol rol, TreeNode padre)
+        {
+            foreach (var permisoId in rol.idsPermisos ?? new List<int>())
+            {
+                var p = listaPermisos.FirstOrDefault(x => x.id == permisoId);
+                if (p != null)
+                {
+                    padre.Nodes.Add(new TreeNode($"Permiso: {p.nombre} (ID:{p.id})") { Tag = p });
+                }
+            }
+
+            foreach (var rolId in rol.idsRolesHijos ?? new List<int>())
+            {
+                var rolHijo = listaRoles.FirstOrDefault(r => r.id == rolId);
+                if (rolHijo == null) continue;
+
+                var nodoHijo = new TreeNode($"Rol: {rolHijo.designacion} (ID:{rolHijo.id})")
+                    {
+                        Tag = rolHijo
+                    };
+                padre.Nodes.Add(nodoHijo);
+
+                AgregarNodosPermisosYRoles(rolHijo, nodoHijo);
+            }
         }
 
         private void treeViewPermisos_AfterSelect(object sender, TreeViewEventArgs e)
@@ -178,7 +209,11 @@ namespace IU
 
             textBoxIdPermiso.Text = permisoSeleccionado.id.ToString();
             textBoxNombrePermiso.Text = permisoSeleccionado.nombre;
-            
+
+            if (comboPermisos.DataSource != null)
+            {
+                comboPermisos.SelectedValue = permisoSeleccionado.id;
+            }
         }
 
         private void treeViewRolesyPermisosDelUsuario_AfterSelect(object sender, TreeViewEventArgs e)
@@ -295,24 +330,138 @@ namespace IU
         #region Roles a usuario:
         private void buttonAsociarRolUser_Click(object sender, EventArgs e)
         {
-            
+            if (usuarioSeleccionado == null)
+            {
+                MessageBox.Show("Primero seleccioná un usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (comboBoxRolUsuario.SelectedItem == null)
+            {
+                MessageBox.Show("Seleccioná un rol para asignar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int idRol = (int)comboBoxRolUsuario.SelectedValue;
+            usuarioSeleccionado.idRol = idRol;
+
+            try
+            {
+                usuarioBLL.GuardarUsuario(usuarioSeleccionado);
+                MessageBox.Show("Rol asignado correctamente al usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTreeViews();
+                var nodo = treeViewUsuarios.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((UsuarioBE)n.Tag).id == usuarioSeleccionado.id);
+
+                if (nodo != null)
+                {
+
+                    treeViewUsuarios.SelectedNode = nodo;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al asignar rol", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void buttonQuitarRolUser_Click(object sender, EventArgs e)
         {
+            if (usuarioSeleccionado == null)
+            {
+                MessageBox.Show("Primero seleccioná un usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            try
+            {
+                usuarioSeleccionado.idRol = 0; //Quitar rol asignado
+                usuarioBLL.GuardarUsuario(usuarioSeleccionado);
+
+                MessageBox.Show("Rol quitado correctamente del usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTreeViews();
+                var nodo = treeViewUsuarios.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((UsuarioBE)n.Tag).id == usuarioSeleccionado.id);
+
+                if (nodo != null)
+                {
+                    treeViewUsuarios.SelectedNode = nodo;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al quitar rol",MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region Permisos a usuario:
-        private void buttonAsociarPermisoAUser_Click(object sender, EventArgs e)
+        private void buttonAsociarPermisoUser_Click(object sender, EventArgs e)
         {
+            if (usuarioSeleccionado == null)
+            {
+                MessageBox.Show("Primero seleccioná un usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            permisoSeleccionado = comboBoxPermisos.SelectedItem as Permiso;
+
+            if (permisoSeleccionado == null)
+            {
+                MessageBox.Show("Seleccioná un permiso para asignar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                usuarioBLL.AsignarPermisoAdicional (usuarioSeleccionado, permisoSeleccionado.id);
+                MessageBox.Show("permiso asignado correctamente al usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTreeViews();
+                var nodo = treeViewUsuarios.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((UsuarioBE)n.Tag).id == usuarioSeleccionado.id);
+
+                if (nodo != null)
+                {
+
+                    treeViewUsuarios.SelectedNode = nodo;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al asignar permiso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void buttonQuitarPermisoAUser_Click(object sender, EventArgs e)
+        private void buttonQuitarPermisoUser_Click(object sender, EventArgs e)
         {
+            if (usuarioSeleccionado == null)
+            {
+                MessageBox.Show("Primero seleccioná un usuario.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            permisoSeleccionado = comboBoxPermisos.SelectedItem as Permiso;
+
+            if (permisoSeleccionado == null)
+            {
+                MessageBox.Show("Seleccioná un permiso para quitar (debe ser un permiso adicional).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                usuarioBLL.QuitarPermisoAdicional(usuarioSeleccionado, permisoSeleccionado.id);
+                MessageBox.Show("permiso removido de forma exitosa al usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTreeViews();
+                var nodo = treeViewUsuarios.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((UsuarioBE)n.Tag).id == usuarioSeleccionado.id);
+
+                if (nodo != null)
+                {
+
+                    treeViewUsuarios.SelectedNode = nodo;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al quitar permiso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
@@ -321,11 +470,50 @@ namespace IU
         #region Rol para Asociar/Desasociar a otro Rol:
         private void buttonAsociarRolaRol_Click(object sender, EventArgs e)
         {
+            var rolPadre = rolSeleccionado;
+            var rolHijo = comboBoxRoles.SelectedItem as Rol;
+
+            if (rolPadre == null || rolHijo == null)
+            {
+                MessageBox.Show("Seleccioná un rol padre y un rol hijo para asociar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                rolBLL.AsociarSubRol(rolPadre, rolHijo);
+                MessageBox.Show("Rol asociado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTreeViews();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al asociar rol", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 
         private void buttonDesasociarRolaRol_Click(object sender, EventArgs e)
         {
+            var rolPadre = rolSeleccionado;
+            var rolHijo = comboBoxRoles.SelectedItem as Rol; 
+
+            if (rolPadre == null || rolHijo == null)
+            {
+                MessageBox.Show("Seleccioná un rol padre y un rol hijo para desasociar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                rolBLL.DesasociarSubRol(rolPadre, rolHijo);
+                MessageBox.Show("Rol desasociado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarTreeViews();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al desasociar rol", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
 
         }
         #endregion
@@ -354,61 +542,108 @@ namespace IU
         }
         private void buttonModificarUsuario_Click(object sender, EventArgs e)
         {
+            if (usuarioSeleccionado == null)
+            {
+                MessageBox.Show("Debe seleccionar un usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            usuarioSeleccionado.bloqueado = checkBoxBloqueado.Checked;
+            usuarioSeleccionado.username = textBoxUserName.Text.Trim();
+            usuarioSeleccionado.nombre = textBoxNombre.Text.Trim();
+            usuarioSeleccionado.apellido = textBoxApellido.Text.Trim();
+            usuarioSeleccionado.password = textBoxPww.Text;
+
+            try
+            {
+                usuarioBLL.GuardarUsuario(usuarioSeleccionado);
+
+                MessageBox.Show("Usuario modificado correctamente.", "Éxito",MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarTreeViews();
+                var nodo = treeViewUsuarios.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((UsuarioBE)n.Tag).id == usuarioSeleccionado.id);
+                if (nodo != null) treeViewUsuarios.SelectedNode = nodo;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al modificar usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         #region Permisos a Rol:
         private void buttonAsociarPermiso_Click(object sender, EventArgs e)
         {
-            int idPermisoSeleccionado = Int32.Parse(textBoxIdPermiso.Text);
-            if (textBoxIdPermiso.Text == null || idPermisoSeleccionado <= 0) MessageBox.Show("Debe seleccionar un permiso válido."); 
-            
-            int idRolSeleccionado = Int32.Parse(textBoxIDRol.Text);
-            if (textBoxIDRol.Text == null || idRolSeleccionado <= 0) MessageBox.Show("Debe seleccionar un rol válido.");
+            if (rolSeleccionado == null) 
+            {
+                MessageBox.Show("Debe seleccionar un rol", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            MessageBox.Show("Permiso asociado exitosamente al rol.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (comboPermisos.SelectedItem == null) 
+            {
+                MessageBox.Show("Debe seleccionar un permiso para asociar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            CargarTreeViews();
+            var PermisoSeleccionado = comboPermisos.SelectedItem as Permiso;
+            int idPermiso = permisoSeleccionado.id;
+
+            try
+            {
+                rolBLL.AsociarPermiso(rolSeleccionado, idPermiso);
+
+                MessageBox.Show("Permiso asociado exitosamente al rol.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarTreeViews();
+                var nodo = treeViewRoles.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((Rol)n.Tag).id == rolSeleccionado.id);
+                if (nodo != null) treeViewRoles.SelectedNode = nodo;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al asociar permiso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void buttonQuitarPermiso_Click(object sender, EventArgs e)
         {
+            if (rolSeleccionado == null)
+            {
+                MessageBox.Show("Debe seleccionar un rol.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            var permiso = comboPermisos.SelectedItem as Permiso;
+            if (permiso == null)
+            {
+                MessageBox.Show("Debe seleccionar un permiso.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                rolBLL.DesasociarPermiso(rolSeleccionado, permiso.id);
+
+                MessageBox.Show("Permiso removido exitosamente del rol.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarTreeViews();
+                var nodo = treeViewRoles.Nodes.Cast<TreeNode>().FirstOrDefault(n => ((Rol)n.Tag).id == rolSeleccionado.id);
+                if (nodo != null) treeViewRoles.SelectedNode = nodo;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al quitar permiso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
-
-        private void buttonAsociarPermisoUser_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonQuitarPermisoUser_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonAsociarPermisoARol_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonQuitarPermisoARol_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void checkBoxMostrarContraseña_CheckedChanged(object sender, EventArgs e)
         {
             textBoxPww.UseSystemPasswordChar = !checkBoxMostrarContraseña.Checked;
         }
 
-        private void treeViewPermisosXRol_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
-        }
         private void LimpiarCampos()
         {
-            // TextBoxes
             textBoxIdUser.Clear();
             textBoxUserName.Clear();
             textBoxNombre.Clear();
@@ -430,23 +665,26 @@ namespace IU
             textBoxModelo.Clear();
             textBoxSerie.Clear();
 
-            // CheckBoxes
             checkBoxMostrarContraseña.Checked = false;
-            checkBoxBlock.Checked = false;
-            checkBoxActive.Checked = false;
+            checkBoxBloqueado.Checked = false;
 
-            // ComboBoxes (sin selección)
             comboBoxRoles.SelectedIndex = -1;
             comboBoxRolUsuario.SelectedIndex = -1;
             comboBoxPermisos.SelectedIndex = -1;
             comboPermisos.SelectedIndex = -1;
 
-            // Deseleccionar TreeViews
             treeViewUsuarios.SelectedNode = null;
             treeViewRoles.SelectedNode = null;
             treeViewPermisos.SelectedNode = null;
             treeViewPermisosXRol.SelectedNode = null;
             treeViewRolesyPermisosDelUsuario.SelectedNode = null;
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            BackupForm bForm = new BackupForm();
+            bForm.MdiParent = this;
+            bForm.Show();
         }
     }
 }

@@ -83,6 +83,7 @@
             this.Controls.Add(this.dgvOTsinRealizar);
             this.Name = "EliminarOT";
             this.Text = "Eliminar Orden de Trabajo";
+            this.Load += new System.EventHandler(this.EliminarOT_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOTsinRealizar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
