@@ -13,7 +13,7 @@ namespace DAL
 {
     public static class DatosDAL
     {
-        private static readonly string xmlPath = "datos.xml";
+        private static readonly string xmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "datos.xml");
         private static readonly acceso accesoXml = new acceso(xmlPath);
 
         #region Metodos Generales

@@ -19,8 +19,7 @@ namespace DAL
         {
             try
             {
-                if (!File.Exists(_filePath))
-                    throw new FileNotFoundException($"Archivo XML no encontrado: {_filePath}");
+                if (!File.Exists(_filePath)) throw new FileNotFoundException($"Archivo XML no encontrado: {_filePath}");
                 return XDocument.Load(_filePath);
             }
             catch (Exception ex)
@@ -32,11 +31,9 @@ namespace DAL
         {
             try
             {
-                if (doc == null)
-                    throw new ArgumentNullException(nameof(doc), "El documento XML no puede ser null.");
+                if (doc == null) throw new ArgumentNullException(nameof(doc), "El documento XML no puede ser null.");
                 var dir = Path.GetDirectoryName(_filePath);
-                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
                 doc.Save(_filePath);
             }
             catch (Exception ex)

@@ -122,6 +122,16 @@ namespace BLL
             return usuario;
         }
 
+        public static bool TienePermiso(UsuarioBE usuario, string nombrePermiso)
+        {
+            if (usuario == null || string.IsNullOrWhiteSpace(nombrePermiso))
+                return false;
+
+            var permisos = ObtenerPermisosEfectivos(usuario);
+            return permisos.Any(p => p.nombre.Equals(nombrePermiso, StringComparison.OrdinalIgnoreCase));
+        }
+
+
         public void GuardarUsuario(UsuarioBE nuevoUsuario)
         {
             var usuarios = DatosDAL.ListarUsuarios();

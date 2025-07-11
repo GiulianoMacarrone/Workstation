@@ -122,13 +122,15 @@ namespace IU
                 }
                 treeViewRolesyPermisosDelUsuario.Nodes.Add(permisosAdicionales);
             }
-
+            checkBoxMostrarContraseña.Checked = false;
 
             textBoxIdUser.Text = usuarioSeleccionado.id;
             textBoxUserName.Text = usuarioSeleccionado.username;
             textBoxNombre.Text = usuarioSeleccionado.nombre;
             textBoxApellido.Text = usuarioSeleccionado.apellido;
-            textBoxPww.Text = usuarioSeleccionado.password;
+            string originalPassword = Encriptacion.DesencriptarPassword(usuarioSeleccionado.password);
+            textBoxPww.Text = originalPassword;
+            textBoxPww.UseSystemPasswordChar = !checkBoxMostrarContraseña.Checked;
             checkBoxBloqueado.Checked = usuarioSeleccionado.bloqueado;
 
             comboBoxRolUsuario.DataSource = null;
@@ -143,7 +145,7 @@ namespace IU
             comboBoxPermisos.ValueMember = "id";
 
             treeViewRolesyPermisosDelUsuario.ExpandAll();
-
+            
 
         }
         private void treeViewRoles_AfterSelect(object sender, TreeViewEventArgs e)
@@ -200,7 +202,6 @@ namespace IU
                 AgregarNodosPermisosYRoles(rolHijo, nodoHijo);
             }
         }
-
         private void treeViewPermisos_AfterSelect(object sender, TreeViewEventArgs e)
         {
             permisoSeleccionado = e.Node.Tag as Permiso;
