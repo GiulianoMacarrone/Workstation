@@ -131,7 +131,6 @@ namespace BLL
             return permisos.Any(p => p.nombre.Equals(nombrePermiso, StringComparison.OrdinalIgnoreCase));
         }
 
-
         public void GuardarUsuario(UsuarioBE nuevoUsuario)
         {
             var usuarios = DatosDAL.ListarUsuarios();

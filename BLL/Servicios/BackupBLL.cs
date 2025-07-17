@@ -39,8 +39,7 @@ namespace BLL.Servicios
             if (!File.Exists(zipPath))
                 throw new FileNotFoundException("Archivo de backup no encontrado", zipPath);
 
-            if (Directory.Exists(carpetaDatos))
-                Directory.Delete(carpetaDatos, recursive: true);
+            if (Directory.Exists(carpetaDatos)) Directory.Delete(carpetaDatos, recursive: true);
 
             ZipFile.ExtractToDirectory(zipPath, carpetaDatos);
 
@@ -53,7 +52,5 @@ namespace BLL.Servicios
         }
 
         public List<Backup> ListarEventos()=> BackupDAL.ListarEventos();
-
-
     }
 }
