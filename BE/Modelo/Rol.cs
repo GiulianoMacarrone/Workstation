@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE.Modelo
 {
-    public class Rol
+    public class Rol //pasar a obsoleta
     {
         public IEnumerable<int> idsRolesHijos;
 

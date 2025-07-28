@@ -46,7 +46,7 @@ namespace IU
             nuevoUsuario.password = textBoxPww.Text;
             nuevoUsuario.bloqueado = false; //por defecto no bloqueado
             int idRol = (int)comboBoxRolUsuario.SelectedValue;
-            nuevoUsuario.idRol = idRol;
+            nuevoUsuario.rolesAsignados.Add(idRol); // Agregar el rol seleccionado a la lista de roles asignados
 
             usuarioBLL.GuardarUsuario(nuevoUsuario);
 

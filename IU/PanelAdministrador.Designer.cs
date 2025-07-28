@@ -371,7 +371,7 @@
             this.buttonQuitarPermiso.TabIndex = 13;
             this.buttonQuitarPermiso.Text = "Quitar permiso";
             this.buttonQuitarPermiso.UseVisualStyleBackColor = true;
-            this.buttonQuitarPermiso.Click += new System.EventHandler(this.buttonQuitarPermiso_Click);
+            this.buttonQuitarPermiso.Click += new System.EventHandler(this.buttonQuitarPermisoRol_Click);
             // 
             // button2
             // 
@@ -381,7 +381,7 @@
             this.button2.TabIndex = 12;
             this.button2.Text = "Asociar permiso";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.buttonAsociarPermiso_Click);
+            this.button2.Click += new System.EventHandler(this.buttonAsociarPermisoRol_Click);
             // 
             // comboPermisos
             // 

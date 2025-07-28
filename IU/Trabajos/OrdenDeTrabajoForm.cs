@@ -20,6 +20,7 @@ using System.Xml.Schema;
 
 namespace IU
 {
+    //USAR ITEXTDOCUMENT para generar el PDF
     public partial class OrdenDeTrabajoForm : Form
     {
         public OrdenDeTrabajo ordenActual = new OrdenDeTrabajo(); 
@@ -125,8 +126,7 @@ namespace IU
                     row.Cells["btnCertificar"] = new DataGridViewTextBoxCell { Value = $"[{nro}]" };
                     row.Cells["btnCertificar"].ReadOnly = true;
                 }
-
-                
+       
             }
         }
 
@@ -144,7 +144,7 @@ namespace IU
                     var usuario = SesionUsuario.Instancia.UsuarioActual;
                     var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
-                    if (permisos.Any(p => p.nombre == "Firmar Tarea")) // o si  rol == "Mecánico"
+                    if (permisos.Any(p => p.designacion == "Firmar Tarea")) // o si  rol == "Mecánico"
                     {
                         var tareaNombre = grid.Rows[e.RowIndex].Cells["Tarea"].Value?.ToString();
                         //Actualizar la firma de la tarea. Reemplazar boton.
@@ -164,8 +164,7 @@ namespace IU
             var usuario = SesionUsuario.Instancia.UsuarioActual;
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
-            if (!permisos.Any(p =>
-                p.nombre.Equals("Firmar_OT", StringComparison.OrdinalIgnoreCase)))
+            if (!permisos.Any(p =>p.designacion.Equals("Firmar_OT", StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("No tenés permiso de mecánico.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -188,7 +187,7 @@ namespace IU
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
             if (!permisos.Any(p =>
-                p.nombre.Equals("Cerrar_OT", StringComparison.OrdinalIgnoreCase)))
+                p.designacion.Equals("Cerrar_OT", StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("No tenés permiso de inspector.", "Acceso denegado",MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -266,7 +265,7 @@ namespace IU
 
             if (colName == "btnFirmar")
             {
-                if (!permisos.Any(p => p.nombre.Equals("Firmar_OT", StringComparison.OrdinalIgnoreCase)))
+                if (!permisos.Any(p => p.designacion.Equals("Firmar_OT", StringComparison.OrdinalIgnoreCase)))
                 {
                     MessageBox.Show("No tenés permiso de mecánico para firmar.","Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -287,7 +286,7 @@ namespace IU
             }
             else if (colName == "btnCertificar")
             {
-                if (!permisos.Any(p => p.nombre.Equals("Cerrar_OT", StringComparison.OrdinalIgnoreCase)))
+                if (!permisos.Any(p => p.designacion.Equals("Cerrar_OT", StringComparison.OrdinalIgnoreCase)))
                 {
                     MessageBox.Show("No tenés permiso de inspector para certificar.","Acceso denegado", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                     return;

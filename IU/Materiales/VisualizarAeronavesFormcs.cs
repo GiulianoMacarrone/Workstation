@@ -29,7 +29,7 @@ namespace IU
 
             var usuario = SesionUsuario.Instancia.UsuarioActual;
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
-            bool puedeCerrar = permisos.Any(p => p.nombre.Equals("Cerrar_Diferido", StringComparison.OrdinalIgnoreCase));
+            bool puedeCerrar = permisos.Any(p => p.designacion.Equals("Cerrar_Diferido", StringComparison.OrdinalIgnoreCase));
             if (puedeCerrar) 
             {
                 buttonCerrarDMI.Visible = true; 

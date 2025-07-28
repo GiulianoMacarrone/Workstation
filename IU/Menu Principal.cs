@@ -25,7 +25,7 @@ namespace IU
         {
             var usuarioActual = SesionUsuario.Instancia.UsuarioActual;
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuarioActual)
-                .Select (p => p.nombre)
+                .Select (p => p.designacion)
                 .ToList();
 
             dashboardToolStripMenuItem.Visible = permisos.Contains("Ver_Dashboard");

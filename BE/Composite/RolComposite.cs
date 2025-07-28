@@ -7,33 +7,48 @@ using System.Threading.Tasks;
 
 namespace BE.Composite
 {
-    public class RolComposite : PermisoComponent
+    public class RolComposite : Componente
     {
-        private readonly List<PermisoComponent> children = new List<PermisoComponent>();
+        private readonly List<Componente> hijo = new List<Componente>();
 
-        public override void Add(PermisoComponent c)
+        public override void AgregarHijo(Componente component)
         {
-            children.Add(c);
+            try
+            {
+                hijo.Add(component);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al agregar hijo al rol", ex);
+            }
         }
 
-        public override void Remove(PermisoComponent c)
+        public override void EliminarHijo(Componente component)
         {
-            children.Remove(c);
+            try
+            {
+                hijo.Remove(component);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar hijo del rol", ex);
+            }
         }
-
-        public override PermisoComponent GetChild(int index)
+        public override bool TieneHijos() //no se refiere a si el rol tiene hijos, sino a si el componente puede tener hijos. Rol = si. Permiso = no.
         {
-            return children[index];
+            //if (hijo.Count == 0) return true; //Podriamos agregar una validacion si se quiere q corrobora que tiene hijos o no.
+            return true; 
         }
-
-        public override void Operation()
+        public override IList<Componente> ObtenerHijos()
         {
-            foreach (var child in children)child.Operation();
-        }
-
-        public override List<Permiso> ObtenerPermisos()
-        {
-            return children.SelectMany(c => c.ObtenerPermisos()).ToList();
+            try 
+            {
+                return hijo;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener hijos del rol", ex);
+            }
         }
     }
 }

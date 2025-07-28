@@ -21,6 +21,11 @@ namespace IU.Materiales
         public int cantidadSolicitada { get; private set; }
         public SeleccionarReceptorForm(ElementoVisualizable componente)
         {
+            if(componente == null)
+            {
+                throw new ArgumentNullException(nameof(componente), "El componente no puede ser nulo.");
+            }
+            this.componente = componente;
             InitializeComponent();
             var listaUsuarios = usuarioBLL.ListarUsuarios();
             comboBoxUser.DataSource = listaUsuarios;

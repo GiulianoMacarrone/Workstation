@@ -14,8 +14,6 @@ namespace BE.Modelo
         public int Cantidad { get; set; }
         public string Tipo { get; set; }
         public string Descripcion { get; set; }
-
-        [Browsable(false)]
         public object ElementoOriginal { get; set; }
 
         public ElementoVisualizable(Consumible c, string tipo)

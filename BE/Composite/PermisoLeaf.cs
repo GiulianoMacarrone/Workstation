@@ -1,4 +1,5 @@
 ﻿using BE.Modelo;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,26 @@ using System.Threading.Tasks;
 
 namespace BE.Composite
 {
-    public class PermisoLeaf : PermisoComponent
+    public class PermisoLeaf : Componente
     {
-        private Permiso permiso;
-
-        public PermisoLeaf(Permiso permiso)
+        public override void AgregarHijo(Componente component)
         {
-            this.permiso = permiso;
+            throw new Exception("Un permiso no puede contener hijos");
         }
 
-        public override void Operation()
+        public override void EliminarHijo(Componente component)
         {
-            Console.WriteLine($"Permiso: {permiso.nombre}");
+            throw new Exception("Un permiso no puede contener hijos");
         }
 
-        public override List<Permiso> ObtenerPermisos()
+        public override bool TieneHijos()
         {
-            return new List<Permiso> { permiso };
+            return false;
+        }
+
+        public override IList<Componente> ObtenerHijos()
+        {
+            return new List<Componente>(); // Un permiso no tiene hijos, retornamos una lista vacía por las dudas.
         }
     }
 }

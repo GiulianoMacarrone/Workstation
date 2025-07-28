@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup\Backup.cs" />
-    <Compile Include="Composite\PermisoComponent.cs" />
+    <Compile Include="Composite\Componente.cs" />
     <Compile Include="Composite\PermisoLeaf.cs" />
     <Compile Include="Composite\RolComposite.cs" />
     <Compile Include="Modelo\AeronaveBE.cs" />
@@ -54,8 +54,6 @@
     <Compile Include="Modelo\ItemOTBE.cs" />
     <Compile Include="Modelo\NoStockBE.cs" />
     <Compile Include="Modelo\OrdenDeTrabajo.cs" />
-    <Compile Include="Modelo\Permiso.cs" />
-    <Compile Include="Modelo\Rol.cs" />
     <Compile Include="Modelo\RotableBE.cs" />
     <Compile Include="Modelo\TrabajoBE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

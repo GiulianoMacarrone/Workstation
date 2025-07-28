@@ -21,7 +21,9 @@ namespace BLL.Servicios
         public static void IniciarSesion(UsuarioBE usuario)
         {
             if (instancia == null)
+            {
                 instancia = new SesionUsuario(usuario);
+            }
         }
 
         public static SesionUsuario Instancia => instancia;

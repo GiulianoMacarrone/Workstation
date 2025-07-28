@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE.Modelo
 {
-    public class Permiso
+    public class Permiso //pasar a obsoleta
     {
         public int id { get; set; }
         public string nombre { get; set; }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -131,12 +132,24 @@ namespace DAL
                 new XElement("password", usuario.password),
                 new XElement("nombre", usuario.nombre),
                 new XElement("apellido", usuario.apellido),
-                new XElement("bloqueado", usuario.bloqueado.ToString().ToLower()),
-                new XElement("idRol", usuario.idRol),
-                new XElement("permisosAdicionales",usuario.permisosAdicionales?.Select(p => new XElement("Permiso", p))
-                )
-            );
-            if(!string.IsNullOrEmpty(usuario.nroMecanico))
+                new XElement("bloqueado", usuario.bloqueado.ToString().ToLower())
+                );
+
+            if (usuario.rolesAsignados.Any())
+            {
+                usuarioElem.Add(new XElement("rolesAsignados",
+                    usuario.rolesAsignados.Select(r => new XElement("Rol", r))
+                ));
+            }
+
+            if (usuario.permisosAdicionales.Any())
+            {
+                usuarioElem.Add(new XElement("permisosAdicionales",
+                    usuario.permisosAdicionales.Select(p => new XElement("Permiso", p))
+                ));
+            }
+
+            if (!string.IsNullOrEmpty(usuario.nroMecanico))
             {
                 usuarioElem.Add(new XElement("nroMecanico", usuario.nroMecanico));
             }
@@ -213,42 +226,34 @@ namespace DAL
             contenedor.Add(elem);
             GuardarDocumento(doc);
         }
-        public static void GuardarPermiso(Permiso permiso)
-        {
-            var doc = GetDocumento();
-            var contenedor = GetOrCreateContenedor(doc, "Permisos");
-
-            permiso.id = GenerarIdUnico(contenedor, "Permiso");
-
-            var elem = new XElement("Permiso",
-                new XAttribute("id", permiso.id),
-                new XElement("nombre", permiso.nombre)
-            );
-
-            contenedor.Add(elem);
-            GuardarDocumento(doc);
-        }
-        public static void GuardarRol(Rol rol)
+        public static void GuardarRol(RolComposite rol)
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Roles");
 
-
-            if (rol.id == 0) 
+            if (rol.id == 0) //Generar un ID único si no tiene uno asignado
             {
                 rol.id = GenerarIdUnico(contenedor, "Rol");
             }
-            
-            //se borra el nodo actual y se crea uno nuevo. ActualizarRol() podría eliminarse como se hizo con GuardarUsuario()
-            var nodoExistente = contenedor.Elements("Rol").FirstOrDefault(r => (int)r.Attribute("id") == rol.id);
-            if (nodoExistente != null) nodoExistente.Remove();
+
+            contenedor.Elements("Rol").FirstOrDefault(x=> (int)x.Attribute("id") == rol.id)?.Remove();
+
+            var permisos = rol.ObtenerHijos().OfType<PermisoLeaf>()
+                .Select(p => new XElement("idPermiso", p.id));
+
+            var rolesHijos = rol.ObtenerHijos().OfType<RolComposite>()
+                .Select(r => new XElement("idRol", r.id));
 
             var newRol = new XElement("Rol",
                 new XAttribute("id", rol.id),
                 new XElement("designacion", rol.designacion),
-                new XElement("Permisos", rol.idsPermisos.Select(id => new XElement("idPermiso", id))),
-                new XElement("RolesHijos", rol.idRolesHijos.Select(id => new XElement("idRol", id)))
+                new XElement("Permisos", permisos)
             );
+
+            if (rolesHijos.Any())
+            {
+                newRol.Add(new XElement("RolesHijos", rolesHijos));
+            }
 
             contenedor.Add(newRol);
             GuardarDocumento(doc);
@@ -456,8 +461,9 @@ namespace DAL
                     password = nodo.Element("password")?.Value,
                     nombre = nodo.Element("nombre")?.Value,
                     apellido = nodo.Element("apellido")?.Value,
-                    idRol = int.TryParse(nodo.Element("idRol")?.Value, out var idRol) ? idRol : 0,
                     bloqueado = bool.TryParse(nodo.Element("bloqueado")?.Value, out var bloq) && bloq,
+                    rolesAsignados = nodo.Element("rolesAsignados")?
+                        .Elements("Rol").Select(x => int.Parse(x.Value)).ToList() ?? new List<int>(),
                     permisosAdicionales = nodo.Element("permisosAdicionales")?
                         .Elements("Permiso").Select(x => int.Parse(x.Value)).ToList() ?? new List<int>(),
                     nroMecanico = nodo.Element("nroMecanico")?.Value,
@@ -521,34 +527,62 @@ namespace DAL
                     idNoStock = int.TryParse(x.Element("idNoStock")?.Value, out int idNS) ? idNS : (int?)null
                 }).ToList();
         }
-        public static List<Permiso> ListarPermisos()
+        public static List<PermisoLeaf> ListarPermisos()
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Permisos");
 
-            return contenedor.Elements("Permiso").Select(x => new Permiso
-                {
-                    id = int.Parse(x.Attribute("id")?.Value ?? "0"),
-                    nombre = x.Element("nombre")?.Value
-                }).ToList();
-        }
-        public static List<Rol> ListarRoles(bool includeInactive = false)
-        {
-            var roles = GetOrCreateContenedor(GetDocumento(), "Roles").Elements("Rol")
-                .Select(x => new Rol
+            return contenedor.Elements("Permiso")
+                .Select(x => new PermisoLeaf
                 {
                     id = (int)x.Attribute("id"),
-                    designacion = (string)x.Element("designacion"),
-                    idsPermisos = x.Element("Permisos")
-                                      ?.Elements("idPermiso")
-                                      .Select(y => (int)y).ToList() ?? new List<int>(),
-                    inactivo = (bool?)x.Element("inactivo") ?? false,
-                    idsRolesHijos = x.Element("RolesHijos") //no funcionaba por una S...
-                                      ?.Elements("idRol")
-                                      .Select(y => (int)y).ToList() ?? new List<int>()
-                });
+                    designacion = (string)x.Element("designacion")
+                }).ToList();
+        }
+        public static List<RolComposite> ListarRoles()
+        {
+            var doc = GetDocumento();
+            var contenedor = GetOrCreateContenedor(doc, "Roles");
+            var permisos = ListarPermisos();
 
-            return roles.Where(r => r.id != 0 && (includeInactive || !r.inactivo)).ToList();
+            var rolDiccionario = contenedor.Elements("Rol")
+                .Select(x =>
+                {
+                    var rol = new RolComposite
+                    {
+                        id = (int)x.Attribute("id"),
+                        designacion = (string)x.Element("designacion")
+                    };
+                    return rol;
+                }).ToDictionary(r => r.id);
+
+            foreach (var x in contenedor.Elements("Rol"))
+            {
+                int rolId = (int)x.Attribute("id");
+                var rol = rolDiccionario[rolId];
+
+                var idsPermisos = x.Element("Permisos")?.Elements("idPermiso").Select(p => (int)p) ?? new List<int>();
+
+                var idsRolesHijos = x.Element("RolesHijos")?.Elements("idRol").Select(r => (int)r) ?? new List<int>();
+
+                foreach (var idPermiso in idsPermisos)
+                {
+                    var permiso = permisos.FirstOrDefault(p => p.id == idPermiso);
+                    if (permiso != null)
+                    {
+                        rol.AgregarHijo(permiso);
+                    }
+                }
+
+                foreach (var idRol in idsRolesHijos)
+                {
+                    if (rolDiccionario.TryGetValue(idRol, out var subRol))
+                    {
+                        rol.AgregarHijo(subRol);
+                    }
+                }
+            }
+            return rolDiccionario.Values.ToList();
         }
         public static List<Consumible> ListarConsumibles()
         {
@@ -674,26 +708,6 @@ namespace DAL
 
             GuardarDocumento(doc);
         }
-        public static void ActualizarRol(Rol rol)
-        {
-            var doc = GetDocumento();
-            var contenedor = GetOrCreateContenedor(doc, "Roles");
-
-            var nodoRol = contenedor.Elements("Rol").FirstOrDefault(x => (int?)x.Attribute("id") == rol.id);
-            if(nodoRol == null) throw new Exception($"No se encontró el rol con id {rol.id}");
-
-            var permisosElem = nodoRol.Element("Permisos");
-            permisosElem.Remove();
-            foreach(var idPermiso in rol.idsPermisos)
-            {
-                permisosElem.Add(new XElement("idPermiso", idPermiso));
-            }
-            
-            nodoRol.Element("designacion")?.SetValue(rol.designacion);
-
-            GuardarDocumento(doc);
-
-        }
         public static void ActualizarDiferido(Diferido dmi)
         {
             var doc = GetDocumento();
@@ -751,27 +765,66 @@ namespace DAL
         }
 
         #region Borrar / Desactivar Datos
-        public static void DesactivarRol(int idRol)
+        public static void EliminarRol(int idRol)
         {
             var doc = GetDocumento();
-            var contenedor = GetOrCreateContenedor(doc, "Roles");
-            var nodo = contenedor.Elements("Rol").FirstOrDefault(x => (int?)x.Attribute("id") == idRol);
+            var rolesContenedor = GetOrCreateContenedor(doc, "Roles");
+            var usuariosContenedor = GetOrCreateContenedor(doc, "Usuarios");    
 
-            if (nodo == null)throw new Exception($"No existe el rol con ID {idRol}");
+            var nodoRol = rolesContenedor.Elements("Rol").FirstOrDefault(x => (int)x.Attribute("id") == idRol);
 
-            var elem = nodo.Element("inactivo"); //como esto lo agregue mas tarde, puede que haya roles que no lo tengan
-            if (elem == null)
+            if (nodoRol != null)
             {
-                nodo.Add(new XElement("inactivo", true));
+                nodoRol.Remove();
             }
             else
             {
-                elem.SetValue(true);
+                throw new Exception($"No se encontró el rol con ID {idRol} para eliminar.");
+            }
+
+            //eliminar referencias al rol en otros roles
+            foreach (var rol in rolesContenedor.Elements("Rol"))
+            {
+                var rolesHijos = rol.Element("RolesHijos");
+
+                if (rolesHijos != null)
+                {
+                    var referencias = rolesHijos.Elements("idRol").Where(x => int.Parse(x.Value) == idRol).ToList();
+
+                    foreach (var referencia in referencias)
+                    {
+                        referencia.Remove();
+                    }
+
+                    if (!rolesHijos.HasElements)
+                    {
+                        rolesHijos.Remove();
+                    }
+                }
+            }
+
+            //eliminar referencias al rol en usuarios
+            foreach (var usuario in usuariosContenedor.Elements("Usuario"))
+            {
+                var listaRoles = usuario.Element("rolesAsignados");
+                if (listaRoles != null)
+                {
+                    var referencias = listaRoles.Elements("Rol").Where(x => int.Parse(x.Value) == idRol).ToList();
+
+                    foreach (var referencia in referencias)
+                    {
+                        referencia.Remove();
+                    }
+
+                    if (!listaRoles.HasElements)
+                    {
+                        listaRoles.Remove();
+                    }
+                }
             }
 
             GuardarDocumento(doc);
         }
-
         public static void EliminarTrabajo(int idTrabajo)
         {
             var doc = GetDocumento();

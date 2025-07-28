@@ -11,10 +11,9 @@ namespace BLL.Roles
 {
     public class PermisoBLL
     {
-        public List<Permiso> ListarPermisos()
+        public List<PermisoLeaf> ListarPermisos()
         {
             return DatosDAL.ListarPermisos();
-        }
-       
+        }      
     }
 }

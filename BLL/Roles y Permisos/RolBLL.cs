@@ -11,100 +11,126 @@ namespace BLL.Roles
 {
     public class RolBLL
     {
-        public List<Rol> ListarRoles()
+        public List<RolComposite> ListarRoles()
         {
             return DatosDAL.ListarRoles();
         }
 
         #region ABM Rol
-        public void CrearRol(Rol rol)
+        public void CrearRol(RolComposite nuevoRol)
         {
-            var rolesExistentes = DatosDAL.ListarRoles();
-            if (rolesExistentes.Any(r => r.designacion.Equals(rol.designacion, StringComparison.OrdinalIgnoreCase)))
+            var rolesExistentes = ListarRoles();
+            if (rolesExistentes.Any(r => r.designacion.Equals(nuevoRol.designacion, StringComparison.OrdinalIgnoreCase)))
             {
-                throw new Exception("Ya existe un rol con esa designación.");
+                throw new InvalidOperationException($"Ya existe un rol con la designación “{nuevoRol.designacion}”.");
             }
-
-            rol.id = rolesExistentes.Select(r => r.id).DefaultIfEmpty(-1).Max() + 1;
-
-            DatosDAL.GuardarRol(rol);
+            
+            DatosDAL.GuardarRol(nuevoRol);
         }
 
-        //en usuarioBLL se usa GuardarUsuario y se reescribe el usuario. Aca se usa ActualizarRol. Metodo para probar distinto enfoque
-        public void ActualizarRol(Rol rol)
+        public void ActualizarRol(RolComposite rol)
         {
-            var existentes = DatosDAL.ListarRoles();
+            var existentes = ListarRoles();
             if (!existentes.Any(r => r.id == rol.id))
             {
-                throw new Exception("El rol a actualizar no existe.");
+                throw new ArgumentException($"El rol {rol.id} no existe.");
             }
 
-            if (existentes.Any(r => r.designacion.Equals(rol.designacion, StringComparison.OrdinalIgnoreCase) && r.id != rol.id))
+            if (existentes.Any(r => r.id != rol.id && r.designacion.Equals(rol.designacion, StringComparison.OrdinalIgnoreCase)))
             {
-                throw new Exception("Ya existe un rol con esa designación.");
+                throw new InvalidOperationException(
+                    $"Ya existe otro rol con la designación “{rol.designacion}”.");
             }
 
-            DatosDAL.ActualizarRol(rol);
+            DatosDAL.GuardarRol(rol);
         }
 
-        public void EliminarRol(int idRol)
+        public void EliminarRol(int rolId)
         {
-            var rol = DatosDAL.ListarRoles(includeInactive: true)
-                          .FirstOrDefault(r => r.id == idRol);
-            if (rol == null) throw new ArgumentException($"Rol {idRol} no encontrado.");
+            var rol = DatosDAL.ListarRoles().FirstOrDefault(r => r.id == rolId);
+            if (rol == null)
+            {
+                throw new ArgumentException($"Rol {rolId} no encontrado.");
+            }
 
             var usuarios = DatosDAL.ListarUsuarios();
-            if (usuarios.Any(u => u.idRol == idRol && !u.bloqueado))
+            if (usuarios.Any(u => u.rolesAsignados.Contains(rolId) && !u.bloqueado)) //verificacion usuarios con ese rol
             {
-                throw new InvalidOperationException($"No se puede desactivar el rol porque hay usuarios activos asignados.");
+                throw new InvalidOperationException($"No se puede desactivar el rol {rol.designacion} porque hay usuarios activos asignados.");
             }
 
-            DatosDAL.DesactivarRol(idRol);
-        }
-
-        public void AsociarPermiso(Rol rol, int idPermiso)
-        {
-            if (rol.idsPermisos.Contains(idPermiso)) { throw new InvalidOperationException("El rol ya tiene este permiso"); }
-            
-            rol.idsPermisos.Add(idPermiso);
-            DatosDAL.GuardarRol(rol);
-        }
-
-        public void DesasociarPermiso(Rol rol, int idPermiso)
-        {
-            if (!rol.idsPermisos.Contains(idPermiso)) { throw new InvalidOperationException("El rol no tiene asigando este permiso"); }
-            rol.idsPermisos.Remove(idPermiso);
-            DatosDAL.GuardarRol(rol);
-        }
-
-
-        public void AsociarSubRol(Rol rolPadre, Rol rolHijo)
-        {
-            if (rolPadre == null || rolHijo == null)
-                throw new ArgumentNullException("Ambos roles deben estar definidos.");
-
-            if (rolPadre.id == rolHijo.id)
-                throw new InvalidOperationException("Un rol no puede asociarse a sí mismo.");
-
-            if (rolPadre.idRolesHijos.Contains(rolHijo.id))
-                throw new InvalidOperationException("El rol ya está asociado como hijo.");
-
-            rolPadre.idRolesHijos.Add(rolHijo.id);
-            DatosDAL.GuardarRol(rolPadre); 
-
-        }
-        public void DesasociarSubRol(Rol rolPadre, Rol rolHijo)
-        {
-            if (rolPadre == null || rolHijo == null)
-                throw new ArgumentNullException("Ambos roles deben estar definidos.");
-
-            if (!rolPadre.idRolesHijos.Contains(rolHijo.id))
-                throw new InvalidOperationException("Este rol no está asociado como hijo.");
-
-            rolPadre.idRolesHijos.Remove(rolHijo.id);
-            DatosDAL.GuardarRol(rolPadre);
+            DatosDAL.EliminarRol(rolId);
         }
         #endregion
+
+        #region Permisos y SubRoles 
+        public void AsociarPermiso(RolComposite rol, PermisoLeaf permiso)
+        {
+            bool yaExiste = rol.ObtenerHijos().OfType<PermisoLeaf>().Any(p => p.id == permiso.id);
+
+            if (yaExiste)
+            {
+                throw new InvalidOperationException($"El rol {rol.designacion} ya tiene el permiso {permiso.designacion}.");
+            }
+
+            rol.AgregarHijo(permiso);
+            DatosDAL.GuardarRol(rol);
+        }
+
+        public void DesasociarPermiso(RolComposite rol, PermisoLeaf permiso)
+        {
+            var hijo = rol.ObtenerHijos().FirstOrDefault(c => c is PermisoLeaf pl && pl.id == permiso.id);
+
+            if (hijo == null)
+            {
+                throw new InvalidOperationException($"El rol {rol.designacion} no tiene asignado el permiso {permiso.designacion}.");
+            }
+
+            rol.EliminarHijo(hijo);
+            DatosDAL.GuardarRol(rol);
+        }
+
+        public void AsociarSubRol(RolComposite padre, RolComposite hijo)
+        {
+            if (ContieneDescendiente(hijo, padre.id))
+                throw new InvalidOperationException($"Asociación inválida: {hijo.designacion} ya contiene a {padre.designacion}.");
+
+
+            if (padre.id == hijo.id)
+            {
+                throw new InvalidOperationException("Un rol no puede asociarse a sí mismo.");
+            }
+
+            bool yaTiene = padre.ObtenerHijos().OfType<RolComposite>().Any(r => r.id == hijo.id);
+
+            if (yaTiene)
+            {
+                throw new InvalidOperationException($"El rol {padre.designacion} ya incluye al sub-rol {hijo.designacion}.");
+            }
+
+            padre.AgregarHijo(hijo);
+            DatosDAL.GuardarRol(padre);
+        }
+
+        public void DesasociarSubRol(RolComposite padre, RolComposite hijo)
+        {
+            var nodo = padre.ObtenerHijos().FirstOrDefault(c => c is RolComposite rc && rc.id == hijo.id);
+
+            if (nodo == null)
+            {
+                throw new InvalidOperationException($"El rol {padre.designacion} no tiene asociado el sub-rol {hijo.designacion}.");
+            }
+                   
+            padre.EliminarHijo(nodo);
+            DatosDAL.GuardarRol(padre);
+        }
+        #endregion
+
+        bool ContieneDescendiente(RolComposite raiz, int idBuscado)
+        {
+            if (raiz.id == idBuscado) return true;
+            return raiz.ObtenerHijos().OfType<RolComposite>().Any(sub => ContieneDescendiente(sub, idBuscado));
+        }
 
     }
 }
