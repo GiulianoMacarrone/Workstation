@@ -38,6 +38,7 @@ namespace DAL
                        new XAttribute("id", id),
                        new XElement("fecha", ev.Fecha.ToString("o")),
                        new XElement("operacion", ev.Operacion),
+                       new XElement("usuario", ev.Usuario),
                        new XElement("archivoPath", ev.ArchivoPath)
                    ));
             SaveDoc(doc);
@@ -52,6 +53,7 @@ namespace DAL
                     Id = (int)x.Attribute("id"),
                     Fecha = DateTime.Parse(x.Element("fecha")?.Value),
                     Operacion = x.Element("operacion")?.Value,
+                    Usuario = x.Element("usuario")?.Value,
                     ArchivoPath = x.Element("archivoPath")?.Value
                 })
                 .OrderByDescending(e => e.Fecha).ToList();

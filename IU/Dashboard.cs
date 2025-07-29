@@ -58,30 +58,20 @@ namespace IU
         private void CargarDashboard(DateTime desde, DateTime hasta)
         {
             var all = _otBll.ListarOrdenes();
-            var periodo = all
-                .Where(o => o.fechaInicio >= desde && o.fechaInicio <= hasta)
-                .ToList();
+            var periodo = all.Where(o => o.fechaInicio >= desde && o.fechaInicio <= hasta).ToList();
 
-            string me = SesionUsuario.Instancia.UsuarioActual.nroMecanico;
-            bool esInspector = false;
+            bool esInspector = !string.IsNullOrWhiteSpace(usuarioActual.nroInspector);
+            bool esMecanico = !string.IsNullOrWhiteSpace(usuarioActual.nroMecanico);
+
             if (esInspector)
             {
-                dgvDisponibles.DataSource = periodo
-                    .Where(o => string.IsNullOrWhiteSpace(o.inspector))
-                    .ToList();
-                dgvRealizadas.DataSource = periodo
-                    .Where(o => o.inspector ==
-                        SesionUsuario.Instancia.UsuarioActual.nroInspector)
-                    .ToList();
+                dgvDisponibles.DataSource = periodo.Where(o => string.IsNullOrWhiteSpace(o.inspector)).ToList();
+                dgvRealizadas.DataSource = periodo.Where(o => !string.IsNullOrWhiteSpace(o.inspector) && o.inspector == usuarioActual.nroInspector).ToList();
             }
-            else
+            else if (esMecanico)
             {
-                dgvDisponibles.DataSource = periodo
-                    .Where(o => string.IsNullOrWhiteSpace(o.mecanico))
-                    .ToList();
-                dgvRealizadas.DataSource = periodo
-                    .Where(o => o.mecanico == me)
-                    .ToList();
+                dgvDisponibles.DataSource = periodo.Where(o => string.IsNullOrWhiteSpace(o.mecanico)).ToList();
+                dgvRealizadas.DataSource = periodo.Where(o => !string.IsNullOrWhiteSpace(o.mecanico) && o.mecanico == usuarioActual.nroMecanico).ToList();
             }
 
             txtTotalOTs.Text = periodo.Count.ToString();
@@ -90,13 +80,9 @@ namespace IU
 
             if (dgvRealizadas.Rows.Count > 0)
             {
-                var realizadas = ((System.Collections.IEnumerable)
-                    dgvRealizadas.DataSource)
-                    .Cast<OrdenDeTrabajo>()
-                    .ToList();
+                var realizadas = ((System.Collections.IEnumerable)dgvRealizadas.DataSource).Cast<OrdenDeTrabajo>().ToList();
 
-                double promTareas = realizadas
-                    .Average(o => o.trabajo.listaTareas.Count);
+                double promTareas = realizadas.Average(o => o.trabajo.listaTareas.Count);
                 txtPromedioTareas.Text = $"{promTareas:F1}";
             }
             else
@@ -169,6 +155,18 @@ namespace IU
             chart1.ChartAreas[0].AxisX.LabelStyle.Angle = -45;
         }
         #endregion
+
+        private void dgvDisponibles_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var ot = (OrdenDeTrabajo)dgvDisponibles.Rows[e.RowIndex].DataBoundItem;
+
+            var verOT = new OrdenDeTrabajoForm(ot)
+            {
+                MdiParent = this.MdiParent
+            };
+            verOT.Show();
+        }
     }
 }
 

@@ -89,7 +89,20 @@ namespace IU
             }
 
             dataGridViewAeronaves.DataSource = listaAeronaves;
-        
+
+            comboBoxRoles.DataSource = null;
+            comboBoxRoles.DataSource = listaRoles;
+            comboBoxRoles.DisplayMember = "designacion";
+            comboBoxRoles.ValueMember = "id";
+            comboBoxPermisos.DataSource = null;
+            comboBoxPermisos.DataSource = listaPermisos;
+            comboBoxPermisos.DisplayMember = "designacion";
+            comboBoxPermisos.ValueMember = "id";
+            comboPermisos.DataSource = null;
+            comboPermisos.DataSource = listaPermisos;
+            comboPermisos.DisplayMember = "designacion";
+            comboPermisos.ValueMember = "id";
+
         }
         private void treeViewUsuarios_AfterSelect(object sender, TreeViewEventArgs e)
         {
@@ -288,7 +301,7 @@ namespace IU
                 rolBLL.ActualizarRol(rol);
 
                 MessageBox.Show($"Rol ID {rol.id} modificado a '{rol.designacion}'","Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
                 CargarTreeViews();
                 
                 var idx = listaRoles.FindIndex(r => r.id == rol.id);
@@ -367,11 +380,12 @@ namespace IU
             }
 
             var usuarioNuevoRol = listaUsuarios.First(u => u.id == usuarioSeleccionado.id);
-
             usuarioNuevoRol.rolesAsignados.Add((int)comboBoxRolUsuario.SelectedValue);
 
             try
             {
+                var originalPww = Encriptacion.DesencriptarPassword(usuarioNuevoRol.password);
+                usuarioNuevoRol.password = originalPww;
                 usuarioBLL.GuardarUsuario(usuarioNuevoRol);
                 MessageBox.Show("Rol asignado correctamente al usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarTreeViews();
@@ -409,6 +423,8 @@ namespace IU
 
             try
             {
+                var originalPww = Encriptacion.DesencriptarPassword(usuarioSacarRol.password);
+                usuarioSacarRol.password = originalPww;
                 usuarioBLL.GuardarUsuario(usuarioSacarRol);
 
                 MessageBox.Show("Rol quitado correctamente del usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -448,6 +464,8 @@ namespace IU
 
             try
             {
+                var originalPww = Encriptacion.DesencriptarPassword(usuarioNuevoPermiso.password);
+                usuarioNuevoPermiso.password = originalPww;
                 usuarioBLL.AsignarPermisoAdicional (usuarioNuevoPermiso, permisoSeleccionado.id);
                 MessageBox.Show("permiso asignado correctamente al usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarTreeViews();
@@ -484,6 +502,8 @@ namespace IU
 
             try
             {
+                var originalPww = Encriptacion.DesencriptarPassword(usuarioSacarPermiso.password);
+                usuarioSacarPermiso.password = originalPww;
                 usuarioBLL.QuitarPermisoAdicional(usuarioSacarPermiso, permisoSeleccionado.id);
                 MessageBox.Show("permiso removido de forma exitosa al usuario.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarTreeViews();

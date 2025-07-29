@@ -40,7 +40,7 @@
             this.dgvEventos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEventos.Location = new System.Drawing.Point(12, 50);
             this.dgvEventos.Name = "dgvEventos";
-            this.dgvEventos.Size = new System.Drawing.Size(441, 252);
+            this.dgvEventos.Size = new System.Drawing.Size(784, 252);
             this.dgvEventos.TabIndex = 0;
             // 
             // label1
@@ -64,7 +64,7 @@
             // 
             // btnRestore
             // 
-            this.btnRestore.Location = new System.Drawing.Point(366, 342);
+            this.btnRestore.Location = new System.Drawing.Point(701, 342);
             this.btnRestore.Name = "btnRestore";
             this.btnRestore.Size = new System.Drawing.Size(75, 23);
             this.btnRestore.TabIndex = 3;
@@ -76,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(465, 385);
+            this.ClientSize = new System.Drawing.Size(808, 385);
             this.Controls.Add(this.btnRestore);
             this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.label1);

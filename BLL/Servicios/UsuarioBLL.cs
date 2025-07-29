@@ -54,25 +54,26 @@ namespace BLL
             if (string.IsNullOrEmpty(nuevoUsuario.id))
             {
                 int nuevoIdNumerico = usuarios.Select(u => int.TryParse(u.id?.Replace("U", ""), out var n) ? n : 0).DefaultIfEmpty().Max() + 1;
-                nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // Formato U0001, U0002, etc.
-
-                var rolesIds = new HashSet<int>(nuevoUsuario.rolesAsignados);
-                var roles = DatosDAL.ListarRoles().Where(r => rolesIds.Contains(r.id)).ToList();
-
-                if (roles.Any(rol => rol.designacion.Equals("mecanico", StringComparison.OrdinalIgnoreCase)))
-                {
-                    int nuevoNroMec = usuarios.Select(u=> int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1; //formato M01, M02, etc.
-                    nuevoUsuario.nroMecanico = "M" + nuevoNroMec.ToString("D2"); // Formato M01, M02, etc.
-                }
-
-                if (roles.Any(rol => rol.designacion.Equals("inspector", StringComparison.OrdinalIgnoreCase)))
-                {
-                    int nuevoNroIns = usuarios.Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0).DefaultIfEmpty().Max() + 1; //formato I01, I02, etc.  
-                    nuevoUsuario.nroInspector = "I" + nuevoNroIns.ToString("D2"); // Formato I01, I02, etc.
-                }
+                nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // Formato U0001, U0002, etc. 
             }
 
-            nuevoUsuario.password = Encriptacion.EncriptarPassword(nuevoUsuario.password); 
+            var roles = DatosDAL.ListarRoles().Where(r => nuevoUsuario.rolesAsignados.Contains(r.id)).Select(r => r.designacion.ToLowerInvariant()).ToHashSet();
+
+            if (roles.Contains("mecanico")&& string.IsNullOrWhiteSpace(nuevoUsuario.nroMecanico))
+            {
+                int nuevoNroMec = usuarios.Select(u => int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1; //formato M01, M02, etc.
+                nuevoUsuario.nroMecanico = "M" + nuevoNroMec.ToString("D2"); // Formato M01, M02, etc.
+            }
+
+            if (roles.Contains("inspector") && string.IsNullOrWhiteSpace(nuevoUsuario.nroInspector))
+
+            {
+                int nuevoNroIns = usuarios.Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0).DefaultIfEmpty().Max() + 1; //formato I01, I02, etc.  
+                nuevoUsuario.nroInspector = "I" + nuevoNroIns.ToString("D2"); // Formato I01, I02, etc.
+            }
+
+            nuevoUsuario.password = Encriptacion.EncriptarPassword(nuevoUsuario.password);           
+
             DatosDAL.GuardarUsuario(nuevoUsuario);
         }
 

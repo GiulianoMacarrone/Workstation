@@ -12,6 +12,6 @@ namespace BE.Backup
         public DateTime Fecha { get; set; }
         public string Operacion { get; set; }  // backup o restaurar
         public string ArchivoPath { get; set; }   
-
+        public string Usuario { get; set; }  // usuario que realizó la operación
     }
 }

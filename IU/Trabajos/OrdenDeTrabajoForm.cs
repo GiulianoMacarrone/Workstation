@@ -20,7 +20,6 @@ using System.Xml.Schema;
 
 namespace IU
 {
-    //USAR ITEXTDOCUMENT para generar el PDF
     public partial class OrdenDeTrabajoForm : Form
     {
         public OrdenDeTrabajo ordenActual = new OrdenDeTrabajo(); 

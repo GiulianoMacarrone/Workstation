@@ -1,4 +1,5 @@
-﻿using BE.Modelo;
+﻿using BE.Composite;
+using BE.Modelo;
 using DAL;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,25 @@ namespace BLL.Roles
         {
             //GENERAR NRO DE TRABAJO. TR-001 TR-002, ETC
             if (nuevoTrabajo == null)
+            {
                 throw new ArgumentNullException(nameof(nuevoTrabajo), "El trabajo no puede ser nulo.");
+            }
 
             if (string.IsNullOrWhiteSpace(nuevoTrabajo.titulo))
+            {
                 throw new ArgumentException("El título del trabajo es obligatorio.", nameof(nuevoTrabajo.titulo));
+            }
 
             if (string.IsNullOrWhiteSpace(nuevoTrabajo.descripcion))
+            {
                 throw new ArgumentException("La descripción del trabajo es obligatoria.", nameof(nuevoTrabajo.descripcion));
+            }
+
+            int nuevoNroTr = ListarTrabajos().Select(t => int.TryParse(t.nroTrabajo?.Replace("TR-", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1;
+            string nroTrabajo = "TR-" + nuevoNroTr.ToString("D4");
+            nuevoTrabajo.nroTrabajo = nroTrabajo;
 
             DatosDAL.GuardarTrabajo(nuevoTrabajo);
-
         }
 
         public void EliminarTrabajo(int idTrabajo)

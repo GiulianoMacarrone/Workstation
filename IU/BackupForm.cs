@@ -78,6 +78,11 @@ namespace IU
             });
             dgvEventos.Columns.Add(new DataGridViewTextBoxColumn
             {
+                DataPropertyName = "Usuario",
+                HeaderText = "Usuario"
+            });
+            dgvEventos.Columns.Add(new DataGridViewTextBoxColumn
+            {
                 DataPropertyName = "ArchivoPath",
                 HeaderText = "Archivo .ZIP",
                 Width = 300

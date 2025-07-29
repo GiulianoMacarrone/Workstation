@@ -2,6 +2,7 @@
 using BLL;
 using BLL.Roles;
 using DocumentFormat.OpenXml.Wordprocessing;
+using IU;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,7 +44,6 @@ namespace Presentacion_IU
 
         private void buttonCrear_Click(object sender, EventArgs e)
         {
-            //asignar Nro de trabajo automaticamente
             string titulo = txtTitulo.Text.Trim();
             string descripcion = txtDescripcion.Text.Trim();
             string intervalo = txtIntervalo.Text.Trim();

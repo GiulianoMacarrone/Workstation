@@ -23,13 +23,14 @@ namespace BLL.Servicios
         {
             var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             var zipPath = Path.Combine(carpetaBackup, $"backup_{timestamp}.zip");
-
+            var user = SesionUsuario.Instancia.UsuarioActual?.username;
             ZipFile.CreateFromDirectory(carpetaDatos, zipPath, CompressionLevel.Optimal, false);
 
             BackupDAL.GuardarEvento(new Backup
             {
                 Fecha = DateTime.Now,
                 Operacion = "Backup",
+                Usuario = user,
                 ArchivoPath = zipPath
             });
         }
@@ -47,6 +48,7 @@ namespace BLL.Servicios
             {
                 Fecha = DateTime.Now,
                 Operacion = "Restore",
+                Usuario = SesionUsuario.Instancia.UsuarioActual?.username,
                 ArchivoPath = zipPath
             });
         }
