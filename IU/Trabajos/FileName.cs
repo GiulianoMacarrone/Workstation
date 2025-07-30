@@ -20,9 +20,10 @@ using System.Xml.Schema;
 
 namespace IU
 {
+    //OT FORM PREVIO A AÑADIR TareaBE
     public partial class OrdenDeTrabajoForm : Form
     {
-        public OrdenDeTrabajo ordenActual = new OrdenDeTrabajo(); 
+        public OrdenDeTrabajo ordenActual = new OrdenDeTrabajo();
         public OrdenDeTrabajoForm(OrdenDeTrabajo ot)
         {
             InitializeComponent();
@@ -35,8 +36,8 @@ namespace IU
         private void LlenarOT(OrdenDeTrabajo ot)
         {
             var usuario = SesionUsuario.Instancia.UsuarioActual;
-            bool requiereFirmaMecanico = ot.trabajo.listaTareas.Any(t => string.IsNullOrEmpty(t.nroMecanico));
-            bool requiereFirmaInspector = ot.trabajo.listaTareas.Any(t => string.IsNullOrEmpty(t.nroInspector));
+            bool requiereFirmaMecanico = ot.trabajo.listaTareas?.Any(t => !t.Contains("Mec:")) ?? false;
+            bool requiereFirmaInspector = ot.trabajo.listaTareas?.Any(t => !t.Contains("Ins:")) ?? false;
 
             txtNumeroOT.Text = ot.numeroOT?.ToString() ?? string.Empty;
             txtTituloOT.Text = ot.titulo ?? string.Empty;
@@ -50,6 +51,7 @@ namespace IU
             lblFechaConformance.Text = DateTime.Now.ToString("dd/MM/yyyy");
             buttonFirmaMecanico.Text = ot.mecanico ?? string.Empty;
             buttonFirmaInspector.Text = ot.inspector ?? string.Empty;
+
 
             dataGridViewMateriales.DataSource = ot.trabajo.listaMateriales;
             if (dataGridViewMateriales.Columns.Contains("Descripcion"))
@@ -70,7 +72,6 @@ namespace IU
 
                 if (dataGridViewTareas.Columns["Tareas"] != null)
                     dataGridViewTareas.Columns["Tareas"].HeaderText = "Tarea";
-                if (dataGridViewTareas.Columns["nroMecanico"] != null)
 
                 dataGridViewTareas.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dataGridViewTareas.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
@@ -81,87 +82,74 @@ namespace IU
                 dataGridViewTareas.DataSource = null;
             }
 
-            var listaTareas = new BindingList<TareaBE>(ot.trabajo.listaTareas ?? new List<TareaBE>());
-            dataGridViewTareas.DataSource = listaTareas;
-
-            if (requiereFirmaMecanico && !dataGridViewTareas.Columns.Contains("nroMecanico"))
+            if (!dataGridViewTareas.Columns.Contains("btnFirmar") && requiereFirmaMecanico)
             {
                 var btnMec = new DataGridViewButtonColumn
                 {
-                    Name = "nroMecanico",
-                    HeaderText = "Mecanico",
-                    Text = "Firmar",
-                    UseColumnTextForButtonValue = true,
-                    Width = 100
+                    Name = "btnFirmar",
+                    HeaderText = "Firma",
+                    Text = "Mecánico",
+                    UseColumnTextForButtonValue = true
                 };
                 dataGridViewTareas.Columns.Add(btnMec);
             }
 
-            if (requiereFirmaInspector && !dataGridViewTareas.Columns.Contains("nroInspector"))
+            if (!dataGridViewTareas.Columns.Contains("btnCertificar") && requiereFirmaInspector)
             {
                 var btnIns = new DataGridViewButtonColumn
                 {
-                    Name = "nroInspector",
-                    HeaderText = "Inspector",
-                    Text = "Firmar",
-                    UseColumnTextForButtonValue = true,
-                    Width = 100
+                    Name = "btnCertificar",
+                    HeaderText = "Certifica",
+                    Text = "Inspector",
+                    UseColumnTextForButtonValue = true
                 };
                 dataGridViewTareas.Columns.Add(btnIns);
             }
 
             foreach (DataGridViewRow row in dataGridViewTareas.Rows)
             {
-                var tarea = row.DataBoundItem as TareaBE;
-                if (tarea == null) continue;    
+                string tareaStr = row.Cells["Tareas"].Value?.ToString() ?? "";
 
-                if (!string.IsNullOrEmpty(tarea.nroMecanico))
+                if (tareaStr.Contains("Mec:") && dataGridViewTareas.Columns.Contains("btnFirmar"))
                 {
-                    row.Cells["nroMecanico"] = new DataGridViewTextBoxCell
+                    var nro = tareaStr.Split(new[] { "Mec:" }, StringSplitOptions.None).Skip(1).FirstOrDefault()?.Split('|')[0]?.Trim();
+                    if (!string.IsNullOrEmpty(nro))
                     {
-                        Value = tarea.nroMecanico
-                    };
+                        row.Cells["btnFirmar"] = new DataGridViewTextBoxCell { Value = $"[{nro}]" };
+                        row.Cells["btnFirmar"].ReadOnly = true;
+                    }
                 }
 
-                if (!string.IsNullOrEmpty(tarea.nroInspector))
+                if (tareaStr.Contains("Ins:") && dataGridViewTareas.Columns.Contains("btnCertificar"))
                 {
-                    row.Cells["nroInspector"] = new DataGridViewTextBoxCell
-                    {
-                        Value = tarea.nroInspector
-                    };
+                    var nro = tareaStr.Split(new[] { "Ins:" }, StringSplitOptions.None).Skip(1).FirstOrDefault()?.Split('|')[0]?.Trim();
+                    row.Cells["btnCertificar"] = new DataGridViewTextBoxCell { Value = $"[{nro}]" };
+                    row.Cells["btnCertificar"].ReadOnly = true;
                 }
+
             }
-        }    
+        }
 
+
+        //EDITAR
         private void dataGridViewTareas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 var grid = (DataGridView)sender;
-                var tarea = (TareaBE)grid.Rows[e.RowIndex].DataBoundItem;
-                var usuario = SesionUsuario.Instancia.UsuarioActual;
-                var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
-                if (grid.Columns[e.ColumnIndex].Name == "nroMecanico" && string.IsNullOrEmpty(tarea.nroMecanico))
+                if (grid.Columns[e.ColumnIndex].Name == "btnFirmar") //podemos hacer OTRO pero para Inspectores? o que firme en el mmismo boton?
                 {
-                    if (permisos.Any(p => p.designacion == "Firmar_Tarea"))
-                    {
-                        tarea.nroMecanico = SesionUsuario.Instancia.UsuarioActual.nroMecanico;
-                        grid.Rows[e.RowIndex].Cells["nroMecanico"] = new DataGridViewTextBoxCell { Value = tarea.nroMecanico };
+                    // Validar si es mecánico
+                    var usuario = SesionUsuario.Instancia.UsuarioActual;
+                    var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
-                    }
-                    else
+                    if (permisos.Any(p => p.designacion == "Firmar Tarea")) // o si  rol == "Mecánico"
                     {
-                        MessageBox.Show("No tenés permisos para firmar esta tarea.");
-                    }
-                }
-                if (grid.Columns[e.ColumnIndex].Name == "nroInspector")
-                {
-                    if (permisos.Any(p => p.designacion == "Certificar_Tarea"))
-                    {
-                        tarea.nroInspector = SesionUsuario.Instancia.UsuarioActual.nroInspector;
-                        grid.Rows[e.RowIndex].Cells["nroInspector"] = new DataGridViewTextBoxCell { Value = tarea.nroInspector };
-
+                        var tareaNombre = grid.Rows[e.RowIndex].Cells["Tarea"].Value?.ToString();
+                        //Actualizar la firma de la tarea. Reemplazar boton.
+                        //AÑADIR NUMERO DE MECANICO (ROL = MECANICO = GENERA UN NRO DE MECANICO AL USUARIO)
+                        grid.Rows[e.RowIndex].Cells["btnFirmar"].Value = $"{SesionUsuario.Instancia.UsuarioActual.nroMecanico}";
                     }
                     else
                     {
@@ -176,7 +164,7 @@ namespace IU
             var usuario = SesionUsuario.Instancia.UsuarioActual;
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
-            if (!permisos.Any(p =>p.designacion.Equals("Firmar_Tarea", StringComparison.OrdinalIgnoreCase)))
+            if (!permisos.Any(p => p.designacion.Equals("Firmar_OT", StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("No tenés permiso de mecánico.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -199,9 +187,9 @@ namespace IU
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
             if (!permisos.Any(p =>
-                p.designacion.Equals("Certificar_Tarea", StringComparison.OrdinalIgnoreCase)))
+                p.designacion.Equals("Cerrar_OT", StringComparison.OrdinalIgnoreCase)))
             {
-                MessageBox.Show("No tenés permiso de inspector.", "Acceso denegado",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("No tenés permiso de inspector.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -216,7 +204,7 @@ namespace IU
                 buttonFirmaInspector.Text = $"[{usuario.nroInspector}]";
                 buttonFirmaInspector.Enabled = false;
 
-                MessageBox.Show("La orden ha sido certificada por el inspector.","Cierre exitoso",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("La orden ha sido certificada por el inspector.", "Cierre exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -233,22 +221,23 @@ namespace IU
         }
         private void buttonCerrarOT_Click(object sender, EventArgs e)
         {
-            if (ordenActual.trabajo.listaTareas.Any(t => string.IsNullOrEmpty(t.nroMecanico) || string.IsNullOrEmpty(t.nroInspector)))
+            if (ordenActual.trabajo.listaTareas.Any(t => !t.Contains("Mec:") || !t.Contains("Ins:")))
             {
-                MessageBox.Show("Faltan firmas en alguna tarea.","Atención", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("Faltan firmas en alguna tarea.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            
+
             // cierro la OT a nivel global
             CerrarOT(
                 numeroOT: ordenActual.numeroOT,
                 idMecanico: ordenActual.mecanico,
                 idInspector: ordenActual.inspector
             );
-            
-            MessageBox.Show("Orden de trabajo completada.","Éxito", MessageBoxButtons.OK,MessageBoxIcon.Information);
+
+            MessageBox.Show("Orden de trabajo completada.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
+
 
         public void CerrarOT(string numeroOT, string idMecanico, string idInspector)
         {
@@ -258,7 +247,7 @@ namespace IU
             ordenActual.inspector = idInspector;
 
             var otBLL = new OrdenDeTrabajoBLL();
-            otBLL.ActualizarOT(ordenActual); 
+            otBLL.ActualizarOT(ordenActual);
         }
 
         private void dataGridViewTareas_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -266,33 +255,61 @@ namespace IU
             if (e.RowIndex < 0) return;
             var grid = (DataGridView)sender;
             var colName = grid.Columns[e.ColumnIndex].Name;
-            var tarea = (TareaBE)grid.Rows[e.RowIndex].DataBoundItem;
             var usuario = SesionUsuario.Instancia.UsuarioActual;
             var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
 
-            if (colName == "nroMecanico")
+            var listaTareas = ordenActual.trabajo.listaTareas;
+
+            int idx = e.RowIndex;
+            string original = listaTareas[idx];
+
+            if (colName == "btnFirmar")
             {
-                if (!permisos.Any(p => p.designacion.Equals("Firmar_Tarea", StringComparison.OrdinalIgnoreCase)))
+                if (!permisos.Any(p => p.designacion.Equals("Firmar_OT", StringComparison.OrdinalIgnoreCase)))
                 {
-                    MessageBox.Show("No tenés permiso para firmar.","Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("No tenés permiso de mecánico para firmar.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                tarea.nroMecanico = usuario.nroMecanico;
-                grid.Rows[e.RowIndex].Cells["nroMecanico"].Value = $"{tarea.nroMecanico}";
 
+                string tagMec = $"Mec:{usuario.nroMecanico}";
+                if (!original.Contains(tagMec))
+                {
+                    original += $" | {tagMec}";
+                    listaTareas[idx] = original;
+                    grid.Rows[idx].Cells["Tareas"].Value = original;
+
+                    grid.Rows[idx].Cells["btnFirmar"] = new DataGridViewTextBoxCell
+                    {
+                        Value = $"[{usuario.nroMecanico}]"
+                    };
+                }
             }
-            else if (colName == "nroInspector")
+            else if (colName == "btnCertificar")
             {
-                if (!permisos.Any(p => p.designacion.Equals("Certificar_Tarea", StringComparison.OrdinalIgnoreCase)))
+                if (!permisos.Any(p => p.designacion.Equals("Cerrar_OT", StringComparison.OrdinalIgnoreCase)))
                 {
-                    MessageBox.Show("No tenés permiso para certificar.","Acceso denegado", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show("No tenés permiso de inspector para certificar.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                tarea.nroInspector = usuario.nroInspector;
-                grid.Rows[e.RowIndex].Cells["nroInspector"].Value = $"{tarea.nroInspector}";
+                string tagIns = $"Ins:{usuario.nroInspector}";
+                if (!original.Contains(tagIns))
+                {
+                    original += $" | {tagIns}";
+                    listaTareas[idx] = original;
+                    grid.Rows[idx].Cells["Tareas"].Value = original;
+
+                    grid.Rows[idx].Cells["btnCertificar"] = new DataGridViewTextBoxCell
+                    {
+                        Value = $"[{usuario.nroInspector}]"
+                    };
+                }
             }
             else return;
+
+            listaTareas[idx] = original;
+
+            grid.Rows[idx].Cells["Tareas"].Value = original;
         }
     }
 }

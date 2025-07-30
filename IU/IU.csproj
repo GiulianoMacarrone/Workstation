@@ -144,6 +144,9 @@
     <Compile Include="NuevoUsuario.Designer.cs">
       <DependentUpon>NuevoUsuario.cs</DependentUpon>
     </Compile>
+    <Compile Include="Trabajos\FileName.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Trabajos\OrdenDeTrabajoForm.cs">
       <SubType>Form</SubType>
     </Compile>

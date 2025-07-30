@@ -55,6 +55,7 @@
     <Compile Include="Modelo\NoStockBE.cs" />
     <Compile Include="Modelo\OrdenDeTrabajo.cs" />
     <Compile Include="Modelo\RotableBE.cs" />
+    <Compile Include="Modelo\TareaBE.cs" />
     <Compile Include="Modelo\TrabajoBE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Composite\UsuarioBE.cs" />

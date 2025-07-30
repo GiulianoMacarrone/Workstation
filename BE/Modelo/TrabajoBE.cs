@@ -17,7 +17,7 @@ namespace BE.Modelo
         public string intervalo { get; set; } // Intervalo de tiempo para el trabajo (ej. "Mensual", "Anual")
         public string referencias { get; set; } // Referencias a documentacion para el trabajo
         public string nota { get; set; } // Nota adicional para el trabajo
-        public List<string> listaTareas { get; set; } // Lista de tareas asociadas al trabajo
+        public List<TareaBE> listaTareas { get; set; } // Lista de tareas asociadas al trabajo
         public List<ItemOTBE> listaMateriales { get; set; } // Lista de materiales necesarios para la OT
         public List<ItemOTBE> listaHerramientas { get; set; } // Lista de herramientas necesarias para la OT
 

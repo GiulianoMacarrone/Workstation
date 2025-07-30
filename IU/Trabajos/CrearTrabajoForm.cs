@@ -76,14 +76,21 @@ namespace Presentacion_IU
 
             }
 
-            List<string> tareas = new List<string>();
+            List<TareaBE> tareas = new List<TareaBE>();
             foreach (DataGridViewRow row in dgvTask.Rows)
             {
                 if (row.IsNewRow) continue;
-                var cellValue = row.Cells[0].Value;
-                if (cellValue != null)
-                    tareas.Add(cellValue.ToString());
-                
+                var cellValue = row.Cells[0].Value?.ToString().Trim();
+                if (!string.IsNullOrEmpty(cellValue))
+                {
+                    tareas.Add(new TareaBE
+                    {
+                        descripcion = cellValue,
+                        nroMecanico = string.Empty, // Asignar un valor por defecto o dejar vacío
+                        nroInspector = string.Empty // Asignar un valor por defecto o dejar vacío  
+                    });
+                }
+                    
             }
             
 

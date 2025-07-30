@@ -70,7 +70,11 @@ namespace DAL
                 new XElement("referencias", trabajo.referencias),
                 new XElement("nota", trabajo.nota),
                 new XElement("ListaTareas",
-                    trabajo.listaTareas?.Select(t => new XElement("Tarea", t))
+                    trabajo.listaTareas?.Select(t => new XElement("Tarea",
+                        new XAttribute("nroMecanico", t.nroMecanico ?? ""),
+                        new XAttribute("nroInspector", t.nroInspector ?? ""),
+                        t.descripcion ?? ""
+                    ))
                 ),
                 new XElement("ListaMateriales",
                     trabajo.listaMateriales?.Select(m => new XElement("Item",
@@ -385,8 +389,15 @@ namespace DAL
                     intervalo = nodo.Element("intervalo")?.Value,
                     referencias = nodo.Element("referencias")?.Value,
                     nota = nodo.Element("nota")?.Value,
+
                     listaTareas = nodo.Element("ListaTareas")?
-                        .Elements("Tarea").Select(t => t.Value).ToList() ?? new List<string>(),
+                        .Elements("Tarea").Select(t => new TareaBE
+                        {
+                            descripcion = t.Value,
+                            nroMecanico = t.Attribute("nroMecanico")?.Value ?? string.Empty,
+                            nroInspector = t.Attribute("nroInspector")?.Value ?? string.Empty
+                        }).ToList() ?? new List<TareaBE>(),
+
                     listaMateriales = nodo.Element("ListaMateriales")?
                         .Elements("Item").Select(x => new ItemOTBE
                         {
@@ -681,30 +692,31 @@ namespace DAL
 
             if (nodo == null) throw new Exception("No se encontró la OT para actualizar.");
 
-            var tareasElem = nodo.Element("ListaTareas");
-            tareasElem?.Remove();
+            nodo.Element("ListaTareas")?.Remove();
 
-            var nuevaLista = new XElement("ListaTareas",ot.trabajo.listaTareas.Select(t => new XElement("Tarea", t)));
+            var nuevaLista = new XElement("ListaTareas", ot.trabajo.listaTareas.Select(t =>
+                {
+                    var tareaElem = new XElement("Tarea", t.descripcion.Trim());
+                    if (!string.IsNullOrWhiteSpace(t.nroMecanico))
+                    {
+                        tareaElem.Add(new XAttribute("nroMecanico", t.nroMecanico));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(t.nroInspector))
+                    {
+                        tareaElem.Add(new XAttribute("nroInspector", t.nroInspector));
+                    }
+                    return tareaElem;
+                })
+            );
+
             nodo.Add(nuevaLista);
 
             nodo.Element("estado")?.SetValue(ot.estado);
             nodo.Element("fechaCierre")?.SetValue(ot.fechaCierre.ToString("yyyy-MM-dd"));
 
-            if (!string.IsNullOrEmpty(ot.mecanico))
-            {
-                var mecanicoElem = nodo.Element("mecanico");
-                if (mecanicoElem != null) mecanicoElem.SetValue(ot.mecanico);
-                else nodo.Add(new XElement("mecanico", ot.mecanico));
-            }
-            else nodo.Add(new XElement("mecanico", ot.mecanico));
-
-            if (!string.IsNullOrEmpty(ot.inspector))
-            {
-                var inspectorElem = nodo.Element("inspector");
-                if (inspectorElem != null) inspectorElem.SetValue(ot.inspector);
-                else nodo.Add(new XElement("inspector", ot.inspector));
-            }
-
+            nodo.SetElementValue("mecanico", ot.mecanico ?? string.Empty);
+            nodo.SetElementValue("inspector", ot.inspector ?? string.Empty);
 
             GuardarDocumento(doc);
         }
