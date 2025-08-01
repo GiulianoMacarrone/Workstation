@@ -13,7 +13,7 @@ namespace BLL.Roles
     {
         public void CrearTrabajo(TrabajoBE nuevoTrabajo)
         {
-            //GENERAR NRO DE TRABAJO. TR-001 TR-002, ETC
+
             if (nuevoTrabajo == null)
             {
                 throw new ArgumentNullException(nameof(nuevoTrabajo), "El trabajo no puede ser nulo.");

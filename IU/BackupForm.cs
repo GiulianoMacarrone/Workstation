@@ -39,6 +39,14 @@ namespace IU
             if (fila == null) return;
 
             var ev = (Backup)fila.DataBoundItem;
+
+            //evito que se pueda restaurar un restore
+            if (ev.Operacion.Equals("Restore", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Este evento ya es resultado de una restauración previa.\nRestaurá un Backup original para mantener la trazabilidad del sistema.","Restore no permitido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var confirmar = MessageBox.Show($"¿Restaurar desde: {ev.ArchivoPath}?","Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirmar != DialogResult.Yes) return;

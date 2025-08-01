@@ -24,7 +24,13 @@ namespace BLL.Servicios
             var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             var zipPath = Path.Combine(carpetaBackup, $"backup_{timestamp}.zip");
             var user = SesionUsuario.Instancia.UsuarioActual?.username;
+            var bitacoraPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BitacoraBackups.xml");
+            var destinoBitacora = Path.Combine(carpetaDatos, "BitacoraBackups.xml");
+
+            if (File.Exists(bitacoraPath)) File.Copy(bitacoraPath, destinoBitacora, overwrite: true);
+
             ZipFile.CreateFromDirectory(carpetaDatos, zipPath, CompressionLevel.Optimal, false);
+            if (File.Exists(destinoBitacora)) File.Delete(destinoBitacora);
 
             BackupDAL.GuardarEvento(new Backup
             {
@@ -37,12 +43,17 @@ namespace BLL.Servicios
 
         public void RestaurarBackup(string zipPath)
         {
-            if (!File.Exists(zipPath))
-                throw new FileNotFoundException("Archivo de backup no encontrado", zipPath);
+            if (!File.Exists(zipPath)) throw new FileNotFoundException("Archivo de backup no encontrado", zipPath);
 
             if (Directory.Exists(carpetaDatos)) Directory.Delete(carpetaDatos, recursive: true);
 
             ZipFile.ExtractToDirectory(zipPath, carpetaDatos);
+
+            var bitacoraRestaurada = Path.Combine(carpetaDatos, "BitacoraBackups.xml");
+            var destinoBitacora = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BitacoraBackups.xml");
+
+            if (File.Exists(bitacoraRestaurada)) File.Copy(bitacoraRestaurada, destinoBitacora, overwrite: true);
+
 
             BackupDAL.GuardarEvento(new Backup
             {
