@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BE.Backup;
+using BE.Modelo;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using BE.Backup;
-using BE.Modelo;
 
 namespace DAL
 {
@@ -11,19 +12,21 @@ namespace DAL
     {
         private const string RootName = "Backups";
         private const string EventoName = "Evento";
-        private const string FileName = "BitacoraBackups.xml";
+        public static readonly string CarpetaDatos = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
+        public static readonly string BitacoraPath = Path.Combine(CarpetaDatos, "BitacoraBackups.xml");
+
+
 
         private static XDocument GetDoc()
         {
-            if (!System.IO.File.Exists(FileName))
-            {
-                new XDocument(new XElement(RootName)).Save(FileName);
-            }
+            Directory.CreateDirectory(CarpetaDatos);
+            if (!File.Exists(BitacoraPath))
+                new XDocument(new XElement(RootName)).Save(BitacoraPath);
 
-            return XDocument.Load(FileName);
+            return XDocument.Load(BitacoraPath);
         }
 
-        private static void SaveDoc(XDocument doc) => doc.Save(FileName);
+        private static void SaveDoc(XDocument doc) => doc.Save(BitacoraPath);
 
         private static int NextId(XElement root) => root.Elements(EventoName).Select(x => (int)x.Attribute("id")).DefaultIfEmpty(0).Max() + 1;
 

@@ -885,10 +885,9 @@ namespace DAL
         public static void EliminarOrdenDeTrabajo(string numeroOT)
         {
             var doc = GetDocumento();
-            var cont = GetOrCreateContenedor(doc, "OrdenesTrabajo");
+            var cont = GetOrCreateContenedor(doc, "OrdenesDeTrabajo");
 
-            var nodo = cont.Elements("OrdenDeTrabajo")
-                .FirstOrDefault(x => (string)x.Element("numeroOT") == numeroOT);
+            var nodo = cont.Elements("OrdenDeTrabajo").FirstOrDefault(x => (string)x.Element("numeroOT") == numeroOT);
 
             if (nodo == null) throw new InvalidOperationException($"No se encontró la OT con número '{numeroOT}'.");
 
