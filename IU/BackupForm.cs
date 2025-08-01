@@ -47,7 +47,8 @@ namespace IU
             {
                 backupBll.RestaurarBackup(ev.ArchivoPath);
                 MessageBox.Show("Restore completado", "Éxito",MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CargarEventos();
+                Application.Restart(); //reinicio la aplicación para aplicar los cambios
+                return;
             }
             catch (Exception ex)
             {

@@ -39,8 +39,19 @@ namespace BLL.Roles
         public void EliminarTrabajo(int idTrabajo)
         {
             var listaTrabajos = DatosDAL.ListarTrabajos();
-            if (!listaTrabajos.Any(t => t.id == idTrabajo)) { throw new InvalidOperationException("Trabajo no encontrado");}
-            
+            if (!listaTrabajos.Any(t => t.id == idTrabajo))
+            {
+                throw new InvalidOperationException($"Trabajo #{idTrabajo} no encontrado.");
+            }
+
+            var listaOTs = DatosDAL.ListarOrdenesDeTrabajo();
+            bool trabajoEnUso = listaOTs.Any(ot => ot.trabajo != null && ot.trabajo.id == idTrabajo);
+
+            if (trabajoEnUso)
+            {
+                throw new InvalidOperationException($"No se puede eliminar el trabajo #{idTrabajo} porque está asociado a una orden de trabajo.");
+            }
+
             DatosDAL.EliminarTrabajo(idTrabajo);
         }
 

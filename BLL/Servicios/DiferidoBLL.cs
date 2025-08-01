@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BE.Modelo;
 using DAL;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace BLL
 {

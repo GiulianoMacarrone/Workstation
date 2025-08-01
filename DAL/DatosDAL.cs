@@ -20,7 +20,7 @@ namespace DAL
         #region Metodos Generales
         private static XDocument GetDocumento()
         {
-            if (! File.Exists(xmlPath))
+            if (!File.Exists(xmlPath))
             {
                 var docNuevo = new XDocument(new XElement("Datos"));
                 accesoXml.Save(docNuevo);
@@ -101,18 +101,25 @@ namespace DAL
             var contenedor = GetOrCreateContenedor(doc, "OrdenesDeTrabajo");
 
             var otElem = new XElement("OrdenDeTrabajo",
-                new XElement("numeroOT", ot.numeroOT),
-                new XElement("titulo", ot.titulo),
-                new XElement("descripcion", ot.descripcion),
-                new XElement("aeronave", ot.aeronave),
-                new XElement("serial", ot.serial),
-                new XElement("matricula", ot.matricula),
-                new XElement("fechaInicio", ot.fechaInicio.ToString("yyyy-MM-dd")),
-                new XElement("fechaCierre", ot.fechaCierre.ToString("yyyy-MM-dd")),
-                new XElement("estado", ot.estado),
-                new XElement("trabajo",
-                    new XAttribute("id", ot.trabajo.id)
+            new XElement("numeroOT", ot.numeroOT),
+            new XElement("titulo", ot.titulo),
+            new XElement("descripcion", ot.descripcion),
+            new XElement("aeronave", ot.aeronave),
+            new XElement("serial", ot.serial),
+            new XElement("matricula", ot.matricula),
+            new XElement("fechaInicio", ot.fechaInicio.ToString("yyyy-MM-dd")),
+            new XElement("fechaCierre", ot.fechaCierre.ToString("yyyy-MM-dd")),
+            new XElement("estado", ot.estado),
+            new XElement("trabajo", new XAttribute("id", ot.trabajo.id)),
+            new XElement("mecanico", ot.mecanico ?? ""),
+            new XElement("inspector", ot.inspector ?? ""),
+            new XElement("ListaTareas", ot.listaTareasOT.Select(t =>
+                new XElement("Tarea",
+                    new XAttribute("nroMecanico", t.nroMecanico ?? ""),
+                    new XAttribute("nroInspector", t.nroInspector ?? ""),
+                    t.descripcion?.Trim() ?? ""
                 )
+            ))
             );
 
             contenedor.Add(otElem);
@@ -157,7 +164,7 @@ namespace DAL
             {
                 usuarioElem.Add(new XElement("nroMecanico", usuario.nroMecanico));
             }
-            if(!string.IsNullOrEmpty(usuario.nroInspector))
+            if (!string.IsNullOrEmpty(usuario.nroInspector))
             {
                 usuarioElem.Add(new XElement("nroInspector", usuario.nroInspector));
             }
@@ -240,7 +247,7 @@ namespace DAL
                 rol.id = GenerarIdUnico(contenedor, "Rol");
             }
 
-            contenedor.Elements("Rol").FirstOrDefault(x=> (int)x.Attribute("id") == rol.id)?.Remove();
+            contenedor.Elements("Rol").FirstOrDefault(x => (int)x.Attribute("id") == rol.id)?.Remove();
 
             var permisos = rol.ObtenerHijos().OfType<PermisoLeaf>()
                 .Select(p => new XElement("idPermiso", p.id));
@@ -268,7 +275,7 @@ namespace DAL
             var contenedor = GetOrCreateContenedor(doc, "Consumibles");
 
             var nodo = contenedor.Elements("Consumible").FirstOrDefault(x => x.Attribute("id")?.Value == consumible.id);
-            
+
 
             if (nodo == null)
             {
@@ -394,8 +401,8 @@ namespace DAL
                         .Elements("Tarea").Select(t => new TareaBE
                         {
                             descripcion = t.Value,
-                            nroMecanico = t.Attribute("nroMecanico")?.Value ?? string.Empty,
-                            nroInspector = t.Attribute("nroInspector")?.Value ?? string.Empty
+                            nroMecanico = t.Attribute("nroMecanico")?.Value,
+                            nroInspector = t.Attribute("nroInspector")?.Value
                         }).ToList() ?? new List<TareaBE>(),
 
                     listaMateriales = nodo.Element("ListaMateriales")?
@@ -426,11 +433,20 @@ namespace DAL
 
             var lista = new List<OrdenDeTrabajo>();
 
-
             foreach (var nodo in contenedor.Elements("OrdenDeTrabajo"))
             {
                 int idTrabajo = (int)nodo.Element("trabajo")?.Attribute("id"); //id del trabajo 
                 var trabajoCompleto = ListarTrabajos().FirstOrDefault(t => t.id == idTrabajo); // lo busco
+
+                var listaTareasOT = nodo.Element("ListaTareas")?
+                    .Elements("Tarea").Select(t => new TareaBE
+                    {
+                        descripcion = t.Value,
+                        nroMecanico = t.Attribute("nroMecanico")?.Value ?? "",
+                        nroInspector = t.Attribute("nroInspector")?.Value ?? ""
+                    }).ToList() ?? new List<TareaBE>();
+
+
                 var ot = new OrdenDeTrabajo
                 {
                     numeroOT = nodo.Element("numeroOT")?.Value,
@@ -444,7 +460,8 @@ namespace DAL
                     fechaInicio = DateTime.TryParse(nodo.Element("fechaInicio")?.Value, out var fi) ? fi : DateTime.MinValue,
                     fechaCierre = DateTime.TryParse(nodo.Element("fechaCierre")?.Value, out var fc) ? fc : DateTime.MinValue,
                     mecanico = nodo.Element("mecanico")?.Value,
-                    inspector = nodo.Element("inspector")?.Value
+                    inspector = nodo.Element("inspector")?.Value,
+                    listaTareasOT = listaTareasOT
                 };
 
                 var estadoNode = nodo.Element("estado")?.Value;
@@ -525,18 +542,18 @@ namespace DAL
             var contenedor = GetOrCreateContenedor(doc, "Diferidos");
 
             return contenedor.Elements("Diferido").Select(x => new Diferido
-                {
-                    id = int.Parse(x.Attribute("id")?.Value ?? "0"),
-                    numero = int.Parse(x.Element("numero")?.Value ?? "0"),
-                    aeronave = x.Element("aeronave")?.Value,
-                    descripcion = x.Element("descripcion")?.Value,
-                    fechaApertura = DateTime.Parse(x.Element("fechaApertura")?.Value ?? DateTime.MinValue.ToString()),
-                    fechaCierre = DateTime.Parse(x.Element("fechaCierre")?.Value ?? DateTime.MinValue.ToString()),
-                    estado = bool.Parse(x.Element("estado")?.Value ?? "false"),
-                    nroItemMEl = x.Element("nroItemMEl")?.Value,
-                    observaciones = x.Element("observaciones")?.Value,
-                    idNoStock = int.TryParse(x.Element("idNoStock")?.Value, out int idNS) ? idNS : (int?)null
-                }).ToList();
+            {
+                id = int.Parse(x.Attribute("id")?.Value ?? "0"),
+                numero = int.Parse(x.Element("numero")?.Value ?? "0"),
+                aeronave = x.Element("aeronave")?.Value,
+                descripcion = x.Element("descripcion")?.Value,
+                fechaApertura = DateTime.Parse(x.Element("fechaApertura")?.Value ?? DateTime.MinValue.ToString()),
+                fechaCierre = DateTime.Parse(x.Element("fechaCierre")?.Value ?? DateTime.MinValue.ToString()),
+                estado = bool.Parse(x.Element("estado")?.Value ?? "false"),
+                nroItemMEl = x.Element("nroItemMEl")?.Value,
+                observaciones = x.Element("observaciones")?.Value,
+                idNoStock = int.TryParse(x.Element("idNoStock")?.Value, out int idNS) ? idNS : (int?)null
+            }).ToList();
         }
         public static List<PermisoLeaf> ListarPermisos()
         {
@@ -694,8 +711,8 @@ namespace DAL
 
             nodo.Element("ListaTareas")?.Remove();
 
-            var nuevaLista = new XElement("ListaTareas", ot.trabajo.listaTareas.Select(t =>
-                {
+            var nuevaLista = new XElement("ListaTareas", ot.listaTareasOT.Select(t =>
+            {
                     var tareaElem = new XElement("Tarea", t.descripcion.Trim());
                     if (!string.IsNullOrWhiteSpace(t.nroMecanico))
                     {
@@ -707,7 +724,7 @@ namespace DAL
                         tareaElem.Add(new XAttribute("nroInspector", t.nroInspector));
                     }
                     return tareaElem;
-                })
+                })   
             );
 
             nodo.Add(nuevaLista);
@@ -781,7 +798,7 @@ namespace DAL
         {
             var doc = GetDocumento();
             var rolesContenedor = GetOrCreateContenedor(doc, "Roles");
-            var usuariosContenedor = GetOrCreateContenedor(doc, "Usuarios");    
+            var usuariosContenedor = GetOrCreateContenedor(doc, "Usuarios");
 
             var nodoRol = rolesContenedor.Elements("Rol").FirstOrDefault(x => (int)x.Attribute("id") == idRol);
 
@@ -841,6 +858,7 @@ namespace DAL
         {
             var doc = GetDocumento();
             var contenedor = GetOrCreateContenedor(doc, "Trabajos");
+            var contenedorOTs = GetOrCreateContenedor(doc, "OrdenesDeTrabajo");
 
             var nodo = contenedor.Elements("Trabajo").FirstOrDefault(x => (int)x.Attribute("id") == idTrabajo);
 
@@ -853,6 +871,16 @@ namespace DAL
             {
                 throw new InvalidOperationException($"No se encontró el trabajo con id {idTrabajo}.");
             }
+            
+            bool trabajoEnUso = contenedorOTs.Elements("OrdenDeTrabajo")
+                .Any(ot => (int)ot.Element("trabajo").Attribute("id") == idTrabajo);
+            if (trabajoEnUso)
+            {
+                throw new InvalidOperationException($"No se puede eliminar el trabajo #{idTrabajo} porque está asociado a una orden de trabajo.");
+            }
+
+            nodo.Remove();
+            GuardarDocumento(doc);
         }
         public static void EliminarOrdenDeTrabajo(string numeroOT)
         {
@@ -860,7 +888,7 @@ namespace DAL
             var cont = GetOrCreateContenedor(doc, "OrdenesTrabajo");
 
             var nodo = cont.Elements("OrdenDeTrabajo")
-                .FirstOrDefault(x =>(string)x.Element("numeroOT") == numeroOT);
+                .FirstOrDefault(x => (string)x.Element("numeroOT") == numeroOT);
 
             if (nodo == null) throw new InvalidOperationException($"No se encontró la OT con número '{numeroOT}'.");
 

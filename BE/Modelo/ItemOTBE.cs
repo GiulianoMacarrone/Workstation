@@ -11,10 +11,5 @@ namespace BE.Modelo
         public string PN { get; set; } // Número de parte del item
         public string Descripcion { get; set; } // Descripción del item
         public int QTY { get; set; } // Cantidad del item
-        // Método para representar el ItemOTBE como una cadena de texto
-        public string ItemOTToString()
-        {
-            return $"{PN} - {Descripcion} - Cantidad: {QTY}";
-        }
     }
 }

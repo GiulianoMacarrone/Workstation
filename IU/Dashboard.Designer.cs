@@ -28,15 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
             this.dgvDisponibles = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvRealizadas = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.label3 = new System.Windows.Forms.Label();
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,9 +65,17 @@
             this.txtTotalPendientes = new System.Windows.Forms.TextBox();
             this.txtTotalRealizadas = new System.Windows.Forms.TextBox();
             this.txtPromedioTareas = new System.Windows.Forms.TextBox();
+            this.printButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.chartHeatMap = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartPromedioCierreTareas = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chartCumplimiento = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDisponibles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRealizadas)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartHeatMap)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartPromedioCierreTareas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartCumplimiento)).BeginInit();
             this.SuspendLayout();
             // 
             // dtpDesde
@@ -105,30 +122,30 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Trabajos realizados";
             // 
-            // chart1
+            // chart
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
-            this.chart1.Location = new System.Drawing.Point(653, 111);
-            this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(536, 432);
-            this.chart1.TabIndex = 5;
-            this.chart1.Text = "chart1";
+            chartArea1.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart.Legends.Add(legend1);
+            this.chart.Location = new System.Drawing.Point(540, 71);
+            this.chart.Name = "chart";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart.Series.Add(series1);
+            this.chart.Size = new System.Drawing.Size(630, 366);
+            this.chart.TabIndex = 5;
+            this.chart.Text = "chart1";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(651, 87);
+            this.label3.Location = new System.Drawing.Point(547, 55);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 13);
+            this.label3.Size = new System.Drawing.Size(160, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Creadas x Completadas";
+            this.label3.Text = "Tareas Creadas vs Completadas";
             // 
             // dtpHasta
             // 
@@ -159,7 +176,7 @@
             // 
             this.lblUsername.AutoSize = true;
             this.lblUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUsername.Location = new System.Drawing.Point(1096, 15);
+            this.lblUsername.Location = new System.Drawing.Point(1269, 15);
             this.lblUsername.Name = "lblUsername";
             this.lblUsername.Size = new System.Drawing.Size(93, 20);
             this.lblUsername.TabIndex = 12;
@@ -211,7 +228,7 @@
             // 
             // buttonCerrar
             // 
-            this.buttonCerrar.Location = new System.Drawing.Point(1177, 646);
+            this.buttonCerrar.Location = new System.Drawing.Point(1725, 774);
             this.buttonCerrar.Name = "buttonCerrar";
             this.buttonCerrar.Size = new System.Drawing.Size(75, 23);
             this.buttonCerrar.TabIndex = 23;
@@ -292,12 +309,89 @@
             this.txtPromedioTareas.Size = new System.Drawing.Size(69, 20);
             this.txtPromedioTareas.TabIndex = 32;
             // 
+            // printButton
+            // 
+            this.printButton.Location = new System.Drawing.Point(398, 553);
+            this.printButton.Name = "printButton";
+            this.printButton.Size = new System.Drawing.Size(75, 23);
+            this.printButton.TabIndex = 33;
+            this.printButton.Text = "Imprimir";
+            this.printButton.UseVisualStyleBackColor = true;
+            this.printButton.Click += new System.EventHandler(this.printButton_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(547, 467);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.TabIndex = 35;
+            this.label7.Text = "Cumplimiento";
+            // 
+            // chartHeatMap
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.chartHeatMap.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartHeatMap.Legends.Add(legend2);
+            this.chartHeatMap.Location = new System.Drawing.Point(1204, 71);
+            this.chartHeatMap.Name = "chartHeatMap";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bubble;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            series2.YValuesPerPoint = 2;
+            this.chartHeatMap.Series.Add(series2);
+            this.chartHeatMap.Size = new System.Drawing.Size(580, 366);
+            this.chartHeatMap.TabIndex = 36;
+            this.chartHeatMap.Text = "chart3";
+            // 
+            // chartAvgClose
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chartPromedioCierreTareas.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartPromedioCierreTareas.Legends.Add(legend3);
+            this.chartPromedioCierreTareas.Location = new System.Drawing.Point(983, 471);
+            this.chartPromedioCierreTareas.Name = "chartAvgClose";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            series3.YValuesPerPoint = 2;
+            this.chartPromedioCierreTareas.Series.Add(series3);
+            this.chartPromedioCierreTareas.Size = new System.Drawing.Size(801, 297);
+            this.chartPromedioCierreTareas.TabIndex = 37;
+            this.chartPromedioCierreTareas.Text = "chart4";
+            // 
+            // chartCumplimiento
+            // 
+            chartArea4.Name = "ChartArea1";
+            this.chartCumplimiento.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.chartCumplimiento.Legends.Add(legend4);
+            this.chartCumplimiento.Location = new System.Drawing.Point(540, 483);
+            this.chartCumplimiento.Name = "chartCumplimiento";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.chartCumplimiento.Series.Add(series4);
+            this.chartCumplimiento.Size = new System.Drawing.Size(378, 282);
+            this.chartCumplimiento.TabIndex = 38;
+            this.chartCumplimiento.Text = "chart2";
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1264, 693);
+            this.ClientSize = new System.Drawing.Size(1822, 809);
+            this.Controls.Add(this.chartCumplimiento);
+            this.Controls.Add(this.chartPromedioCierreTareas);
+            this.Controls.Add(this.chartHeatMap);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.printButton);
             this.Controls.Add(this.txtPromedioTareas);
             this.Controls.Add(this.txtTotalRealizadas);
             this.Controls.Add(this.txtTotalPendientes);
@@ -317,7 +411,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.dtpHasta);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.chart1);
+            this.Controls.Add(this.chart);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dgvRealizadas);
             this.Controls.Add(this.label1);
@@ -329,7 +423,10 @@
             this.Load += new System.EventHandler(this.Dashboard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDisponibles)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRealizadas)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartHeatMap)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartPromedioCierreTareas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartCumplimiento)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -342,7 +439,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvRealizadas;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DateTimePicker dtpHasta;
         private System.Windows.Forms.Label label4;
@@ -362,5 +459,10 @@
         private System.Windows.Forms.TextBox txtTotalPendientes;
         private System.Windows.Forms.TextBox txtTotalRealizadas;
         private System.Windows.Forms.TextBox txtPromedioTareas;
+        private System.Windows.Forms.Button printButton;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartHeatMap;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartPromedioCierreTareas;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartCumplimiento;
     }
 }

@@ -63,7 +63,6 @@ namespace Presentacion_IU
             comboBoxAeronaves.DisplayMember = "matricula";
 
             textBoxSerialNumber.Text = "serial";
-
         }
 
         private void CargarTrabajos()
@@ -126,7 +125,14 @@ namespace Presentacion_IU
 
                 estado = "Pendiente",
 
-                trabajo = trabajoSeleccionado
+                trabajo = trabajoSeleccionado,
+
+                listaTareasOT = trabajoSeleccionado.listaTareas.Select(t => new TareaBE
+                {
+                    descripcion = t.descripcion,
+                    nroMecanico = "",
+                    nroInspector = "",
+                }).ToList(),
             };
 
             try
@@ -169,14 +175,34 @@ namespace Presentacion_IU
 
             dataGridViewTareas.Columns.Add(new DataGridViewTextBoxColumn
             {
-                DataPropertyName = "Tarea",
+                DataPropertyName = "descripcion",
                 HeaderText = "Tareas",
                 Name = "tarea"
             });
 
-            var tareasData = trabajo.listaTareas.Select(t => new { Tarea = t }).ToList();
+            dataGridViewTareas.DataSource = trabajo.listaTareas;
 
-            dataGridViewTareas.DataSource = tareasData;
+            dataGridViewTareas.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "descripcion",
+                HeaderText = "Descripción",
+                Name = "descripcion",
+                Width = 540
+            });
+
+            dataGridViewTareas.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "nroMecanico",
+                HeaderText = "Mecánico",
+                Name = "nroMecanico"
+            });
+
+            dataGridViewTareas.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "nroInspector",
+                HeaderText = "Inspector",
+                Name = "nroInspector"
+            });
 
             foreach (DataGridViewColumn column in dataGridViewTareas.Columns)
             {

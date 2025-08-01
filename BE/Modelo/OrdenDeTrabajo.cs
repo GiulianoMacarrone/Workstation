@@ -19,6 +19,7 @@ namespace BE.Modelo
         public string estado { get; set; } // Ejemplo: "Pendiente", "En Progreso", "Completada"
         public TrabajoBE trabajo { get; set; } // Trabajo asociado a la OT
         //registro de firmas
+        public List<TareaBE> listaTareasOT { get; set; } = new List<TareaBE>(); // Lista de tareas asociadas a la OT
         public string mecanico { get; set; }
         public string inspector { get; set; }
 
