@@ -13,11 +13,11 @@ namespace BLL
         {
             foreach (var rol in roles)
             {
-                if (rol.ObtenerHijos().Contains(objetivo))
+                if (rol.Hijos().Contains(objetivo))
                     return rol;
 
                 var padreEncontrado = EncontrarPadre(
-                    rol.ObtenerHijos().OfType<RolComposite>(),
+                    rol.Hijos().OfType<RolComposite>(),
                     objetivo);
 
                 if (padreEncontrado != null)

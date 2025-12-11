@@ -33,7 +33,7 @@ namespace IU
 
             var ot = (OrdenDeTrabajo)dgvOTsinRealizar.CurrentRow.DataBoundItem;
 
-            var resp = MessageBox.Show($"¿Confirma eliminar la OT #({ot.numeroOT})?", "Confirmar eliminación", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
+            var resp = MessageBox.Show($"¿Confirma eliminar la ({ot.numeroOT})?", "Confirmar eliminación", MessageBoxButtons.YesNo,MessageBoxIcon.Question);
 
             if (resp != DialogResult.Yes)
                 return;

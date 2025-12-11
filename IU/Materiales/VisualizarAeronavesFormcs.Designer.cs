@@ -50,6 +50,9 @@
             this.txtNoStock = new System.Windows.Forms.TextBox();
             this.buttonCerrar = new System.Windows.Forms.Button();
             this.buttonCerrarDMI = new System.Windows.Forms.Button();
+            this.buttonActualizarEstado = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textBoxEstadoAeronave = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDiferidos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,7 +68,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 31);
+            this.label1.Location = new System.Drawing.Point(30, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 1;
@@ -74,7 +77,7 @@
             // comboBoxMatriculaAeronave
             // 
             this.comboBoxMatriculaAeronave.FormattingEnabled = true;
-            this.comboBoxMatriculaAeronave.Location = new System.Drawing.Point(89, 27);
+            this.comboBoxMatriculaAeronave.Location = new System.Drawing.Point(89, 20);
             this.comboBoxMatriculaAeronave.Name = "comboBoxMatriculaAeronave";
             this.comboBoxMatriculaAeronave.Size = new System.Drawing.Size(144, 21);
             this.comboBoxMatriculaAeronave.TabIndex = 2;
@@ -130,9 +133,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(363, 203);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 13);
+            this.label7.Size = new System.Drawing.Size(63, 13);
             this.label7.TabIndex = 8;
-            this.label7.Text = "Estado";
+            this.label7.Text = "Estado DMI";
             // 
             // label8
             // 
@@ -248,11 +251,41 @@
             this.buttonCerrarDMI.Visible = false;
             this.buttonCerrarDMI.Click += new System.EventHandler(this.buttonCerrarDMI_Click);
             // 
+            // buttonActualizarEstado
+            // 
+            this.buttonActualizarEstado.Location = new System.Drawing.Point(239, 50);
+            this.buttonActualizarEstado.Name = "buttonActualizarEstado";
+            this.buttonActualizarEstado.Size = new System.Drawing.Size(75, 23);
+            this.buttonActualizarEstado.TabIndex = 22;
+            this.buttonActualizarEstado.Text = "Actualizar";
+            this.buttonActualizarEstado.UseVisualStyleBackColor = true;
+            this.buttonActualizarEstado.Click += new System.EventHandler(this.buttonActualizarEstado_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(30, 53);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(89, 13);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Estado Aeronave";
+            // 
+            // textBoxEstadoAeronave
+            // 
+            this.textBoxEstadoAeronave.Location = new System.Drawing.Point(125, 50);
+            this.textBoxEstadoAeronave.Name = "textBoxEstadoAeronave";
+            this.textBoxEstadoAeronave.ReadOnly = true;
+            this.textBoxEstadoAeronave.Size = new System.Drawing.Size(108, 20);
+            this.textBoxEstadoAeronave.TabIndex = 24;
+            // 
             // VisualizarAeronavesFormcs
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBoxEstadoAeronave);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.buttonActualizarEstado);
             this.Controls.Add(this.buttonCerrarDMI);
             this.Controls.Add(this.buttonCerrar);
             this.Controls.Add(this.txtNoStock);
@@ -308,5 +341,8 @@
         private System.Windows.Forms.TextBox txtNoStock;
         private System.Windows.Forms.Button buttonCerrar;
         private System.Windows.Forms.Button buttonCerrarDMI;
+        private System.Windows.Forms.Button buttonActualizarEstado;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBoxEstadoAeronave;
     }
 }

@@ -8,10 +8,10 @@ using System.Xml.Linq;
 
 namespace DAL
 {
-    public class acceso
+    public class Acceso
     {
         private readonly string _filePath;
-        public acceso(string filePath)
+        public Acceso(string filePath)
         {
             _filePath = filePath;
         }

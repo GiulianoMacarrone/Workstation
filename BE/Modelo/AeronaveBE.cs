@@ -13,5 +13,7 @@ namespace BE.Modelo
         public string modelo { get; set; }
         public string matricula { get; set; }
         public string serial { get; set; }
+        public EstadoAeronave estadoActual { get; set; }
+  
     }
 }

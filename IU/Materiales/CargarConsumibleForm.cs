@@ -58,7 +58,7 @@ namespace IU
 
             try
             {
-                consumibleBLL.CrearConsumible(consumible);  
+                consumibleBLL.GuardarConsumible(consumible);  
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿using BE.Composite;
 using BLL;
+using BLL.Roles;
 using BLL.Servicios;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace IU
 {
     public partial class Login : Form
     {
+        private UsuarioBE user = new UsuarioBE();
+        private readonly PermisoBLL permisoBLL = new PermisoBLL();
         public Login()
         {
             InitializeComponent();
@@ -25,13 +28,15 @@ namespace IU
             var username = textBoxUser.Text.Trim();
             var password = textBoxPww.Text.Trim();
 
-            UsuarioBE user = UsuarioBLL.Login(username, password);
+            user = UsuarioBLL.Login(username, password);
 
             if (user != null && !user.bloqueado)
             {
                 SesionUsuario.IniciarSesion(user);
                 this.Hide();
-                new Menu().Show();
+                var menu = new Menu();
+                menu.Show();
+                
             }
             else
             {

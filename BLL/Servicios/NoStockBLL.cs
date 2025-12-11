@@ -1,5 +1,6 @@
 ﻿using BE.Modelo;
 using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,15 @@ namespace BLL.Servicios
 {
     public class NoStockBLL
     {
+        private readonly MPPNoStock mpp = new MPPNoStock();
         public void ActualizarEstado(NoStockBE pedido)
         {
-            DatosDAL.ActualizarNoStock(pedido);
+            mpp.ActualizarNoStock(pedido);
         }
 
         public void AsociarNoStockADiferido(int idDiferido, int idNoStock)
         {
-            DatosDAL.AsociarNoStockADiferido(idDiferido, idNoStock);
+            mpp.AsociarNoStockADiferido(idDiferido, idNoStock);
         }
 
         public void CrearNoStock(NoStockBE noStock)
@@ -57,12 +59,12 @@ namespace BLL.Servicios
 
             noStock.estado = false;
 
-            DatosDAL.GuardarNoStock(noStock);
+            mpp.GuardarNoStock(noStock);
         }
 
         public List<NoStockBE> ListarNoStocks()
         {
-            return DatosDAL.ListarNoStocks();
+            return mpp.ListarNoStocks();
         }
 
 

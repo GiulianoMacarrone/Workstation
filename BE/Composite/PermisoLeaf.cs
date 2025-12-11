@@ -10,24 +10,22 @@ namespace BE.Composite
 {
     public class PermisoLeaf : Componente
     {
+        public override IList<Componente> hijos
+        {
+            get
+            {
+                return new List<Componente>();
+            }
+        }
         public override void AgregarHijo(Componente component)
         {
-            throw new Exception("Un permiso no puede contener hijos");
         }
 
         public override void EliminarHijo(Componente component)
         {
-            throw new Exception("Un permiso no puede contener hijos");
         }
-
-        public override bool TieneHijos()
+        public override void VaciarHijos()
         {
-            return false;
-        }
-
-        public override IList<Componente> ObtenerHijos()
-        {
-            return new List<Componente>(); // Un permiso no tiene hijos, retornamos una lista vacía por las dudas.
         }
     }
 }

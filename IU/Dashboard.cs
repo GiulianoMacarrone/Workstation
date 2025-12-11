@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,7 +22,10 @@ namespace IU
     public partial class Dashboard : Form
     {
         private readonly OrdenDeTrabajoBLL _otBll = new OrdenDeTrabajoBLL();
+        private readonly HistorialEstadoBLL _historialBll = new HistorialEstadoBLL();
         private readonly UsuarioBE usuarioActual = SesionUsuario.Instancia.UsuarioActual;
+        private readonly DashboardBLL _dashboardBll = new DashboardBLL();
+
         public Dashboard()
         {
             InitializeComponent();
@@ -62,10 +66,17 @@ namespace IU
         private void CargarDashboard(DateTime desde, DateTime hasta)
         {
             var all = _otBll.ListarOrdenes();
+            var historial = _historialBll.ListarHistorial();
             var periodo = all.Where(o => o.fechaInicio >= desde && o.fechaInicio <= hasta).ToList();
 
             bool esInspector = !string.IsNullOrWhiteSpace(usuarioActual.nroInspector);
             bool esMecanico = !string.IsNullOrWhiteSpace(usuarioActual.nroMecanico);
+
+            if (desde > hasta)
+            {
+                MessageBox.Show("La fecha 'Desde' no puede ser mayor que 'Hasta'.", "Error de fechas", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (esInspector)
             {
@@ -77,6 +88,8 @@ namespace IU
                 dgvDisponibles.DataSource = periodo.Where(o => string.IsNullOrWhiteSpace(o.mecanico)).ToList();
                 dgvRealizadas.DataSource = periodo.Where(o => !string.IsNullOrWhiteSpace(o.mecanico) && o.mecanico == usuarioActual.nroMecanico).ToList();
             }
+            OcultarColumnas(dgvDisponibles,"trabajo","mecanico","inspector","fechaCierre");
+            OcultarColumnas(dgvRealizadas, "trabajo");
 
             txtTotalOTs.Text = periodo.Count.ToString();
             txtTotalPendientes.Text = dgvDisponibles.Rows.Count.ToString();
@@ -86,13 +99,19 @@ namespace IU
             {
                 var realizadas = ((System.Collections.IEnumerable)dgvRealizadas.DataSource).Cast<OrdenDeTrabajo>().ToList();
 
-                double promTareas = realizadas.Average(o => o.trabajo.listaTareas.Count);
+                double promTareas = realizadas
+                    .Where(o => o.trabajo != null)
+                    .Average(o => o.trabajo.listaTareas?.Count ?? 0);
+
                 txtPromedioTareas.Text = $"{promTareas:F1}";
             }
             else
             {
                 txtPromedioTareas.Text = "0";
             }
+
+            dgvHistorialEstado.DataSource = _historialBll.FiltrarHistorialPorFechas(desde, hasta);
+            OcultarColumnas(dgvHistorialEstado,"id","aeronaveId");
 
             FillChart(periodo, desde, hasta);
             FillPieChart(periodo, desde, hasta);
@@ -146,15 +165,15 @@ namespace IU
 
             var seriesCreadas = chart.Series["Creadas"];
             var seriesCompletadas = chart.Series["Completadas"];
+            var creadas = _dashboardBll.ObtenerOtsCreadasPorDia(desde, hasta);
+            var cerradas = _dashboardBll.ObtenerOtsCerradasPorDia(desde, hasta);
             seriesCreadas.Points.Clear();
             seriesCompletadas.Points.Clear();
 
-            foreach (var d in dias)
+            foreach (var dia in creadas.Keys)
             {
-                int creadas = lista.Count(o => o.fechaInicio.Date == d);
-                int cerradas = lista.Count(o => o.fechaCierre.Date == d);
-                seriesCreadas.Points.AddXY(d.ToString("dd/MM"), creadas);
-                seriesCompletadas.Points.AddXY(d.ToString("dd/MM"), cerradas);
+                seriesCreadas.Points.AddXY(dia.ToString("dd/MM"), creadas[dia]);
+                seriesCompletadas.Points.AddXY(dia.ToString("dd/MM"), cerradas[dia]);
             }
 
             chart.ChartAreas[0].AxisX.Interval = 1;
@@ -177,33 +196,32 @@ namespace IU
         {
             var exportador = new ExportadorPDF();
 
-            var ot = (OrdenDeTrabajo)dgvRealizadas.SelectedRows[0].DataBoundItem;
-
             if (dgvRealizadas.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Seleccioná una orden realizada para imprimir.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            
+            var ot = (OrdenDeTrabajo)dgvRealizadas.SelectedRows[0].DataBoundItem;
 
-            using (var dialog = new SaveFileDialog())
+            string carpeta = Path.Combine(Application.StartupPath, "Reportes");
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
+            string ruta = Path.Combine(carpeta, $"Orden_{ot.numeroOT}.pdf");
+
+            try
             {
-                dialog.Title = "Guardar Orden de Trabajo";
-                dialog.Filter = "Archivo PDF (*.pdf)|*.pdf";
-                dialog.FileName = $"Orden_{ot.numeroOT}.pdf";
+                exportador.ImprimirOrdenDeTrabajo(ot, ruta);
+                MessageBox.Show($"Orden exportada correctamente.\n\nUbicación:\n{ruta}",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        exportador.ImprimirOrdenDeTrabajo(ot, dialog.FileName);
-                        MessageBox.Show("Orden exportada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        System.Diagnostics.Process.Start(dialog.FileName);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error al exportar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
+                System.Diagnostics.Process.Start(ruta);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al exportar: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -320,6 +338,130 @@ namespace IU
             }
         }
         #endregion
+
+        private void dgvHistorialEstado_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var historial = dgvHistorialEstado.Rows[e.RowIndex].DataBoundItem as HistorialEstadoBE;
+            if (historial == null) return;
+
+            var columna = dgvHistorialEstado.Columns[e.ColumnIndex].Name;
+
+            if (columna == "matricula")
+            {
+                var aeronaveBLL = new AeronaveBLL();
+                var aeronave = aeronaveBLL.ListarAeronaves().FirstOrDefault(a => a.id == historial.aeronaveId);
+                if (aeronave != null)
+                {
+                    var form = new VisualizarAeronavesFormcs(aeronave);
+                    form.ShowDialog();
+                    CargarDashboard(dtpDesde.Value.Date, dtpHasta.Value.Date);
+                }
+            }
+            else if (columna == "numeroOT" && historial.estadoRegistrado == EstadoAeronave.Serviciable && !string.IsNullOrWhiteSpace(historial.numeroOT))
+            {
+                var ot = _otBll.ListarOrdenes().FirstOrDefault(o => o.numeroOT == historial.numeroOT);
+                if (ot != null)
+                {
+                    var exportador = new ExportadorPDF();
+                    string carpeta = Path.Combine(Application.StartupPath, "Reportes");
+                    if (!Directory.Exists(carpeta))
+                        Directory.CreateDirectory(carpeta);
+
+                    string ruta = Path.Combine(carpeta, $"Orden_{ot.numeroOT}.pdf");
+
+                    try
+                    {
+                        exportador.ImprimirOrdenDeTrabajo(ot, ruta);
+                        MessageBox.Show($"Orden exportada correctamente.\n\nUbicación:\n{ruta}",
+                            "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        System.Diagnostics.Process.Start(ruta);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al exportar: " + ex.Message, "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void buttonImprimirHistorialEstadoFlota_Click(object sender, EventArgs e)
+        {
+            var desde = dtpDesde.Value.Date;
+            var hasta = dtpHasta.Value.Date.AddDays(1).AddTicks(-1);
+
+            var historial = _historialBll.FiltrarHistorialPorFechas(desde, hasta);
+
+            if (historial.Count == 0)
+            {
+                MessageBox.Show("No hay registros en el período seleccionado.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string carpeta = Path.Combine(Application.StartupPath, "Reportes");
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
+            string nombreArchivo = $"HistorialEstadoFlota_{desde:dd-MM-yyyy}_{hasta:dd-MM-yyyy}.xlsx";
+            string ruta = Path.Combine(carpeta, nombreArchivo);
+
+            var exportador = new ExportadorDataSheet();
+
+            try
+            {
+                exportador.ExportarHistorialFlota(historial, ruta);
+                MessageBox.Show($"Excel generado correctamente.\n\nUbicación:\n{ruta}",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                System.Diagnostics.Process.Start(ruta);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al generar Excel: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void buttonActualizarEstadoAeronave_Click(object sender, EventArgs e)
+        {
+            var form = new VisualizarAeronavesFormcs();
+            form.ShowDialog();  
+        }
+
+
+        public void OcultarColumnas(DataGridView dgv, params string[] columnas)
+        {
+            foreach (var col in columnas)
+            {
+                if (dgv.Columns.Contains(col))
+                    dgv.Columns[col].Visible = false;
+            }
+        }
+
+        private void buttonAbrirUbicacionArchivos_Click(object sender, EventArgs e)
+        {
+            string carpeta = Path.Combine(Application.StartupPath, "Reportes");
+
+            if (!Directory.Exists(carpeta))
+            {
+                Directory.CreateDirectory(carpeta);
+            }
+
+            try
+            {
+                System.Diagnostics.Process.Start(carpeta);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo abrir la carpeta de reportes.\n\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
 

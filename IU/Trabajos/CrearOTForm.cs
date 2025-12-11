@@ -112,6 +112,23 @@ namespace Presentacion_IU
 
         private void buttonGenerarOT_Click(object sender, EventArgs e)
         {
+            if (aeronaveSeleccionada == null)
+            {
+                MessageBox.Show("Debe seleccionar una aeronave.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (trabajoSeleccionado == null)
+            {
+                MessageBox.Show("Debe seleccionar un trabajo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(textBoxTituloOT.Text))
+            {
+                MessageBox.Show("Debe ingresar un título para la OT.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             OrdenDeTrabajo nuevaOrden = new OrdenDeTrabajo
             {
                 numeroOT = textBoxNroOT.Text,
@@ -146,8 +163,6 @@ namespace Presentacion_IU
                 MessageBox.Show("Error al crear la Orden de Trabajo: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)

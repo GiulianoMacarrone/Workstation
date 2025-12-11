@@ -31,6 +31,9 @@ namespace IU
         private RolComposite rolSeleccionado;
         private PermisoLeaf permisoSeleccionado;
 
+        PermisoBLL oPermisoBLL;
+        RolComposite oBERol;
+
         public PanelAdministrador()
         {
             InitializeComponent();
@@ -141,10 +144,10 @@ namespace IU
 
             treeViewRolesyPermisosDelUsuario.Nodes.Add(nodoRoles);
 
-            if (usuarioSeleccionado.permisosAdicionales.Any())
+            if (usuarioSeleccionado._permisos.Any())
             {
                 var nodoPermisosAd = new TreeNode("Permisos adicionales");
-                foreach (var idPerm in usuarioSeleccionado.permisosAdicionales)
+                foreach (var idPerm in usuarioSeleccionado._permisos)
                 {
                     var permisoLeaf = listaPermisos.FirstOrDefault(p => p.id == idPerm);
                     if (permisoLeaf != null)
@@ -205,13 +208,13 @@ namespace IU
         }
         private void AgregarNodosPermisosYRoles(RolComposite rol, TreeNode padre)
         {
-            foreach (var permiso in rol.ObtenerHijos().OfType<PermisoLeaf>())
+            foreach (var permiso in rol.Hijos().OfType<PermisoLeaf>())
             {
                 var nodoPerm = new TreeNode($"Permiso: {permiso.designacion} (ID:{permiso.id})") { Tag = permiso };
                 padre.Nodes.Add(nodoPerm);
             }
 
-            foreach (var subRol in rol.ObtenerHijos().OfType<RolComposite>())
+            foreach (var subRol in rol.Hijos().OfType<RolComposite>())
             {
                 var nodoSubRol = new TreeNode($"Rol: {subRol.designacion} (ID:{subRol.id})") { Tag = subRol };
                 padre.Nodes.Add(nodoSubRol);
@@ -258,7 +261,7 @@ namespace IU
             try
             {
                 var nuevoRol = new RolComposite { designacion = design };
-                rolBLL.CrearRol(nuevoRol);
+                oBERol.AgregarHijo(nuevoRol);
 
                 MessageBox.Show(
                   $"Rol: {nuevoRol.designacion} creado exitosamente", "Rol", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -340,7 +343,7 @@ namespace IU
                 var padre = CompositeHelper.EncontrarPadre(listaRoles, rol);
                 if (padre != null)
                 {
-                    padre.EliminarHijo(rol);
+                    padre.VaciarHijos();
                 }
 
                 rolBLL.EliminarRol(idRol);

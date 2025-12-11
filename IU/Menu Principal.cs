@@ -1,5 +1,8 @@
-﻿using BLL;
+﻿using BE.Composite;
+using BLL;
+using BLL.Roles;
 using BLL.Servicios;
+using IU.ALTERNATIVO;
 using Presentacion_IU;
 using System;
 using System.Collections.Generic;
@@ -15,52 +18,49 @@ namespace IU
 {
     public partial class Menu : Form
     {
+        private readonly MaterialBLL materialBLL = new MaterialBLL();
+
         public Menu()
         {
             InitializeComponent();
             AplicarPermisosAlMenu();
         }
-
         private void AplicarPermisosAlMenu()
         {
             var usuarioActual = SesionUsuario.Instancia.UsuarioActual;
-            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuarioActual)
-                .Select (p => p.designacion)
-                .ToList();
+            
+            panelDeAdministraciónToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Permisos_Panel_Administrador);
 
-            dashboardToolStripMenuItem.Visible = permisos.Contains("Ver_Dashboard");
+            dashboardToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Ver_Dashboard);
 
-            trabajosToolStripMenuItem.Visible = permisos.Contains("Crear_Trabajo") || permisos.Contains("Eliminar_Trabajo");
-            crearTrabajoToolStripMenuItem.Visible = permisos.Contains("Crear_Trabajo");
-            eliminarTrToolStripMenuItem.Visible = permisos.Contains("Eliminar_Trabajo"); 
+            trabajosToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Trabajo) || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Eliminar_Trabajo);
+            crearTrabajoToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Trabajo);
+            eliminarTrToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Eliminar_Trabajo);
 
-            ordenesDeTrabajoToolStripMenuItem.Visible = permisos.Contains("Crear_Orden_De_Trabajo")
-                || permisos.Contains("Visualizar_OT") || permisos.Contains("Eliminar_OT") || permisos.Contains("Ejecutar_OT");
+            ordenesDeTrabajoToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Orden_De_Trabajo)
+                || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Visualizar_OT) || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Eliminar_OT) || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Ejecutar_OT);
 
-            crearOrdenDeTrabajoToolStripMenuItem.Visible = permisos.Contains("Crear_Orden_De_Trabajo");
-            visualizarOrdenDeTrabajoToolStripMenuItem.Visible = permisos.Contains("Visualizar_OT");
-            eliminarOrdenDeTrabajoToolStripMenuItem.Visible = permisos.Contains("Eliminar_OT");
+            crearOrdenDeTrabajoToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Orden_De_Trabajo);
+            visualizarOrdenDeTrabajoToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Visualizar_OT);
+            eliminarOrdenDeTrabajoToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Eliminar_OT);
 
-            panelDeAdministraciónToolStripMenuItem.Visible = permisos.Contains("Permisos_Panel_Administrador");
 
-            aeronavesToolStripMenuItem.Visible = permisos.Contains("Consultar_Aeronaves");
-            consultarAToolStripMenuItem.Visible = permisos.Contains("Consultar_Aeronaves");
+            aeronavesToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Consultar_Aeronaves);
+            consultarAToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Consultar_Aeronaves);
 
-            abrirDiferidoToolStripMenuItem.Visible = permisos.Contains("Abrir_Diferido");
+            abrirDiferidoToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Abrir_Diferido);
 
-            pañolToolStripMenuItem.Visible = permisos.Contains("Crear_Herramienta") || permisos.Contains("Crear_Rotable") || permisos.Contains("Cargar_Consumible");
-            crearHerramientaToolStripMenuItem.Visible = permisos.Contains("Crear_Herramienta");
-            crearRotableToolStripMenuItem.Visible = permisos.Contains("Crear_Rotable");
-            cargarConsumibleToolStripMenuItem.Visible = permisos.Contains("Cargar_Consumible");
+            pañolToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Herramienta) || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Rotable) || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Cargar_Consumible);
+            crearHerramientaToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Herramienta);
+            crearRotableToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Crear_Rotable);
+            cargarConsumibleToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Cargar_Consumible);
 
-            generarNOSTOCKToolStripMenuItem.Visible = permisos.Contains("Generar_NoStock");
-            visualizarToolStripMenuItem.Visible = permisos.Contains("Visualizar_Elemento");
+            generarNOSTOCKToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Generar_NoStock);
+            visualizarToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Visualizar_Elemento);
 
-            logisticaToolStripMenuItem.Visible = permisos.Contains("Generar_NoStock") || permisos.Contains("Consultar_Solicitudes");
-            consultarSolicitudesToolStripMenuItem.Visible = permisos.Contains("Consultar_Solicitudes");
-
+            logisticaToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Generar_NoStock) || SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Consultar_Solicitudes);
+            consultarSolicitudesToolStripMenuItem.Enabled = SesionUsuario.Instancia.IsInRole(TipoPermisoBE.Consultar_Solicitudes);
         }
-
         private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form dashboard = new Dashboard();
@@ -70,7 +70,7 @@ namespace IU
 
         private void panelDeAdministraciónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form paneladmin = new PanelAdministrador();
+            Form paneladmin = new PanelAdmininistrador();
             paneladmin.MdiParent = this;
             paneladmin.Show();
         }
@@ -179,6 +179,11 @@ namespace IU
             loginForm.Show();
 
             this.Close();
+        }
+
+        private void pañolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            materialBLL.ActualizarDisponibilidadPorVencimiento();
         }
     }
 }

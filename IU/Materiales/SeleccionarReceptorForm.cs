@@ -27,7 +27,7 @@ namespace IU.Materiales
             }
             this.componente = componente;
             InitializeComponent();
-            var listaUsuarios = usuarioBLL.ListarUsuarios();
+            var listaUsuarios = usuarioBLL.ListarTodo();
             comboBoxUser.DataSource = listaUsuarios;
             comboBoxUser.DisplayMember = "username";
             comboBoxUser.ValueMember = "id";

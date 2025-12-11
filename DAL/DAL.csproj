@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="acceso.cs" />
+    <Compile Include="Acceso.cs" />
     <Compile Include="BackupDAL.cs" />
     <Compile Include="DatosDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

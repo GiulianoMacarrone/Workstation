@@ -1,5 +1,6 @@
 ﻿using BE.Modelo;
 using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,16 @@ namespace BLL.Servicios
 {
     public class AeronaveBLL
     {
+        private readonly MPPAeronave mpp = new MPPAeronave();
         public void GuardarAeronave(AeronaveBE aeronave)
         {
             GenerarIDUnico();
-            DatosDAL.GuardarAeronave(aeronave);
+            mpp.GuardarAeronave(aeronave);
+        }
+
+        public void ActualizarAeronave(AeronaveBE aeronave)
+        {
+            mpp.ActualizarAeronave(aeronave);
         }
 
         private string GenerarIDUnico()
@@ -38,7 +45,7 @@ namespace BLL.Servicios
 
         public List<AeronaveBE> ListarAeronaves()
         {
-            return DatosDAL.ListarAeronaves();
+            return mpp.ListarAeronaves();
         }
     }
 }

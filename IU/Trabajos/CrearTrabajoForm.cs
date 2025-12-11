@@ -86,8 +86,8 @@ namespace Presentacion_IU
                     tareas.Add(new TareaBE
                     {
                         descripcion = cellValue,
-                        nroMecanico = string.Empty, // Asignar un valor por defecto o dejar vacío
-                        nroInspector = string.Empty // Asignar un valor por defecto o dejar vacío  
+                        nroMecanico = string.Empty, 
+                        nroInspector = string.Empty   
                     });
                 }
                     

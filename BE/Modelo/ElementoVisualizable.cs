@@ -15,6 +15,11 @@ namespace BE.Modelo
         public string Tipo { get; set; }
         public string Descripcion { get; set; }
         public object ElementoOriginal { get; set; }
+        public DateTime? FechaVencimiento { get; set; }
+        public bool EstaVencido => 
+            FechaVencimiento.HasValue && 
+            FechaVencimiento.Value.Date < DateTime.Today;
+
 
         public ElementoVisualizable(Consumible c, string tipo)
         {
@@ -24,6 +29,7 @@ namespace BE.Modelo
             Tipo = tipo;
             Descripcion = c.descripcion;
             ElementoOriginal = c;
+            FechaVencimiento = c.fechaVto; 
         }
 
         public ElementoVisualizable(HerramientaBE h, string tipo)
@@ -34,6 +40,7 @@ namespace BE.Modelo
             Tipo = tipo;
             Descripcion = h.descripcion;
             ElementoOriginal = h;
+            FechaVencimiento = h.fechaVtoCalibracion;
         }
 
         public ElementoVisualizable(RotableBE r, string tipo)
@@ -44,6 +51,7 @@ namespace BE.Modelo
             Tipo = tipo;
             Descripcion = r.descripcion;
             ElementoOriginal = r;
+            FechaVencimiento = null;
         }
     }
 }

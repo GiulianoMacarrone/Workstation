@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBoxRolUsuario = new System.Windows.Forms.ComboBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.buttonCrearUser = new System.Windows.Forms.Button();
             this.textBoxPww = new System.Windows.Forms.TextBox();
             this.labelPassword = new System.Windows.Forms.Label();
@@ -45,26 +43,9 @@
             this.bttnCancelar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // comboBoxRolUsuario
-            // 
-            this.comboBoxRolUsuario.FormattingEnabled = true;
-            this.comboBoxRolUsuario.Location = new System.Drawing.Point(47, 162);
-            this.comboBoxRolUsuario.Name = "comboBoxRolUsuario";
-            this.comboBoxRolUsuario.Size = new System.Drawing.Size(167, 21);
-            this.comboBoxRolUsuario.TabIndex = 5;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(12, 170);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(29, 13);
-            this.label17.TabIndex = 0;
-            this.label17.Text = "Rol: ";
-            // 
             // buttonCrearUser
             // 
-            this.buttonCrearUser.Location = new System.Drawing.Point(25, 202);
+            this.buttonCrearUser.Location = new System.Drawing.Point(27, 171);
             this.buttonCrearUser.Name = "buttonCrearUser";
             this.buttonCrearUser.Size = new System.Drawing.Size(75, 23);
             this.buttonCrearUser.TabIndex = 13;
@@ -167,7 +148,7 @@
             // 
             // bttnCancelar
             // 
-            this.bttnCancelar.Location = new System.Drawing.Point(131, 202);
+            this.bttnCancelar.Location = new System.Drawing.Point(139, 171);
             this.bttnCancelar.Name = "bttnCancelar";
             this.bttnCancelar.Size = new System.Drawing.Size(75, 23);
             this.bttnCancelar.TabIndex = 14;
@@ -179,15 +160,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 236);
+            this.ClientSize = new System.Drawing.Size(234, 205);
             this.Controls.Add(this.bttnCancelar);
             this.Controls.Add(this.textBoxPww);
             this.Controls.Add(this.labelPassword);
             this.Controls.Add(this.buttonCrearUser);
             this.Controls.Add(this.checkBoxMostrarContraseña);
-            this.Controls.Add(this.comboBoxRolUsuario);
             this.Controls.Add(this.textBoxApellido);
-            this.Controls.Add(this.label17);
             this.Controls.Add(this.textBoxNombre);
             this.Controls.Add(this.idLbl);
             this.Controls.Add(this.textBoxUserName);
@@ -197,16 +176,12 @@
             this.Controls.Add(this.lblUsername);
             this.Name = "NuevoUsuario";
             this.Text = "Crear Usuario";
-            this.Load += new System.EventHandler(this.NuevoUsuario_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.ComboBox comboBoxRolUsuario;
-        private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button buttonCrearUser;
         private System.Windows.Forms.TextBox textBoxPww;
         private System.Windows.Forms.Label labelPassword;

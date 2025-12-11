@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
             this.dgvDisponibles = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
@@ -70,12 +70,18 @@
             this.chartHeatMap = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartPromedioCierreTareas = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartCumplimiento = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.dgvHistorialEstado = new System.Windows.Forms.DataGridView();
+            this.label12 = new System.Windows.Forms.Label();
+            this.buttonImprimirHistorialEstadoFlota = new System.Windows.Forms.Button();
+            this.buttonActualizarEstadoAeronave = new System.Windows.Forms.Button();
+            this.buttonAbrirUbicacionArchivos = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDisponibles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRealizadas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartHeatMap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartPromedioCierreTareas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCumplimiento)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHistorialEstado)).BeginInit();
             this.SuspendLayout();
             // 
             // dtpDesde
@@ -92,7 +98,8 @@
             this.dgvDisponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDisponibles.Location = new System.Drawing.Point(12, 81);
             this.dgvDisponibles.Name = "dgvDisponibles";
-            this.dgvDisponibles.Size = new System.Drawing.Size(461, 277);
+            this.dgvDisponibles.ReadOnly = true;
+            this.dgvDisponibles.Size = new System.Drawing.Size(461, 181);
             this.dgvDisponibles.TabIndex = 1;
             this.dgvDisponibles.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDisponibles_CellDoubleClick);
             // 
@@ -108,15 +115,16 @@
             // dgvRealizadas
             // 
             this.dgvRealizadas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRealizadas.Location = new System.Drawing.Point(12, 393);
+            this.dgvRealizadas.Location = new System.Drawing.Point(12, 301);
             this.dgvRealizadas.Name = "dgvRealizadas";
+            this.dgvRealizadas.ReadOnly = true;
             this.dgvRealizadas.Size = new System.Drawing.Size(461, 150);
             this.dgvRealizadas.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 377);
+            this.label2.Location = new System.Drawing.Point(14, 285);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(98, 13);
             this.label2.TabIndex = 4;
@@ -124,16 +132,16 @@
             // 
             // chart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart.Legends.Add(legend1);
+            chartArea5.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.chart.Legends.Add(legend5);
             this.chart.Location = new System.Drawing.Point(540, 71);
             this.chart.Name = "chart";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart.Series.Add(series1);
+            series5.ChartArea = "ChartArea1";
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.chart.Series.Add(series5);
             this.chart.Size = new System.Drawing.Size(630, 366);
             this.chart.TabIndex = 5;
             this.chart.Text = "chart1";
@@ -228,7 +236,7 @@
             // 
             // buttonCerrar
             // 
-            this.buttonCerrar.Location = new System.Drawing.Point(1725, 774);
+            this.buttonCerrar.Location = new System.Drawing.Point(1735, 913);
             this.buttonCerrar.Name = "buttonCerrar";
             this.buttonCerrar.Size = new System.Drawing.Size(75, 23);
             this.buttonCerrar.TabIndex = 23;
@@ -239,7 +247,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 558);
+            this.label6.Location = new System.Drawing.Point(14, 492);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(55, 13);
             this.label6.TabIndex = 24;
@@ -248,7 +256,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(13, 580);
+            this.label8.Location = new System.Drawing.Point(14, 514);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(89, 13);
             this.label8.TabIndex = 25;
@@ -257,7 +265,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(14, 603);
+            this.label9.Location = new System.Drawing.Point(15, 537);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(103, 13);
             this.label9.TabIndex = 26;
@@ -266,7 +274,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 628);
+            this.label10.Location = new System.Drawing.Point(15, 562);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(102, 13);
             this.label10.TabIndex = 27;
@@ -275,7 +283,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(14, 651);
+            this.label11.Location = new System.Drawing.Point(15, 585);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(134, 13);
             this.label11.TabIndex = 28;
@@ -283,35 +291,35 @@
             // 
             // txtTotalOTs
             // 
-            this.txtTotalOTs.Location = new System.Drawing.Point(109, 578);
+            this.txtTotalOTs.Location = new System.Drawing.Point(110, 512);
             this.txtTotalOTs.Name = "txtTotalOTs";
             this.txtTotalOTs.Size = new System.Drawing.Size(78, 20);
             this.txtTotalOTs.TabIndex = 29;
             // 
             // txtTotalPendientes
             // 
-            this.txtTotalPendientes.Location = new System.Drawing.Point(123, 600);
+            this.txtTotalPendientes.Location = new System.Drawing.Point(124, 534);
             this.txtTotalPendientes.Name = "txtTotalPendientes";
             this.txtTotalPendientes.Size = new System.Drawing.Size(63, 20);
             this.txtTotalPendientes.TabIndex = 30;
             // 
             // txtTotalRealizadas
             // 
-            this.txtTotalRealizadas.Location = new System.Drawing.Point(122, 625);
+            this.txtTotalRealizadas.Location = new System.Drawing.Point(123, 559);
             this.txtTotalRealizadas.Name = "txtTotalRealizadas";
             this.txtTotalRealizadas.Size = new System.Drawing.Size(64, 20);
             this.txtTotalRealizadas.TabIndex = 31;
             // 
             // txtPromedioTareas
             // 
-            this.txtPromedioTareas.Location = new System.Drawing.Point(154, 648);
+            this.txtPromedioTareas.Location = new System.Drawing.Point(155, 582);
             this.txtPromedioTareas.Name = "txtPromedioTareas";
             this.txtPromedioTareas.Size = new System.Drawing.Size(69, 20);
             this.txtPromedioTareas.TabIndex = 32;
             // 
             // printButton
             // 
-            this.printButton.Location = new System.Drawing.Point(398, 553);
+            this.printButton.Location = new System.Drawing.Point(398, 462);
             this.printButton.Name = "printButton";
             this.printButton.Size = new System.Drawing.Size(75, 23);
             this.printButton.TabIndex = 33;
@@ -322,7 +330,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(547, 467);
+            this.label7.Location = new System.Drawing.Point(547, 455);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(69, 13);
             this.label7.TabIndex = 35;
@@ -330,63 +338,118 @@
             // 
             // chartHeatMap
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartHeatMap.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartHeatMap.Legends.Add(legend2);
+            chartArea6.Name = "ChartArea1";
+            this.chartHeatMap.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chartHeatMap.Legends.Add(legend6);
             this.chartHeatMap.Location = new System.Drawing.Point(1204, 71);
             this.chartHeatMap.Name = "chartHeatMap";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bubble;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            series2.YValuesPerPoint = 2;
-            this.chartHeatMap.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bubble;
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            series6.YValuesPerPoint = 2;
+            this.chartHeatMap.Series.Add(series6);
             this.chartHeatMap.Size = new System.Drawing.Size(580, 366);
             this.chartHeatMap.TabIndex = 36;
             this.chartHeatMap.Text = "chart3";
             // 
-            // chartAvgClose
+            // chartPromedioCierreTareas
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartPromedioCierreTareas.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chartPromedioCierreTareas.Legends.Add(legend3);
+            chartArea7.Name = "ChartArea1";
+            this.chartPromedioCierreTareas.ChartAreas.Add(chartArea7);
+            legend7.Name = "Legend1";
+            this.chartPromedioCierreTareas.Legends.Add(legend7);
             this.chartPromedioCierreTareas.Location = new System.Drawing.Point(983, 471);
-            this.chartPromedioCierreTareas.Name = "chartAvgClose";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            series3.YValuesPerPoint = 2;
-            this.chartPromedioCierreTareas.Series.Add(series3);
-            this.chartPromedioCierreTareas.Size = new System.Drawing.Size(801, 297);
+            this.chartPromedioCierreTareas.Name = "chartPromedioCierreTareas";
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Range;
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            series7.YValuesPerPoint = 2;
+            this.chartPromedioCierreTareas.Series.Add(series7);
+            this.chartPromedioCierreTareas.Size = new System.Drawing.Size(801, 413);
             this.chartPromedioCierreTareas.TabIndex = 37;
             this.chartPromedioCierreTareas.Text = "chart4";
             // 
             // chartCumplimiento
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartCumplimiento.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chartCumplimiento.Legends.Add(legend4);
-            this.chartCumplimiento.Location = new System.Drawing.Point(540, 483);
+            chartArea8.Name = "ChartArea1";
+            this.chartCumplimiento.ChartAreas.Add(chartArea8);
+            legend8.Name = "Legend1";
+            this.chartCumplimiento.Legends.Add(legend8);
+            this.chartCumplimiento.Location = new System.Drawing.Point(540, 471);
             this.chartCumplimiento.Name = "chartCumplimiento";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartCumplimiento.Series.Add(series4);
-            this.chartCumplimiento.Size = new System.Drawing.Size(378, 282);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.chartCumplimiento.Series.Add(series8);
+            this.chartCumplimiento.Size = new System.Drawing.Size(265, 152);
             this.chartCumplimiento.TabIndex = 38;
             this.chartCumplimiento.Text = "chart2";
+            // 
+            // dgvHistorialEstado
+            // 
+            this.dgvHistorialEstado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHistorialEstado.Location = new System.Drawing.Point(12, 644);
+            this.dgvHistorialEstado.Name = "dgvHistorialEstado";
+            this.dgvHistorialEstado.ReadOnly = true;
+            this.dgvHistorialEstado.Size = new System.Drawing.Size(906, 240);
+            this.dgvHistorialEstado.TabIndex = 39;
+            this.dgvHistorialEstado.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHistorialEstado_CellContentClick);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(15, 628);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(146, 13);
+            this.label12.TabIndex = 40;
+            this.label12.Text = "Historial Estado de Flota";
+            // 
+            // buttonImprimirHistorialEstadoFlota
+            // 
+            this.buttonImprimirHistorialEstadoFlota.Location = new System.Drawing.Point(155, 903);
+            this.buttonImprimirHistorialEstadoFlota.Name = "buttonImprimirHistorialEstadoFlota";
+            this.buttonImprimirHistorialEstadoFlota.Size = new System.Drawing.Size(75, 23);
+            this.buttonImprimirHistorialEstadoFlota.TabIndex = 41;
+            this.buttonImprimirHistorialEstadoFlota.Text = "Imprimir";
+            this.buttonImprimirHistorialEstadoFlota.UseVisualStyleBackColor = true;
+            this.buttonImprimirHistorialEstadoFlota.Click += new System.EventHandler(this.buttonImprimirHistorialEstadoFlota_Click);
+            // 
+            // buttonActualizarEstadoAeronave
+            // 
+            this.buttonActualizarEstadoAeronave.Location = new System.Drawing.Point(18, 903);
+            this.buttonActualizarEstadoAeronave.Name = "buttonActualizarEstadoAeronave";
+            this.buttonActualizarEstadoAeronave.Size = new System.Drawing.Size(108, 23);
+            this.buttonActualizarEstadoAeronave.TabIndex = 42;
+            this.buttonActualizarEstadoAeronave.Text = "Actualizar Estado";
+            this.buttonActualizarEstadoAeronave.UseVisualStyleBackColor = true;
+            this.buttonActualizarEstadoAeronave.Click += new System.EventHandler(this.buttonActualizarEstadoAeronave_Click);
+            // 
+            // buttonAbrirUbicacionArchivos
+            // 
+            this.buttonAbrirUbicacionArchivos.Location = new System.Drawing.Point(346, 541);
+            this.buttonAbrirUbicacionArchivos.Name = "buttonAbrirUbicacionArchivos";
+            this.buttonAbrirUbicacionArchivos.Size = new System.Drawing.Size(127, 61);
+            this.buttonAbrirUbicacionArchivos.TabIndex = 43;
+            this.buttonAbrirUbicacionArchivos.Text = "Abrir Ubicación de los Archivos";
+            this.buttonAbrirUbicacionArchivos.UseVisualStyleBackColor = true;
+            this.buttonAbrirUbicacionArchivos.Click += new System.EventHandler(this.buttonAbrirUbicacionArchivos_Click);
             // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1822, 809);
+            this.ClientSize = new System.Drawing.Size(1822, 948);
+            this.Controls.Add(this.buttonAbrirUbicacionArchivos);
+            this.Controls.Add(this.buttonActualizarEstadoAeronave);
+            this.Controls.Add(this.buttonImprimirHistorialEstadoFlota);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.dgvHistorialEstado);
             this.Controls.Add(this.chartCumplimiento);
             this.Controls.Add(this.chartPromedioCierreTareas);
             this.Controls.Add(this.chartHeatMap);
@@ -418,6 +481,7 @@
             this.Controls.Add(this.dgvDisponibles);
             this.Controls.Add(this.dtpDesde);
             this.Name = "Dashboard";
+            this.Tag = "";
             this.Text = "Dashboard";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Dashboard_Load);
@@ -427,6 +491,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartHeatMap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartPromedioCierreTareas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCumplimiento)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHistorialEstado)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -464,5 +529,10 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartHeatMap;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPromedioCierreTareas;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartCumplimiento;
+        private System.Windows.Forms.DataGridView dgvHistorialEstado;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button buttonImprimirHistorialEstadoFlota;
+        private System.Windows.Forms.Button buttonActualizarEstadoAeronave;
+        private System.Windows.Forms.Button buttonAbrirUbicacionArchivos;
     }
 }

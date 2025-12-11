@@ -1,6 +1,7 @@
 ﻿using BE.Composite;
 using BE.Modelo;
 using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace BLL.Roles
 {
     public class TrabajoBLL
     {
+        private readonly MPPTrabajo _mppTrabajo = new MPPTrabajo();
+        private readonly MPPOrdenDeTrabajo _mppOrdenDeTrabajo = new MPPOrdenDeTrabajo();
+
         public void CrearTrabajo(TrabajoBE nuevoTrabajo)
         {
 
@@ -33,18 +37,18 @@ namespace BLL.Roles
             string nroTrabajo = "TR-" + nuevoNroTr.ToString("D4");
             nuevoTrabajo.nroTrabajo = nroTrabajo;
 
-            DatosDAL.GuardarTrabajo(nuevoTrabajo);
+            _mppTrabajo.GuardarTrabajo(nuevoTrabajo);
         }
 
         public void EliminarTrabajo(int idTrabajo)
         {
-            var listaTrabajos = DatosDAL.ListarTrabajos();
+            var listaTrabajos = _mppTrabajo.ListarTrabajos();
             if (!listaTrabajos.Any(t => t.id == idTrabajo))
             {
                 throw new InvalidOperationException($"Trabajo #{idTrabajo} no encontrado.");
             }
 
-            var listaOTs = DatosDAL.ListarOrdenesDeTrabajo();
+            var listaOTs = _mppOrdenDeTrabajo.ListarOrdenesDeTrabajo();
             bool trabajoEnUso = listaOTs.Any(ot => ot.trabajo != null && ot.trabajo.id == idTrabajo);
 
             if (trabajoEnUso)
@@ -52,12 +56,12 @@ namespace BLL.Roles
                 throw new InvalidOperationException($"No se puede eliminar el trabajo #{idTrabajo} porque está asociado a una orden de trabajo.");
             }
 
-            DatosDAL.EliminarTrabajo(idTrabajo);
+            _mppTrabajo.EliminarTrabajo(idTrabajo);
         }
 
         public List<TrabajoBE> ListarTrabajos()
         {
-            return DatosDAL.ListarTrabajos();
+            return _mppTrabajo.ListarTrabajos();
         }
     }
 }

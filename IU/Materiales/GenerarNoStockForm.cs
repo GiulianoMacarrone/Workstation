@@ -33,7 +33,7 @@ namespace IU
             radioButtonOT.CheckedChanged += (s, e) => CargarDmiOt();
 
             btnAceptar.Click += btnAceptar_Click;
-            btnCancel.Click += (_, __) => Close();
+            btnCancel.Click += btnCancel_Click;
         }
 
         private void CrearNoStockForm_Load(object sender, EventArgs e)
@@ -62,15 +62,16 @@ namespace IU
             {
                 var listaOt = otBLL.ListarOtCerradas();
                 comboBoxDMIuOT.DataSource = listaOt;
-                comboBoxDMIuOT.DisplayMember = "numero";
-                comboBoxDMIuOT.ValueMember = "id";
+                comboBoxDMIuOT.DisplayMember = "numeroOT";
+                comboBoxDMIuOT.ValueMember = "numeroOT";
             }
             comboBoxDMIuOT.SelectedIndex = -1;
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(txtNumeroNoStock.Text.Trim(), out int numero))
+            string nroNoStock = txtNumeroNoStock.Text;
+            if (!int.TryParse(nroNoStock, out int numero) || numero <= 0)
             {
                 MessageBox.Show("Número inválido.", "Error",MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -104,15 +105,17 @@ namespace IU
                 aeronave = comboBoxAeronave.SelectedValue.ToString(),
                 partNumber = textBoxPn.Text.Trim()
             };
-            if (radioButtonDmi.Checked)
-            {
-                int idDmi = (int)comboBoxDMIuOT.SelectedValue;
-                noStockBLL.AsociarNoStockADiferido(idDmi, noStock.id);
-            }
 
             try
             {
                 noStockBLL.CrearNoStock(noStock);
+
+                if (radioButtonDmi.Checked)
+                {
+                    int idDmi = (int)comboBoxDMIuOT.SelectedValue;
+                    noStockBLL.AsociarNoStockADiferido(idDmi, noStock.id);
+                }
+
                 NoStockCreado?.Invoke(this, EventArgs.Empty);
                 MessageBox.Show($"No Stock creado con ID {noStock.id}","Éxito", MessageBoxButtons.OK,MessageBoxIcon.Information);
                 Close();

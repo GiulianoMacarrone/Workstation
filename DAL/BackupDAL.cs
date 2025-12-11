@@ -15,8 +15,6 @@ namespace DAL
         public static readonly string CarpetaDatos = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data");
         public static readonly string BitacoraPath = Path.Combine(CarpetaDatos, "BitacoraBackups.xml");
 
-
-
         private static XDocument GetDoc()
         {
             Directory.CreateDirectory(CarpetaDatos);

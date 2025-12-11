@@ -1,5 +1,6 @@
 ﻿using BE.Modelo;
 using DAL;
+using Org.BouncyCastle.Crypto.Agreement.Kdf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,35 @@ namespace BLL.Servicios
 
                 default:
                     throw new InvalidOperationException($"Tipo desconocido: {elemento.Tipo}");
+            }
+        }
+        public void ActualizarDisponibilidadPorVencimiento()
+        {
+            var listaConsumibles = consumibleBLL.ListarConsumibles();
+            var listaHerramientas = herramientaBLL.ListarHerramientas();
+
+            foreach (var m in listaConsumibles)
+            {
+                if (m.fechaVto != null && m.fechaVto.Date < DateTime.Today)
+                {
+                    if (m.estado == true)
+                    {
+                        m.estado = false;
+                        consumibleBLL.GuardarConsumible(m);
+                    }
+                }
+            }
+
+            foreach (var m in listaHerramientas)
+            {
+                if (m.fechaVtoCalibracion != null && m.fechaVtoCalibracion.Date < DateTime.Today)
+                {
+                    if (m.estado == true)
+                    {
+                        m.estado = false;
+                        herramientaBLL.GuardarHerramienta(m);
+                    }
+                }
             }
         }
     }

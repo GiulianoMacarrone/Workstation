@@ -1,5 +1,6 @@
 ﻿using BE.Modelo;
 using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,21 @@ namespace BLL.Servicios
 {
     public class RotableBLL
     {
+        MPPRotable mpp = new MPPRotable();
         public void GuardarRotable(RotableBE rotable)
         {
-            DatosDAL.GuardarRotable(rotable);
+            mpp.GuardarRotable(rotable);
         }
         public List<RotableBE> ListarRotables()
         {
-            return DatosDAL.ListarRotables();
+            return mpp.ListarRotables();
         }
         public void Entregar(RotableBE rotable, string entregadoPor, string recibidoPor)
         {
             if (rotable == null) throw new ArgumentNullException(nameof(rotable));
-            DatosDAL.RegistrarEntregaRotable(rotable.id, entregadoPor, recibidoPor);
+            mpp.RegistrarEntregaRotable(rotable.id, entregadoPor, recibidoPor);
             rotable.estado = false;
-            DatosDAL.GuardarRotable(rotable);
+            mpp.GuardarRotable(rotable);
         }
     }
 }

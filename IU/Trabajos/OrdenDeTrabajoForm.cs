@@ -27,8 +27,9 @@ namespace IU
         public OrdenDeTrabajoForm(OrdenDeTrabajo ot)
         {
             InitializeComponent();
+            MessageBox.Show(ordenActual.mecanico); 
             var usuario = SesionUsuario.Instancia.UsuarioActual;
-            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
+            var permisos = usuario.permisos;
             LlenarOT(ot);
             ordenActual = ot;
         }
@@ -128,9 +129,12 @@ namespace IU
         private void buttonFirmaMecanico_Click(object sender, EventArgs e)
         {
             var usuario = SesionUsuario.Instancia.UsuarioActual;
-            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
+            var permisos = usuario.permisos;
+            var permisosTotales = usuario.permisos
+            .SelectMany(UsuarioBLL.AplanarPermisos)
+            .ToList();
 
-            if (!permisos.Any(p =>p.designacion.Equals("Firmar_Tarea", StringComparison.OrdinalIgnoreCase)))
+            if (!permisosTotales.Contains(TipoPermisoBE.Firmar_Tarea))
             {
                 MessageBox.Show("No tenés permiso de mecánico.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -150,10 +154,18 @@ namespace IU
         private void buttonFirmaInspector_Click(object sender, EventArgs e)
         {
             var usuario = SesionUsuario.Instancia.UsuarioActual;
-            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
+            var permisos = usuario.permisos;
+            var permisosTotales = usuario.permisos
+            .SelectMany(UsuarioBLL.AplanarPermisos)
+            .ToList();
 
-            if (!permisos.Any(p =>
-                p.designacion.Equals("Certificar_Tarea", StringComparison.OrdinalIgnoreCase)))
+            if (ordenActual.mecanico == null || ordenActual.mecanico == "")
+            {
+                MessageBox.Show("La orden debe ser firmada por el mecánico antes de ser certificada por el inspector.","Acción no permitida",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!permisosTotales.Contains(TipoPermisoBE.Certificar_Tarea))
             {
                 MessageBox.Show("No tenés permiso de inspector.", "Acceso denegado",MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -190,15 +202,20 @@ namespace IU
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
+            UsuarioBLL oBLLUser = new UsuarioBLL();
             var grid = (DataGridView)sender;
             var colName = grid.Columns[e.ColumnIndex].Name;
             var tarea = grid.Rows[e.RowIndex].DataBoundItem as TareaBE;
             var usuario = SesionUsuario.Instancia.UsuarioActual;
-            var permisos = UsuarioBLL.ObtenerPermisosEfectivos(usuario);
+            var permisos = usuario.permisos;
+
+            var permisosTotales = usuario.permisos
+                    .SelectMany(UsuarioBLL.AplanarPermisos)
+                    .ToList();
 
             if (colName == "nroMecanico")
             {
-                if (!permisos.Any(p => p.designacion.Equals("Firmar_Tarea", StringComparison.OrdinalIgnoreCase)))
+                if (!permisosTotales.Contains(TipoPermisoBE.Firmar_Tarea))
                 {
                     MessageBox.Show("No tenés permiso para firmar.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -215,7 +232,7 @@ namespace IU
             }
             else if (colName == "nroInspector")
             {
-                if (!permisos.Any(p => p.designacion.Equals("Certificar_Tarea", StringComparison.OrdinalIgnoreCase)))
+                if (!permisosTotales.Contains(TipoPermisoBE.Certificar_Tarea))
                 {
                     MessageBox.Show("No tenés permiso para certificar.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;

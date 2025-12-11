@@ -3,6 +3,7 @@ using BE.Composite;
 using BE.Modelo;
 using BLL.Servicios;
 using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,12 @@ namespace BLL
 {
     public class UsuarioBLL
     {
+        MPPUsuario oMPPUser;
 
+        public UsuarioBLL()
+        {
+            oMPPUser = new MPPUsuario();
+        }
         public static UsuarioBE Login(object userInput, object passInput)
         {
             string username = userInput.ToString().Trim();
@@ -21,7 +27,8 @@ namespace BLL
 
             string passwordEncriptada = Encriptacion.EncriptarPassword(password);
 
-            var usuarios = DatosDAL.ListarUsuarios();
+            var UsuariosBLL = new UsuarioBLL();
+            var usuarios = UsuariosBLL.ListarTodo();
             var usuario = usuarios.FirstOrDefault(u =>
                 u.username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
                 u.password == passwordEncriptada); 
@@ -29,92 +36,128 @@ namespace BLL
             return usuario;
         }
 
-        public static List<PermisoLeaf> ObtenerPermisosEfectivos(UsuarioBE usuario)
+        public List<UsuarioBE> ListarTodo()
         {
-            if (usuario == null)
-            {
-                throw new ArgumentNullException(nameof(usuario));
-            }
-
-            var rolesIds = new HashSet<int>(usuario.rolesAsignados);
-
-            var roles = DatosDAL.ListarRoles().Where(r => rolesIds.Contains(r.id)).ToList();
-
-            var permisosRol = roles.SelectMany(r => r.ObtenerHijos().OfType<PermisoLeaf>()).GroupBy(p => p.id).Select(g => g.First()).ToList();
-
-            var adicionales = DatosDAL.ListarPermisos().Where(p => usuario.permisosAdicionales.Contains(p.id)).ToList();
-
-            return permisosRol.Concat(adicionales).GroupBy(p => p.id).Select(g => g.First()).ToList();
+            return oMPPUser.GetAll();
         }
 
-        public void GuardarUsuario(UsuarioBE nuevoUsuario)
+        public bool GuardarPermisos(UsuarioBE usuario)
         {
-            var usuarios = DatosDAL.ListarUsuarios();
+            return oMPPUser.GuardarPermisos(usuario);
+        }
+
+        public bool GuardarUsuario(UsuarioBE nuevoUsuario)
+        {
+            nuevoUsuario.username = nuevoUsuario.username?.Trim();
+            nuevoUsuario.nombre = nuevoUsuario.nombre?.Trim();
+            nuevoUsuario.apellido = nuevoUsuario.apellido?.Trim();
+            var passPlano = nuevoUsuario.password; 
+
+            if (string.IsNullOrWhiteSpace(passPlano))
+                throw new ArgumentException("La contraseña no puede estar vacía ni ser solo espacios.");
+
+            if (passPlano.Length < 4)
+                throw new ArgumentException("La contraseña debe tener al menos 4 caracteres.");
+
+            var usuarios = ListarTodo();
 
             if (string.IsNullOrEmpty(nuevoUsuario.id))
             {
-                int nuevoIdNumerico = usuarios.Select(u => int.TryParse(u.id?.Replace("U", ""), out var n) ? n : 0).DefaultIfEmpty().Max() + 1;
-                nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // Formato U0001, U0002, etc. 
+                int nuevoIdNumerico = usuarios
+                    .Select(u => int.TryParse(u.id?.Replace("U", ""), out var n) ? n : 0)
+                    .DefaultIfEmpty()
+                    .Max() + 1;
+
+                nuevoUsuario.id = "U" + nuevoIdNumerico.ToString("D4"); // U0001, U0002...
             }
 
-            var roles = DatosDAL.ListarRoles().Where(r => nuevoUsuario.rolesAsignados.Contains(r.id)).Select(r => r.designacion.ToLowerInvariant()).ToHashSet();
-
-            if (roles.Contains("mecanico")&& string.IsNullOrWhiteSpace(nuevoUsuario.nroMecanico))
+            if (string.IsNullOrWhiteSpace(nuevoUsuario.username))
             {
-                int nuevoNroMec = usuarios.Select(u => int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0).DefaultIfEmpty().Max() + 1; //formato M01, M02, etc.
-                nuevoUsuario.nroMecanico = "M" + nuevoNroMec.ToString("D2"); // Formato M01, M02, etc.
+                throw new ArgumentException("El nombre de usuario no puede estar vacío.");
             }
-
-            if (roles.Contains("inspector") && string.IsNullOrWhiteSpace(nuevoUsuario.nroInspector))
-
+            if (usuarios.Any
+                (u => u.username.Equals(nuevoUsuario.username, StringComparison.OrdinalIgnoreCase) && u.id != nuevoUsuario.id)) 
             {
-                int nuevoNroIns = usuarios.Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0).DefaultIfEmpty().Max() + 1; //formato I01, I02, etc.  
-                nuevoUsuario.nroInspector = "I" + nuevoNroIns.ToString("D2"); // Formato I01, I02, etc.
+                throw new ArgumentException("El nombre de usuario ya existe."); 
             }
 
-            nuevoUsuario.password = Encriptacion.EncriptarPassword(nuevoUsuario.password);           
+            nuevoUsuario.password = Encriptacion.EncriptarPassword(passPlano);
 
-            DatosDAL.GuardarUsuario(nuevoUsuario);
+            return oMPPUser.GuardarUsuario(nuevoUsuario);
         }
 
-        public List<UsuarioBE> ListarUsuarios()
+        public void AsignarNroMecanicoInspector(UsuarioBE usuario)
         {
-            return DatosDAL.ListarUsuarios();
+            var todosLosPermisos = usuario.permisos
+                .SelectMany(comp => AplanarPermisos(comp)).Distinct().ToList();
+
+            bool esMecanico = todosLosPermisos.Any(p => _permisosMecanico.Contains(p));
+            bool esInspector = todosLosPermisos.Any(p => _permisosInspector.Contains(p));
+
+            var usuarios = ListarTodo();
+
+            if (esMecanico && string.IsNullOrEmpty(usuario.nroMecanico))
+            {
+                int nuevoNroMec = usuarios
+                    .Select(u => int.TryParse(u.nroMecanico?.Replace("M", ""), out var m) ? m : 0)
+                    .DefaultIfEmpty()
+                    .Max() + 1;
+
+                usuario.nroMecanico = "M" + nuevoNroMec.ToString("D2");
+            }
+
+            if (esInspector && string.IsNullOrEmpty(usuario.nroInspector))
+            {
+                int nuevoNroIns = usuarios
+                    .Select(u => int.TryParse(u.nroInspector?.Replace("I", ""), out var i) ? i : 0)
+                    .DefaultIfEmpty()
+                    .Max() + 1;
+
+                usuario.nroInspector = "I" + nuevoNroIns.ToString("D2");
+            }
         }
-        public void AsignarPermisoAdicional(UsuarioBE usuario, int idPermiso)
+
+
+        public static List<TipoPermisoBE> AplanarPermisos(Componente comp)
         {
-            // Obtener permisos efectivos del rol (Composite)
-            var permisosEfectivos = ObtenerPermisosEfectivos(usuario).Select(p => p.id).ToHashSet(); 
+            var permisos = new List<TipoPermisoBE>();
 
-            if (permisosEfectivos.Contains(idPermiso))
+            if (comp is PermisoLeaf leaf)
             {
-                throw new InvalidOperationException("El usuario ya posee este permiso.");
+                permisos.Add(leaf.permiso);
+            }
+            else
+            {
+                foreach (var hijo in comp.hijos)
+                {
+                    permisos.AddRange(AplanarPermisos(hijo));
+                }
             }
 
-            usuario.permisosAdicionales.Add(idPermiso);
-            GuardarUsuario(usuario);
+            return permisos;
         }
 
-        public void QuitarPermisoAdicional(UsuarioBE usuario, int idPermiso) //Logica para sacar permisos SOLO ADICIONALES. Otros permisos provenientes del ROL no.
+        public bool ExisteUsuario(string username, List<UsuarioBE> listaUsuariosActuales)
         {
-            if (usuario == null)
-            {
-                throw new ArgumentNullException(nameof(usuario));
-            }
-
-            var permisosDelRol = ObtenerPermisosEfectivos(usuario).Where(p => !usuario.permisosAdicionales.Contains(p.id)).Select(p => p.id).ToHashSet();
-
-            if (permisosDelRol.Contains(idPermiso))
-            {
-                throw new InvalidOperationException("Este permiso proviene del rol asignado y no puede quitarse directamente.");
-            }
-
-            if (!usuario.permisosAdicionales.Contains(idPermiso)) { 
-                throw new InvalidOperationException("El usuario no tiene este permiso adicional asignado.");
-            }
-
-            usuario.permisosAdicionales.Remove(idPermiso);
-            GuardarUsuario(usuario);
+            return listaUsuariosActuales.Any(u => u.username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
+
+        //dado que los mecánicos e inspectores tienen permisos especiales, se crean métodos para obtener los permisos específicos de cada uno, sin depender directamente de un permiso "mecánico" o "inspector"
+        //es mas que nada por si alguien setea alguno de estos permisos directamente al usuario en vez de a un rol. Sino crashearia a la hora de firmar (lo cual no tiene sentido porque se le dio el permiso de FIRMAR)
+        private static readonly HashSet<TipoPermisoBE> _permisosMecanico = new HashSet<TipoPermisoBE> //TipoPermisoBE UNICOS DE MECANICO
+        {
+            TipoPermisoBE.Ejecutar_OT,
+            TipoPermisoBE.Firmar_OT,
+            TipoPermisoBE.Consultar_Aeronaves,
+            TipoPermisoBE.Firmar_Tarea
+        };
+
+        private static readonly HashSet<TipoPermisoBE> _permisosInspector = new HashSet<TipoPermisoBE> //TipoPermisoBE UNICOS DE INSPECTOR
+        {
+            TipoPermisoBE.Abrir_Diferido,
+            TipoPermisoBE.Cerrar_Diferido,
+            TipoPermisoBE.Cerrar_OT,
+            TipoPermisoBE.Certificar_Tarea
+        };
     }
 }

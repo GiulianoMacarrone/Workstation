@@ -40,7 +40,7 @@
             this.dgvOTs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvOTs.Location = new System.Drawing.Point(12, 25);
             this.dgvOTs.Name = "dgvOTs";
-            this.dgvOTs.Size = new System.Drawing.Size(776, 413);
+            this.dgvOTs.Size = new System.Drawing.Size(1181, 413);
             this.dgvOTs.TabIndex = 0;
             this.dgvOTs.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOTs_CellClick);
             // 
@@ -65,7 +65,7 @@
             // 
             // buttonExit
             // 
-            this.buttonExit.Location = new System.Drawing.Point(704, 441);
+            this.buttonExit.Location = new System.Drawing.Point(1118, 441);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(75, 23);
             this.buttonExit.TabIndex = 3;
@@ -77,7 +77,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 471);
+            this.ClientSize = new System.Drawing.Size(1205, 471);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonVisualizarOT);
             this.Controls.Add(this.label1);

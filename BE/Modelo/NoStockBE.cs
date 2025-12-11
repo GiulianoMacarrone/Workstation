@@ -17,28 +17,5 @@ namespace BE.Modelo
         public string partNumber { get; set; } // Número de parte del No Stock
         public bool estado { get; set; } // Estado del No Stock (TRUE = completado, FALSE = abierto)
 
-        /*
-        public string GetNoStock(int numero, string descripcion, string dmiUOt, string criticidad, string aeronave, string partNumber)
-        {
-            this.numero = numero;
-            this.descripcion = descripcion;
-            this.dmiUOt = dmiUOt;
-            this.criticidad = criticidad;
-            this.aeronave = aeronave;
-            this.partNumber = partNumber;
-
-            if (this.estado)
-            {
-                return $"Pedido para la aeronave {aeronave} del {partNumber} Completado"; 
-            }
-            else return $"Solicitud de pedido {numero}" +
-                    $"Descripción: {descripcion}" +
-                    $"PN: {partNumber}" +
-                    $"Criticidad: {criticidad}" +
-                    $"en beneficio de la aeronave {aeronave}" +
-                    $"Motivo: {dmiUOt}"
-                    ; 
-        }
-        */
     }
 }

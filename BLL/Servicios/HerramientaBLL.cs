@@ -1,5 +1,6 @@
 ﻿using BE.Modelo;
 using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,15 @@ namespace BLL.Servicios
 {
     public class HerramientaBLL
     {
+        MPPHerramienta mpp = new MPPHerramienta();
         public void GuardarHerramienta(HerramientaBE herramienta)
         {
-            DatosDAL.GuardarHerramienta(herramienta);
+            mpp.GuardarHerramienta(herramienta);
         }
+
         public List<HerramientaBE> ListarHerramientas()
         {
-            return DatosDAL.ListarHerramientas();
+            return mpp.ListarHerramientas();
         }
 
     }

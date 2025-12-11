@@ -66,7 +66,7 @@ namespace BLL.Roles
         #region Permisos y SubRoles 
         public void AsociarPermiso(RolComposite rol, PermisoLeaf permiso)
         {
-            bool yaExiste = rol.ObtenerHijos().OfType<PermisoLeaf>().Any(p => p.id == permiso.id);
+            bool yaExiste = rol.hijos().OfType<PermisoLeaf>().Any(p => p.id == permiso.id);
 
             if (yaExiste)
             {
@@ -79,14 +79,14 @@ namespace BLL.Roles
 
         public void DesasociarPermiso(RolComposite rol, PermisoLeaf permiso)
         {
-            var hijo = rol.ObtenerHijos().FirstOrDefault(c => c is PermisoLeaf pl && pl.id == permiso.id);
+            var hijo = rol.hijos().FirstOrDefault(c => c is PermisoLeaf pl && pl.id == permiso.id);
 
             if (hijo == null)
             {
                 throw new InvalidOperationException($"El rol {rol.designacion} no tiene asignado el permiso {permiso.designacion}.");
             }
 
-            rol.EliminarHijo(hijo);
+            rol.VaciarHijos(hijo);
             DatosDAL.GuardarRol(rol);
         }
 
@@ -101,7 +101,7 @@ namespace BLL.Roles
                 throw new InvalidOperationException("Un rol no puede asociarse a sí mismo.");
             }
 
-            bool yaTiene = padre.ObtenerHijos().OfType<RolComposite>().Any(r => r.id == hijo.id);
+            bool yaTiene = padre.Hijos().OfType<RolComposite>().Any(r => r.id == hijo.id);
 
             if (yaTiene)
             {
@@ -114,14 +114,14 @@ namespace BLL.Roles
 
         public void DesasociarSubRol(RolComposite padre, RolComposite hijo)
         {
-            var nodo = padre.ObtenerHijos().FirstOrDefault(c => c is RolComposite rc && rc.id == hijo.id);
+            var nodo = padre.Hijos().FirstOrDefault(c => c is RolComposite rc && rc.id == hijo.id);
 
             if (nodo == null)
             {
                 throw new InvalidOperationException($"El rol {padre.designacion} no tiene asociado el sub-rol {hijo.designacion}.");
             }
                    
-            padre.EliminarHijo(nodo);
+            padre.VaciarHijos(nodo);
             DatosDAL.GuardarRol(padre);
         }
         #endregion
@@ -129,7 +129,7 @@ namespace BLL.Roles
         bool ContieneDescendiente(RolComposite raiz, int idBuscado)
         {
             if (raiz.id == idBuscado) return true;
-            return raiz.ObtenerHijos().OfType<RolComposite>().Any(sub => ContieneDescendiente(sub, idBuscado));
+            return raiz.hijos.OfType<RolComposite>().Any(sub => ContieneDescendiente(sub, idBuscado));
         }
 
     }

@@ -27,8 +27,7 @@ namespace IU
             try
             {
                 OrdenDeTrabajoBLL otBll = new OrdenDeTrabajoBLL();
-                List<OrdenDeTrabajo> listaOTs = otBll.ListarOrdenes().Where(ot => !string.Equals(ot.estado, "Completada", StringComparison.OrdinalIgnoreCase)).ToList();
-
+                List<OrdenDeTrabajo> listaOTs = otBll.ListarOrdenes();
                 dgvOTs.AutoGenerateColumns = true;
                 dgvOTs.DataSource = listaOTs;
 

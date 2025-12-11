@@ -12,46 +12,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static BLL.Roles.RolBLL;
 
 namespace IU
 {
     public partial class NuevoUsuario : Form
     {
-        public BLL.Roles.RolBLL rolBLL { get; private set; } = new BLL.Roles.RolBLL();
         public UsuarioBE nuevoUsuario { get; private set; } = new UsuarioBE(); 
         public UsuarioBLL usuarioBLL { get; private set; } = new UsuarioBLL(); 
-
 
         public NuevoUsuario()
         {
             InitializeComponent();
-            rolBLL = new BLL.Roles.RolBLL();
-            comboBoxRolUsuario.DataSource = rolBLL.ListarRoles();
-            comboBoxRolUsuario.DisplayMember = "designacion";
-            comboBoxRolUsuario.ValueMember = "id"; 
-        }
-        private void NuevoUsuario_Load(object sender, EventArgs e)
-        {
-            comboBoxRolUsuario.DataSource = rolBLL.ListarRoles();
         }
 
         private void buttonCrearUser_Click(object sender, EventArgs e)
         {
-            string rol = comboBoxRolUsuario.SelectedItem?.ToString();
+            try
+            {
+                nuevoUsuario.username = textBoxUserName.Text.Trim();
+                nuevoUsuario.nombre = textBoxNombre.Text.Trim();
+                nuevoUsuario.apellido = textBoxApellido.Text.Trim();
+                nuevoUsuario.password = textBoxPww.Text;
+                nuevoUsuario.bloqueado = false;
 
-            nuevoUsuario.username = textBoxUserName.Text;
-            nuevoUsuario.nombre = textBoxNombre.Text;
-            nuevoUsuario.apellido = textBoxApellido.Text;
-            nuevoUsuario.password = textBoxPww.Text;
-            nuevoUsuario.bloqueado = false; //por defecto no bloqueado
-            int idRol = (int)comboBoxRolUsuario.SelectedValue;
-            nuevoUsuario.rolesAsignados.Add(idRol); // Agregar el rol seleccionado a la lista de roles asignados
+                usuarioBLL.GuardarUsuario(nuevoUsuario);
 
-            usuarioBLL.GuardarUsuario(nuevoUsuario);
+                MessageBox.Show("Usuario creado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            MessageBox.Show("Usuario creado correctamente.");
-            this.Close();
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al crear usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void bttnCancelar_Click(object sender, EventArgs e)

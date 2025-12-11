@@ -16,12 +16,11 @@ namespace BE.Modelo
         public string matricula { get; set; }
         public DateTime fechaInicio { get; set; }
         public DateTime fechaCierre { get; set; }
-        public string estado { get; set; } // Ejemplo: "Pendiente", "En Progreso", "Completada"
+        public string estado { get; set; } // Ejemplo: "Pendiente", "Completada"
         public TrabajoBE trabajo { get; set; } // Trabajo asociado a la OT
         //registro de firmas
         public List<TareaBE> listaTareasOT { get; set; } = new List<TareaBE>(); // Lista de tareas asociadas a la OT
         public string mecanico { get; set; }
         public string inspector { get; set; }
-
     }
 }

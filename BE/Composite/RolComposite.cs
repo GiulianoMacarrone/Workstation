@@ -9,46 +9,38 @@ namespace BE.Composite
 {
     public class RolComposite : Componente
     {
-        private readonly List<Componente> hijo = new List<Componente>();
+        private IList<Componente> _hijos;
+
+        public RolComposite()
+        {
+            _hijos = new List<Componente>();
+        }
+        public override IList<Componente> hijos
+        {
+            get 
+            {
+                return _hijos;
+            }
+        }
 
         public override void AgregarHijo(Componente component)
         {
-            try
-            {
-                hijo.Add(component);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al agregar hijo al rol", ex);
-            }
+            _hijos.Add(component);
         }
 
         public override void EliminarHijo(Componente component)
         {
-            try
+            var hijo = _hijos.FirstOrDefault(h => h.id == component.id);
+            if (hijo != null)
             {
-                hijo.Remove(component);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al eliminar hijo del rol", ex);
+                _hijos.Remove(hijo);
             }
         }
-        public override bool TieneHijos() //no se refiere a si el rol tiene hijos, sino a si el componente puede tener hijos. Rol = si. Permiso = no.
+
+        public override void VaciarHijos()
         {
-            //if (hijo.Count == 0) return true; //Podriamos agregar una validacion si se quiere q corrobora que tiene hijos o no.
-            return true; 
+            _hijos = new List<Componente>();
         }
-        public override IList<Componente> ObtenerHijos()
-        {
-            try 
-            {
-                return hijo;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener hijos del rol", ex);
-            }
-        }
+
     }
 }

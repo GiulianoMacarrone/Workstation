@@ -1,5 +1,5 @@
 ﻿using BE.Modelo;
-using DAL;
+using Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +10,15 @@ namespace BLL.Servicios
 {
     public class ConsumibleBLL
     {
-        public void CrearConsumible(Consumible consumible)
+        MPPConsumible mpp = new MPPConsumible();
+        public void GuardarConsumible(Consumible consumible)
         {
-            DatosDAL.GuardarConsumible(consumible);
+            mpp.GuardarConsumible(consumible);
         }
 
         public List<Consumible> ListarConsumibles()
         {
-            return DatosDAL.ListarConsumibles();
+            return mpp.ListarConsumibles();
         }
 
         public void Consumir(Consumible consumible, int cantidad, string entregadoPor, string recibidoPor)
@@ -33,9 +34,9 @@ namespace BLL.Servicios
 
             consumible.cantidad -= cantidad;
 
-            DatosDAL.GuardarConsumible(consumible);
+            mpp.GuardarConsumible(consumible);
 
-            DatosDAL.RegistrarEntregaConsumible(
+            mpp.RegistrarEntregaConsumible(
                 consumible.id,
                 cantidad,
                 entregadoPor,
