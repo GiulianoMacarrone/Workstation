@@ -75,6 +75,8 @@
             this.buttonImprimirHistorialEstadoFlota = new System.Windows.Forms.Button();
             this.buttonActualizarEstadoAeronave = new System.Windows.Forms.Button();
             this.buttonAbrirUbicacionArchivos = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDisponibles)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRealizadas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
@@ -151,9 +153,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(547, 55);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(160, 13);
+            this.label3.Size = new System.Drawing.Size(221, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Tareas Creadas vs Completadas";
+            this.label3.Text = "Ordenes de Trabajo Creadas vs Completadas";
             // 
             // dtpHasta
             // 
@@ -332,9 +334,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(547, 455);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(69, 13);
+            this.label7.Size = new System.Drawing.Size(222, 13);
             this.label7.TabIndex = 35;
-            this.label7.Text = "Cumplimiento";
+            this.label7.Text = "Cumplimiento | Ot Completadas vs Pendientes";
             // 
             // chartHeatMap
             // 
@@ -439,12 +441,32 @@
             this.buttonAbrirUbicacionArchivos.UseVisualStyleBackColor = true;
             this.buttonAbrirUbicacionArchivos.Click += new System.EventHandler(this.buttonAbrirUbicacionArchivos_Click);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(1223, 55);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(311, 13);
+            this.label13.TabIndex = 44;
+            this.label13.Text = "HeatMap | Días y horas más comunes en las que se inician OT\'s";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(1006, 455);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(371, 13);
+            this.label14.TabIndex = 45;
+            this.label14.Text = "Tiempo promecio de cierre de OT  (fecha inicio hasta fechaCierre de cada ot)";
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1822, 948);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.buttonAbrirUbicacionArchivos);
             this.Controls.Add(this.buttonActualizarEstadoAeronave);
             this.Controls.Add(this.buttonImprimirHistorialEstadoFlota);
@@ -534,5 +556,7 @@
         private System.Windows.Forms.Button buttonImprimirHistorialEstadoFlota;
         private System.Windows.Forms.Button buttonActualizarEstadoAeronave;
         private System.Windows.Forms.Button buttonAbrirUbicacionArchivos;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
     }
 }

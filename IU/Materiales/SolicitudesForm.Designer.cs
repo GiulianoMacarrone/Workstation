@@ -61,7 +61,7 @@
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.dataGridViewNoStock);
             this.Name = "SolicitudesForm";
-            this.Text = "SolicitudesForm";
+            this.Text = "Solicitudes";
             this.Load += new System.EventHandler(this.SolicitudesForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNoStock)).EndInit();
             this.ResumeLayout(false);

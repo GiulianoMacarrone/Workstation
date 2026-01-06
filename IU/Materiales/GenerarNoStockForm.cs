@@ -31,9 +31,6 @@ namespace IU
 
             radioButtonDmi.CheckedChanged += (s, e) => CargarDmiOt();
             radioButtonOT.CheckedChanged += (s, e) => CargarDmiOt();
-
-            btnAceptar.Click += btnAceptar_Click;
-            btnCancel.Click += btnCancel_Click;
         }
 
         private void CrearNoStockForm_Load(object sender, EventArgs e)
@@ -101,8 +98,8 @@ namespace IU
                 numero = numero,
                 descripcion = txtDescripcion.Text.Trim(),
                 criticidad = textBoxCriticidad.Text.Trim(),
-                dmiUOt = comboBoxDMIuOT.SelectedValue.ToString(),
-                aeronave = comboBoxAeronave.SelectedValue.ToString(),
+                dmiUOt = $"DMI-{((Diferido)comboBoxDMIuOT.SelectedItem).numero}",
+                aeronave = ((AeronaveBE)comboBoxAeronave.SelectedItem).matricula,
                 partNumber = textBoxPn.Text.Trim()
             };
 
@@ -117,7 +114,7 @@ namespace IU
                 }
 
                 NoStockCreado?.Invoke(this, EventArgs.Empty);
-                MessageBox.Show($"No Stock creado con ID {noStock.id}","Éxito", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show($"No Stock creado","Éxito", MessageBoxButtons.OK,MessageBoxIcon.Information);
                 Close();
             }
             catch (Exception ex)
@@ -131,7 +128,5 @@ namespace IU
             Close();
         }
     }
-
-
 }
 

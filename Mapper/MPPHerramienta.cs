@@ -68,5 +68,27 @@ namespace Mapper
                 ).ToList();
         }
 
+        public void RegistrarEntregaHerramienta(string id, string entregadoPor, string recibidoPor)
+        {
+            var doc = DatosDAL.GetDocumento();
+            var nodo = doc.Descendants("Herramienta").First(x => x.Attribute("id")?.Value == id);
+
+            var hist = nodo.Element("HistorialEntregas");
+            if (hist == null)
+            {
+                hist = new XElement("HistorialEntregas");
+                nodo.Add(hist);
+            }
+
+            hist.Add(new XElement("Entrega",
+                new XElement("fecha", DateTime.Now),
+                new XElement("entregadoPor", entregadoPor),
+                new XElement("recibidoPor", recibidoPor)
+            ));
+
+            DatosDAL.GuardarDocumento(doc);
+        }
+
+
     }
 }

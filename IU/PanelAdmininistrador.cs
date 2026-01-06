@@ -41,7 +41,6 @@ namespace IU.ALTERNATIVO
         {
             LlenarPermisosRol();
             CargarTreeView();
-
         }
 
         private void CargarTreeView()
@@ -548,6 +547,23 @@ namespace IU.ALTERNATIVO
 
         private void buttonCrearAeronave_Click(object sender, EventArgs e)
         {
+            AeronaveBLL aeronaveBLL = new AeronaveBLL();
+
+            if (string.IsNullOrWhiteSpace(textBoxMatricula.Text) ||
+                string.IsNullOrWhiteSpace(textBoxMarca.Text) ||
+                string.IsNullOrWhiteSpace(textBoxModelo.Text) ||
+                string.IsNullOrWhiteSpace(textBoxSerie.Text))
+            {
+                MessageBox.Show("Todos los campos son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (aeronaveBLL.ListarAeronaves().Any(a => a.matricula.Equals(textBoxMatricula.Text.Trim(), StringComparison.OrdinalIgnoreCase)))
+            {
+                MessageBox.Show("Ya existe una aeronave con la misma matrícula.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             AeronaveBE aeronave = new AeronaveBE
             {
                 matricula = textBoxMatricula.Text.Trim(),
@@ -557,10 +573,10 @@ namespace IU.ALTERNATIVO
                 estadoActual = EstadoAeronave.Serviciable
             };
 
-            AeronaveBLL aeronaveBLL = new AeronaveBLL();
             aeronaveBLL.GuardarAeronave(aeronave);
-
             MessageBox.Show($"Aeronave {aeronave.matricula} creada exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            CargarTreeView();
         }
 
         private void treeViewUsuarios_AfterSelect(object sender, TreeViewEventArgs e)

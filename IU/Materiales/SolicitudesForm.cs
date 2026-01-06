@@ -73,7 +73,7 @@ namespace IU
             dataGridViewNoStock.Columns.Add(new DataGridViewCheckBoxColumn
             {
                 DataPropertyName = "estado",
-                HeaderText = "Completado"
+                HeaderText = "Pedido"
             });
 
             dataGridViewNoStock.DataSource = listaNoStocks;

@@ -1,4 +1,5 @@
 ﻿using BE.Composite;
+using DocumentFormat.OpenXml.Office2016.Drawing.Command;
 using Mapper;
 using System;
 using System.Collections.Generic;
@@ -39,16 +40,14 @@ namespace BLL.Servicios
 
         bool isInRole(Componente c, TipoPermisoBE permiso, bool existe)
         {
-
-
-            if (c.permiso.Equals(permiso)) //primera vuelta = ver dashboard, segunda vuelta Crear Trabajo 
+            if (c.permiso.Equals(permiso)) 
             {
                 Console.WriteLine(c.permiso);
                 existe = true; 
             }
             else
             {
-                foreach (var item in c.hijos) //no tiene hijos asi que salio directo
+                foreach (var item in c.hijos) 
                 {
                     existe = isInRole(item, permiso, existe);
                     if (existe) return true;
@@ -60,17 +59,20 @@ namespace BLL.Servicios
 
         public bool IsInRole(TipoPermisoBE permiso)
         {
+            if (UsuarioActual == null) return false;
+
             bool existe = false;
             foreach (var item in UsuarioActual.permisos)
             {
                 if (item.permiso.Equals(permiso))
-                    return true; //aca retorno TRUE 
+                    return true;
                 else
                 {
                     existe = isInRole(item, permiso, existe);
                     if (existe) return true;
                 }
             }
+
             return existe;
         }
 

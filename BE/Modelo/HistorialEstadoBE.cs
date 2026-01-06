@@ -14,10 +14,10 @@ namespace BE.Modelo
         public string marca { get; set; }
         public string modelo { get; set; }
         public string matricula { get; set; }
-        public EstadoAeronave estadoRegistrado { get; set; } // Copia de EstadoActual
-        public DateTime fechaEstado { get; set; } // Fecha escrita por el usuario. Generalmente el registro en el sistema se puede realizar antes o despues del cambio de estado.
-        public string motivo { get; set; } // libre si es F/S
-        public string numeroOT { get; set; } // obligatorio si es SVC
-        public string registradoPor { get; set; } // usuario que hizo el registro
+        public EstadoAeronave estadoRegistrado { get; set; } 
+        public DateTime fechaEstado { get; set; }
+        public string motivo { get; set; } 
+        public string numeroOT { get; set; } 
+        public string registradoPor { get; set; } 
     }
 }

@@ -2,6 +2,7 @@
 using BE.Modelo;
 using BLL;
 using BLL.Servicios;
+using DocumentFormat.OpenXml.EMMA;
 using IU.Materiales;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace IU
 {
@@ -34,13 +36,19 @@ namespace IU
         private void VisualizarPanolForm_Load(object sender, EventArgs e)
         {
             CargarElementos();
+            CargarHistorial();
         }
-
+        private void CargarHistorial()
+        {
+            dgvHistorialEntregas.DataSource = materialBLL.MostrarEntregas();
+        }
         private void CargarElementos()
         {
-            var listaConsumibles = consumibleBLL.ListarConsumibles();
+            var listaConsumibles = consumibleBLL.ListarConsumibles()
+                .Where(c => c.cantidad > 0 ).ToList();
             var listaHerramientas = herramientaBLL.ListarHerramientas();
-            var listaRotables = rotableBLL.ListarRotables();
+            var listaRotables = rotableBLL.ListarRotables()
+                .Where(r => r.estado).ToList();
 
             elementos = new List<ElementoVisualizable>();
             elementos.AddRange(listaConsumibles.Select(c => new ElementoVisualizable(c, "Consumible")));
@@ -57,7 +65,7 @@ namespace IU
         {
             string receptor;
             int cantidad;
-            var emisor = SesionUsuario.Instancia.UsuarioActual.id;
+            var emisor = SesionUsuario.Instancia.UsuarioActual.username;
             
             if (dataGridViewComponentes.CurrentRow == null) return;
             var elem = (ElementoVisualizable)dataGridViewComponentes.CurrentRow.DataBoundItem;
@@ -74,7 +82,7 @@ namespace IU
             using (var dlg = new SeleccionarReceptorForm(elem))
             {
                 if (dlg.ShowDialog(this) != DialogResult.OK) return;
-                receptor = dlg.idUsuarioSeleccionado;
+                receptor = dlg.UsuarioSeleccionado;
                 cantidad = dlg.cantidadSolicitada;
             }
 
@@ -83,6 +91,7 @@ namespace IU
                 materialBLL.EntregarElemento(elem, cantidad, emisor, receptor);
                 MessageBox.Show("Elemento entregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 CargarElementos();
+                CargarHistorial();
             }
             catch (Exception ex)
             {

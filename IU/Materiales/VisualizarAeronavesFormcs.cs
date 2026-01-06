@@ -31,11 +31,13 @@ namespace IU
             aeronaveSeleccionada = aeronave;
             var usuario = SesionUsuario.Instancia.UsuarioActual;
             var permisos = usuario.permisos;
+            
             bool puedeCerrar = permisos.Any(p => p.designacion.Equals("Cerrar_Diferido", StringComparison.OrdinalIgnoreCase));
+            
             if (puedeCerrar) 
             {
                 buttonCerrarDMI.Visible = true; 
-                buttonCerrarDMI.Enabled = true; 
+                buttonCerrarDMI.Enabled = true;
             }
  
             txtFechaCierre.Text = DateTime.Now.ToShortDateString();
@@ -72,7 +74,7 @@ namespace IU
             {
                 dataGridViewDiferidos.DataSource = null;
                 LimpiarCampos();
-                buttonCerrarDMI.Enabled = false; //prueba
+                buttonCerrarDMI.Enabled = false;
 
                 return;
             }

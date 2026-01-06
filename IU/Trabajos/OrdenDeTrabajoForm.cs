@@ -27,7 +27,6 @@ namespace IU
         public OrdenDeTrabajoForm(OrdenDeTrabajo ot)
         {
             InitializeComponent();
-            MessageBox.Show(ordenActual.mecanico); 
             var usuario = SesionUsuario.Instancia.UsuarioActual;
             var permisos = usuario.permisos;
             LlenarOT(ot);
