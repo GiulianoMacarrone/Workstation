@@ -176,7 +176,7 @@
             this.Controls.Add(this.buttonAceptar);
             this.Controls.Add(this.label1);
             this.Name = "CargarConsumibleForm";
-            this.Text = "CargarConsumibleForm";
+            this.Text = "Cargar Consumible";
             this.Load += new System.EventHandler(this.CargarConsumibleForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

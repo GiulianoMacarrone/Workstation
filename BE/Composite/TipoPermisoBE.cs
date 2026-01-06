@@ -8,10 +8,10 @@ namespace BE.Composite
 {
     public enum TipoPermisoBE
     {
-        Ninguno,
+        None,
         Permisos_Panel_Administrador,
-        Crear_Trabajo,
         Eliminar_Trabajo,
+        Crear_Trabajo,
         Crear_Orden_De_Trabajo,
         Eliminar_OT,
         Visualizar_OT,

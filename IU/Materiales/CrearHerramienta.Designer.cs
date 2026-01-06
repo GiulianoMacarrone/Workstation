@@ -44,7 +44,7 @@ namespace IU
             // 
             this.dateTimePickerFechaVto.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dateTimePickerFechaVto.CalendarTitleForeColor = System.Drawing.Color.Silver;
-            this.dateTimePickerFechaVto.Location = new System.Drawing.Point(112, 115);
+            this.dateTimePickerFechaVto.Location = new System.Drawing.Point(112, 88);
             this.dateTimePickerFechaVto.Name = "dateTimePickerFechaVto";
             this.dateTimePickerFechaVto.Size = new System.Drawing.Size(200, 20);
             this.dateTimePickerFechaVto.TabIndex = 28;
@@ -71,7 +71,7 @@ namespace IU
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(12, 115);
+            this.label6.Location = new System.Drawing.Point(12, 88);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(59, 13);
             this.label6.TabIndex = 22;
@@ -89,7 +89,7 @@ namespace IU
             // 
             // buttonCancelar
             // 
-            this.buttonCancelar.Location = new System.Drawing.Point(204, 224);
+            this.buttonCancelar.Location = new System.Drawing.Point(208, 138);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(75, 23);
             this.buttonCancelar.TabIndex = 17;
@@ -99,7 +99,7 @@ namespace IU
             // 
             // buttonAceptar
             // 
-            this.buttonAceptar.Location = new System.Drawing.Point(123, 224);
+            this.buttonAceptar.Location = new System.Drawing.Point(127, 138);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(75, 23);
             this.buttonAceptar.TabIndex = 16;
@@ -121,7 +121,7 @@ namespace IU
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(416, 282);
+            this.ClientSize = new System.Drawing.Size(416, 180);
             this.Controls.Add(this.textBoxSerial);
             this.Controls.Add(this.textBoxDescripcion);
             this.Controls.Add(this.label2);
@@ -131,7 +131,7 @@ namespace IU
             this.Controls.Add(this.dateTimePickerFechaVto);
             this.Controls.Add(this.label6);
             this.Name = "CrearHerramienta";
-            this.Text = "CrearHerramienta";
+            this.Text = "Crear Herramienta";
             this.Load += new System.EventHandler(this.CrearHerramienta_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

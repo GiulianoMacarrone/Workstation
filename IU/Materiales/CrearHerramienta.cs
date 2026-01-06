@@ -29,9 +29,9 @@ namespace IU
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxDescripcion.Text))
+            if (string.IsNullOrWhiteSpace(textBoxDescripcion.Text) || string.IsNullOrWhiteSpace(textBoxSerial.Text))
             {
-                MessageBox.Show("La descripción es obligatoria.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("La descripción y el serial son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxDescripcion.Focus();
                 return;
             }
@@ -54,7 +54,7 @@ namespace IU
                 return;
             }
 
-            MessageBox.Show("Consumible cargado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Herramienta creada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
         

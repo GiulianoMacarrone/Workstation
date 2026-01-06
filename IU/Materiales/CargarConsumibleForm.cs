@@ -32,9 +32,9 @@ namespace IU
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
+            if (string.IsNullOrWhiteSpace(txtDescripcion.Text) || string.IsNullOrWhiteSpace(txtLote.Text) || string.IsNullOrWhiteSpace(txtNumeroParte.Text))
             {
-                MessageBox.Show("La descripción es obligatoria.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe completar todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtDescripcion.Focus();
                 return;
             }

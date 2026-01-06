@@ -1,4 +1,5 @@
 ﻿using BE.Modelo;
+using DAL;
 using Mapper;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,36 @@ namespace BLL.Servicios
                 entregadoPor,
                 recibidoPor
                 );
+        }
+
+        public List<HistorialEntregasBE> ListarEntregas()
+        {
+            var lista = new List<HistorialEntregasBE>();
+            var doc = DatosDAL.GetDocumento();
+
+            var nodos = doc.Descendants("Consumible");
+
+            foreach (var nodo in nodos)
+            {
+                var id = nodo.Attribute("id")?.Value;
+                var hist = nodo.Element("HistorialEntregas");
+                if (hist == null) continue;
+
+                foreach (var entrega in hist.Elements("Entrega"))
+                {
+                    lista.Add(new HistorialEntregasBE
+                    {
+                        IdElemento = id,
+                        Tipo = "Consumible",
+                        Fecha = entrega.Element("fecha")?.Value,
+                        Cantidad = entrega.Element("cantidad")?.Value,
+                        EntregadoPor = entrega.Element("entregadoPor")?.Value,
+                        RecibidoPor = entrega.Element("recibidoPor")?.Value
+                    });
+                }
+            }
+
+            return lista;
         }
     }
 }

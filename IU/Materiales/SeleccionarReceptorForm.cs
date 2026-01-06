@@ -17,7 +17,7 @@ namespace IU.Materiales
     {
         private readonly UsuarioBLL usuarioBLL = new UsuarioBLL();
         private readonly ElementoVisualizable componente;
-        public string idUsuarioSeleccionado {  get; private set; }
+        public string UsuarioSeleccionado {  get; private set; }
         public int cantidadSolicitada { get; private set; }
         public SeleccionarReceptorForm(ElementoVisualizable componente)
         {
@@ -30,7 +30,6 @@ namespace IU.Materiales
             var listaUsuarios = usuarioBLL.ListarTodo();
             comboBoxUser.DataSource = listaUsuarios;
             comboBoxUser.DisplayMember = "username";
-            comboBoxUser.ValueMember = "id";
             comboBoxUser.SelectedIndex = -1;
 
             if (componente.Tipo == "Consumible")
@@ -42,7 +41,6 @@ namespace IU.Materiales
             }
             else
             {
-                // Para rotables se permite de a 1
                 labelCantMax.Text = $"Cantidad Solicitada: 1";
                 textBoxCantidad.Visible = false;
                 textBoxCantidad.Enabled = false;
@@ -83,7 +81,7 @@ namespace IU.Materiales
             }
             else cantidadSolicitada = 1;
 
-            idUsuarioSeleccionado = comboBoxUser.SelectedValue.ToString();
+            UsuarioSeleccionado = ((UsuarioBE)comboBoxUser.SelectedItem).username;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

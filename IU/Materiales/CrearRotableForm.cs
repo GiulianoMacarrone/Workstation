@@ -23,9 +23,9 @@ namespace IU
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxDescripcion.Text))
+            if (string.IsNullOrWhiteSpace(textBoxDescripcion.Text) || string.IsNullOrWhiteSpace(textBoxSerie.Text) || string.IsNullOrWhiteSpace(textNroParte.Text))
             {
-                MessageBox.Show("La descripción es obligatoria.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe completar todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxDescripcion.Focus();
                 return;
             }
@@ -42,7 +42,7 @@ namespace IU
             {
                 rotableBLL.GuardarRotable(rotable);
                 
-                MessageBox.Show($"Rotable creado con ID {rotable.id}","Éxito",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show($"Rotable {rotable.descripcion} creado exitosamente.","Éxito",MessageBoxButtons.OK,MessageBoxIcon.Information);
 
                 this.Close();
             }

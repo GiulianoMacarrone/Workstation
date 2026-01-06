@@ -47,12 +47,12 @@
     <Compile Include="Composite\RolComposite.cs" />
     <Compile Include="Composite\TipoPermisoBE.cs" />
     <Compile Include="Modelo\AeronaveBE.cs" />
-    <Compile Include="Modelo\BaseBE.cs" />
     <Compile Include="Modelo\Consumible.cs" />
     <Compile Include="Modelo\Diferido.cs" />
     <Compile Include="Modelo\ElementoVisualizable.cs" />
     <Compile Include="Modelo\EstadoAeronave.cs" />
     <Compile Include="Modelo\HerramientaBE.cs" />
+    <Compile Include="Modelo\HistorialEntregasBE.cs" />
     <Compile Include="Modelo\HistorialEstadoBE.cs" />
     <Compile Include="Modelo\ItemOTBE.cs" />
     <Compile Include="Modelo\NoStockBE.cs" />
